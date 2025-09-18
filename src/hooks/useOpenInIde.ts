@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IpcClient } from "@/ipc/ipc_client";
 import { showError, showSuccess } from "@/lib/toast";
+import { checkIdeAvailability, type IdeAvailability } from "@/utils/checkIdeAvailability";
 
 export function useOpenInIde() {
   const [isLoading, setIsLoading] = useState(false);
+  const [ideAvailability, setIdeAvailability] = useState<IdeAvailability>({
+    vscode: false,
+    cursor: false,
+  });
+
+  useEffect(() => {
+    checkIdeAvailability().then(setIdeAvailability);
+  }, []);
 
   const openInIde = async (appId: number, ide: "vscode" | "cursor") => {
     if (isLoading) return;
@@ -41,5 +50,6 @@ export function useOpenInIde() {
     openInVSCode,
     openInCursor,
     isLoading,
+    ideAvailability,
   };
 }

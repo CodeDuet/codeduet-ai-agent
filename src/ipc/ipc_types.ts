@@ -501,3 +501,8 @@ export interface OpenInIdeParams {
   projectPath: string;
   ide: "vscode" | "cursor";
 }
+
+export interface IdeAvailability {
+  vscode: boolean;
+  cursor: boolean;
+}

@@ -5,6 +5,7 @@ import { createLoggedHandler } from "./safe_handle";
 import * as path from "node:path";
 import { existsSync } from "node:fs";
 import { resolveAppPath } from "../../paths/paths";
+import type { IdeAvailability } from "../ipc_types";
 
 const logger = log.scope("shell_handlers");
 const handle = createLoggedHandler(logger);
@@ -128,5 +129,38 @@ export function registerShellHandlers() {
         resolve();
       }, 500);
     });
+  });
+
+  handle("check-ide-availability", async (): Promise<IdeAvailability> => {
+    const checkCommand = async (commands: string[]): Promise<boolean> => {
+      for (const cmd of commands) {
+        try {
+          await new Promise<void>((resolve, reject) => {
+            const testProcess = spawn("which", [cmd.split("/").pop() || cmd], { stdio: "pipe" });
+            testProcess.on("close", (code) => {
+              if (code === 0) resolve();
+              else reject();
+            });
+            testProcess.on("error", reject);
+          });
+          return true;
+        } catch {
+          continue;
+        }
+      }
+      return false;
+    };
+
+    const vscodeCommands = ["code", "/usr/local/bin/code", "/opt/homebrew/bin/code"];
+    const cursorCommands = ["cursor", "/usr/local/bin/cursor", "/opt/homebrew/bin/cursor"];
+
+    const [vscode, cursor] = await Promise.all([
+      checkCommand(vscodeCommands),
+      checkCommand(cursorCommands)
+    ]);
+
+    logger.debug("IDE availability check:", { vscode, cursor });
+    
+    return { vscode, cursor };
   });
 }

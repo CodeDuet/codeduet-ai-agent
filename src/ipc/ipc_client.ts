@@ -68,6 +68,7 @@ import type {
   McpTool,
   McpToolCallParams,
   OpenInIdeParams,
+  IdeAvailability,
 } from "./ipc_types";
 import type { Template } from "../shared/templates";
 import type {
@@ -469,6 +470,10 @@ export class IpcClient {
 
   public async openInIde(params: OpenInIdeParams): Promise<void> {
     await this.ipcRenderer.invoke("open-in-ide", params);
+  }
+
+  public async checkIdeAvailability(): Promise<IdeAvailability> {
+    return await this.ipcRenderer.invoke("check-ide-availability");
   }
 
   // Run an app
