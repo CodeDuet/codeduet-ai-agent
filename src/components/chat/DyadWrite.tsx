@@ -64,7 +64,7 @@ export const DyadWrite: React.FC<DyadWriteProps> = ({
           {aborted && (
             <div className="flex items-center text-red-600 text-xs">
               <CircleX size={14} className="mr-1" />
-              <span>Did not finish</span>
+              <span>Pending change approval</span>
             </div>
           )}
         </div>
