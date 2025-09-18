@@ -27,6 +27,7 @@ import {
   getDyadExecuteSqlTags,
 } from "../utils/dyad_tag_parser";
 import { storeDbTimestampAtCurrentVersion } from "../utils/neon_timestamp_utils";
+import { createCheckpoint } from "../utils/checkpoint_utils";
 
 import { FileUploadsState } from "../utils/file_uploads_state";
 
@@ -130,6 +131,32 @@ export async function processFullResponseActions(
     if (!message) {
       logger.error(`No message found for ID: ${messageId}`);
       return {};
+    }
+
+    // Check if this AI response will make any changes
+    const willMakeChanges =
+      dyadWriteTags.length > 0 ||
+      dyadRenameTags.length > 0 ||
+      dyadDeletePaths.length > 0 ||
+      dyadAddDependencyPackages.length > 0 ||
+      dyadExecuteSqlQueries.length > 0;
+
+    // Create checkpoint before applying AI changes
+    if (willMakeChanges) {
+      logger.log(`Creating checkpoint before applying AI changes for message ${messageId}`);
+      const checkpointResult = await createCheckpoint({
+        appPath,
+        chatId,
+        messageId,
+        description: chatSummary || "AI interaction",
+      });
+
+      if (!checkpointResult.success) {
+        logger.warn(`Failed to create checkpoint: ${checkpointResult.error}`);
+        // Continue anyway - checkpoint failure shouldn't block AI changes
+      } else {
+        logger.log(`Created checkpoint: ${checkpointResult.checkpointHash}`);
+      }
     }
 
     // Handle SQL execution tags

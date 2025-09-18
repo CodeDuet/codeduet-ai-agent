@@ -101,6 +101,8 @@ export interface Message {
   content: string;
   approvalState?: "approved" | "rejected" | null;
   commitHash?: string | null;
+  checkpointHash?: string | null;
+  isCheckpoint?: boolean | null;
   dbTimestamp?: string | null;
   createdAt?: Date | string;
 }
@@ -141,6 +143,21 @@ export interface Version {
   message: string;
   timestamp: number;
   dbTimestamp?: string | null;
+}
+
+export interface CheckpointInfo {
+  id: number;
+  role: "user" | "assistant";
+  checkpointHash: string | null;
+  commitHash: string | null;
+  isCheckpoint: boolean | null;
+  createdAt: Date;
+}
+
+export interface CheckpointResult {
+  checkpointHash: string;
+  success: boolean;
+  error?: string;
 }
 
 export type BranchResult = { branch: string };

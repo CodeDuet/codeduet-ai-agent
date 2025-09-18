@@ -5,22 +5,26 @@ import {
 } from "./DyadMarkdownParser";
 import { motion } from "framer-motion";
 import { useStreamChat } from "@/hooks/useStreamChat";
-import { CheckCircle, XCircle, Clock, GitCommit } from "lucide-react";
+import { CheckCircle, XCircle, Clock, GitCommit, RotateCcw, History } from "lucide-react";
 import { formatDistanceToNow, format } from "date-fns";
 import { useVersions } from "@/hooks/useVersions";
 import { useAtomValue } from "jotai";
 import { selectedAppIdAtom } from "@/atoms/appAtoms";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { IpcClient } from "@/ipc/ipc_client";
+import type { CheckpointResult } from "@/ipc/ipc_types";
 
 interface ChatMessageProps {
   message: Message;
   isLastMessage: boolean;
+  chatId?: number;
 }
 
-const ChatMessage = ({ message, isLastMessage }: ChatMessageProps) => {
+const ChatMessage = ({ message, isLastMessage, chatId }: ChatMessageProps) => {
   const { isStreaming } = useStreamChat();
   const appId = useAtomValue(selectedAppIdAtom);
   const { versions: liveVersions } = useVersions(appId);
+  const [isUndoing, setIsUndoing] = useState(false);
   // Find the version that was active when this message was sent
   const messageVersion = useMemo(() => {
     if (
@@ -51,6 +55,30 @@ const ChatMessage = ({ message, isLastMessage }: ChatMessageProps) => {
       return format(messageTime, "MMM d, yyyy 'at' h:mm a");
     }
   };
+
+  // Handle undo message functionality
+  const handleUndo = async () => {
+    if (!chatId || !message.checkpointHash) return;
+    
+    setIsUndoing(true);
+    try {
+      const result: CheckpointResult = await IpcClient.getInstance().undoMessage(message.id, chatId);
+      if (result.success) {
+        // You might want to refresh the app or show a success message
+        console.log('Successfully undid message changes');
+      } else {
+        console.error('Failed to undo message:', result.error);
+        // You might want to show an error toast here
+      }
+    } catch (error) {
+      console.error('Error undoing message:', error);
+    } finally {
+      setIsUndoing(false);
+    }
+  };
+
+  // Check if this message has a checkpoint (can be undone)
+  const hasCheckpoint = message.role === "assistant" && message.checkpointHash && message.approvalState === "approved";
 
   return (
     <div
@@ -124,18 +152,41 @@ const ChatMessage = ({ message, isLastMessage }: ChatMessageProps) => {
             </div>
           )}
           {message.approvalState && (
-            <div className="mt-2 flex items-center justify-end space-x-1 text-xs">
-              {message.approvalState === "approved" ? (
-                <>
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Approved</span>
-                </>
-              ) : message.approvalState === "rejected" ? (
-                <>
-                  <XCircle className="h-4 w-4 text-red-500" />
-                  <span>Rejected</span>
-                </>
-              ) : null}
+            <div className="mt-2 flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                {hasCheckpoint && (
+                  <div className="flex items-center space-x-1 text-xs text-blue-600 dark:text-blue-400">
+                    <History className="h-3 w-3" />
+                    <span>Checkpoint available</span>
+                  </div>
+                )}
+              </div>
+              <div className="flex items-center space-x-2">
+                {hasCheckpoint && (
+                  <button
+                    onClick={handleUndo}
+                    disabled={isUndoing}
+                    className="flex items-center space-x-1 px-2 py-1 text-xs text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="Undo changes from this message"
+                  >
+                    <RotateCcw className={`h-3 w-3 ${isUndoing ? 'animate-spin' : ''}`} />
+                    <span>{isUndoing ? 'Undoing...' : 'Undo'}</span>
+                  </button>
+                )}
+                <div className="flex items-center space-x-1 text-xs">
+                  {message.approvalState === "approved" ? (
+                    <>
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                      <span>Approved</span>
+                    </>
+                  ) : message.approvalState === "rejected" ? (
+                    <>
+                      <XCircle className="h-4 w-4 text-red-500" />
+                      <span>Rejected</span>
+                    </>
+                  ) : null}
+                </div>
+              </div>
             </div>
           )}
         </div>

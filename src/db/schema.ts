@@ -64,6 +64,8 @@ export const messages = sqliteTable("messages", {
     enum: ["approved", "rejected"],
   }),
   commitHash: text("commit_hash"),
+  checkpointHash: text("checkpoint_hash"),
+  isCheckpoint: integer("is_checkpoint", { mode: "boolean" }).default(false),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .default(sql`(unixepoch())`),

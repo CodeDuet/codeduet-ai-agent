@@ -138,7 +138,7 @@ export class McpManager extends EventEmitter {
 
       try {
         const response = await server.client.listTools();
-        tools.push(...response.tools.map(tool => ({
+        tools.push(...response.tools.map((tool: any) => ({
           name: tool.name,
           description: tool.description,
           inputSchema: tool.inputSchema,

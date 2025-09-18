@@ -62,6 +62,8 @@ import type {
   CreatePromptParamsDto,
   UpdatePromptParamsDto,
   McpServer,
+  CheckpointInfo,
+  CheckpointResult,
   McpServerConfig,
   McpTool,
   McpToolCallParams,
@@ -564,6 +566,23 @@ export class IpcClient {
     return this.ipcRenderer.invoke("get-current-branch", {
       appId,
     });
+  }
+
+  // Checkpoint-related methods
+  public async undoMessage(messageId: number, chatId: number): Promise<CheckpointResult> {
+    return this.ipcRenderer.invoke("checkpoint:undo-message", messageId, chatId);
+  }
+
+  public async restoreToCheckpoint(checkpointHash: string, chatId: number): Promise<CheckpointResult> {
+    return this.ipcRenderer.invoke("checkpoint:restore", checkpointHash, chatId);
+  }
+
+  public async getChatCheckpoints(chatId: number): Promise<CheckpointInfo[]> {
+    return this.ipcRenderer.invoke("checkpoint:get-chat-checkpoints", chatId);
+  }
+
+  public async cleanupCheckpoints(chatId: number, keepLatest?: number): Promise<{ success: boolean }> {
+    return this.ipcRenderer.invoke("checkpoint:cleanup", chatId, keepLatest);
   }
 
   // Get user settings

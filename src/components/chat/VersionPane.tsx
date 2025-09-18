@@ -2,7 +2,7 @@ import { useAtom, useAtomValue } from "jotai";
 import { selectedAppIdAtom, selectedVersionIdAtom } from "@/atoms/appAtoms";
 import { useVersions } from "@/hooks/useVersions";
 import { formatDistanceToNow } from "date-fns";
-import { RotateCcw, X, Database, Loader2 } from "lucide-react";
+import { RotateCcw, X, Database, Loader2, History, GitCommit } from "lucide-react";
 import type { Version } from "@/ipc/ipc_types";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
@@ -15,6 +15,9 @@ import {
 } from "@/components/ui/tooltip";
 
 import { useRunApp } from "@/hooks/useRunApp";
+import { CheckpointHistoryPanel } from "./CheckpointHistoryPanel";
+import { useAtomValue as useAtomValueChats } from "jotai";
+import { selectedChatIdAtom } from "@/atoms/chatAtoms";
 
 interface VersionPaneProps {
   isVisible: boolean;
@@ -23,6 +26,7 @@ interface VersionPaneProps {
 
 export function VersionPane({ isVisible, onClose }: VersionPaneProps) {
   const appId = useAtomValue(selectedAppIdAtom);
+  const chatId = useAtomValueChats(selectedChatIdAtom);
   const { refreshApp, app } = useLoadApp(appId);
   const { restartApp } = useRunApp();
   const {
@@ -38,6 +42,7 @@ export function VersionPane({ isVisible, onClose }: VersionPaneProps) {
   const { checkoutVersion, isCheckingOutVersion } = useCheckoutVersion();
   const wasVisibleRef = useRef(false);
   const [cachedVersions, setCachedVersions] = useState<Version[]>([]);
+  const [activeTab, setActiveTab] = useState<'versions' | 'checkpoints'>('versions');
 
   useEffect(() => {
     async function updatePaneState() {
@@ -105,7 +110,7 @@ export function VersionPane({ isVisible, onClose }: VersionPaneProps) {
   return (
     <div className="h-full border-t border-2 border-border w-full">
       <div className="p-2 border-b border-border flex items-center justify-between">
-        <h2 className="text-base font-medium pl-2">Version History</h2>
+        <h2 className="text-base font-medium pl-2">History</h2>
         <div className="flex items-center gap-2">
           <button
             onClick={onClose}
@@ -116,11 +121,41 @@ export function VersionPane({ isVisible, onClose }: VersionPaneProps) {
           </button>
         </div>
       </div>
-      <div className="overflow-y-auto h-[calc(100%-60px)]">
-        {versions.length === 0 ? (
-          <div className="p-4 ">No versions available</div>
-        ) : (
-          <div className="divide-y divide-border">
+      
+      {/* Tabs */}
+      <div className="flex border-b border-border">
+        <button
+          onClick={() => setActiveTab('versions')}
+          className={cn(
+            "flex-1 px-4 py-2 text-sm font-medium flex items-center justify-center gap-2 transition-colors",
+            activeTab === 'versions'
+              ? "bg-background-lightest border-b-2 border-primary text-primary"
+              : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+          )}
+        >
+          <GitCommit className="h-4 w-4" />
+          Versions
+        </button>
+        <button
+          onClick={() => setActiveTab('checkpoints')}
+          className={cn(
+            "flex-1 px-4 py-2 text-sm font-medium flex items-center justify-center gap-2 transition-colors",
+            activeTab === 'checkpoints'
+              ? "bg-background-lightest border-b-2 border-primary text-primary"
+              : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+          )}
+        >
+          <History className="h-4 w-4" />
+          Checkpoints
+        </button>
+      </div>
+      
+      <div className="overflow-y-auto h-[calc(100%-100px)]">
+        {activeTab === 'versions' ? (
+          versions.length === 0 ? (
+            <div className="p-4 ">No versions available</div>
+          ) : (
+            <div className="divide-y divide-border">
             {versions.map((version: Version, index: number) => (
               <div
                 key={version.oid}
@@ -266,7 +301,10 @@ export function VersionPane({ isVisible, onClose }: VersionPaneProps) {
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+          )
+        ) : (
+          <CheckpointHistoryPanel chatId={chatId} />
         )}
       </div>
     </div>
