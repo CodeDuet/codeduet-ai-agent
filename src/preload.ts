@@ -46,6 +46,7 @@ const validInvokeChannels = [
   "get-env-vars",
   "open-external-url",
   "show-item-in-folder",
+  "open-in-ide",
   "reset-all",
   "nodejs-status",
   "install-node",

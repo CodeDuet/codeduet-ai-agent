@@ -479,3 +479,8 @@ export interface HelpChatResponseError {
   sessionId: string;
   error: string;
 }
+
+export interface OpenInIdeParams {
+  projectPath: string;
+  ide: "vscode" | "cursor";
+}

@@ -65,6 +65,7 @@ import type {
   McpServerConfig,
   McpTool,
   McpToolCallParams,
+  OpenInIdeParams,
 } from "./ipc_types";
 import type { Template } from "../shared/templates";
 import type {
@@ -462,6 +463,10 @@ export class IpcClient {
 
   public async showItemInFolder(fullPath: string): Promise<void> {
     await this.ipcRenderer.invoke("show-item-in-folder", fullPath);
+  }
+
+  public async openInIde(params: OpenInIdeParams): Promise<void> {
+    await this.ipcRenderer.invoke("open-in-ide", params);
   }
 
   // Run an app

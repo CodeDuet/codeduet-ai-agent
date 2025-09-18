@@ -1,6 +1,10 @@
 import { shell } from "electron";
+import { spawn } from "child_process";
 import log from "electron-log";
 import { createLoggedHandler } from "./safe_handle";
+import * as path from "node:path";
+import { existsSync } from "node:fs";
+import { resolveAppPath } from "../../paths/paths";
 
 const logger = log.scope("shell_handlers");
 const handle = createLoggedHandler(logger);
@@ -25,5 +29,104 @@ export function registerShellHandlers() {
 
     shell.showItemInFolder(fullPath);
     logger.debug("Showed item in folder:", fullPath);
+  });
+
+  handle("open-in-ide", async (_event, { projectPath, ide }: { projectPath: string; ide: "vscode" | "cursor" }) => {
+    if (!projectPath) {
+      throw new Error("No project path provided.");
+    }
+
+    // Resolve the app path to get the actual file system path
+    const resolvedPath = resolveAppPath(projectPath);
+    
+    if (!existsSync(resolvedPath)) {
+      throw new Error(`Project path does not exist: ${resolvedPath}`);
+    }
+
+    let command: string;
+    let args: string[];
+
+    // Define commands for different IDEs
+    if (ide === "vscode") {
+      // Try different possible VSCode commands
+      const possibleCommands = ["code", "/usr/local/bin/code", "/opt/homebrew/bin/code"];
+      
+      let foundCommand = null;
+      for (const cmd of possibleCommands) {
+        try {
+          // Check if command exists
+          await new Promise<void>((resolve, reject) => {
+            const testProcess = spawn("which", [cmd.split("/").pop() || cmd], { stdio: "pipe" });
+            testProcess.on("close", (code) => {
+              if (code === 0) resolve();
+              else reject();
+            });
+            testProcess.on("error", reject);
+          });
+          foundCommand = cmd;
+          break;
+        } catch {
+          continue;
+        }
+      }
+
+      if (!foundCommand) {
+        throw new Error("VSCode not found. Please install VSCode and ensure 'code' command is available in PATH.");
+      }
+
+      command = foundCommand;
+      args = [resolvedPath];
+    } else if (ide === "cursor") {
+      // Try different possible Cursor commands
+      const possibleCommands = ["cursor", "/usr/local/bin/cursor", "/opt/homebrew/bin/cursor"];
+      
+      let foundCommand = null;
+      for (const cmd of possibleCommands) {
+        try {
+          // Check if command exists
+          await new Promise<void>((resolve, reject) => {
+            const testProcess = spawn("which", [cmd.split("/").pop() || cmd], { stdio: "pipe" });
+            testProcess.on("close", (code) => {
+              if (code === 0) resolve();
+              else reject();
+            });
+            testProcess.on("error", reject);
+          });
+          foundCommand = cmd;
+          break;
+        } catch {
+          continue;
+        }
+      }
+
+      if (!foundCommand) {
+        throw new Error("Cursor not found. Please install Cursor and ensure 'cursor' command is available in PATH.");
+      }
+
+      command = foundCommand;
+      args = [resolvedPath];
+    } else {
+      throw new Error(`Unsupported IDE: ${ide}`);
+    }
+
+    return new Promise<void>((resolve, reject) => {
+      const process = spawn(command, args, {
+        stdio: "ignore",
+        detached: true,
+      });
+
+      process.unref();
+
+      process.on("error", (err) => {
+        logger.error(`Failed to launch ${ide}:`, err);
+        reject(new Error(`Failed to launch ${ide}: ${err.message}`));
+      });
+
+      // Give it a moment to start
+      setTimeout(() => {
+        logger.info(`Successfully launched ${ide} with project: ${resolvedPath}`);
+        resolve();
+      }, 500);
+    });
   });
 }
