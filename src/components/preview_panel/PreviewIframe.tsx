@@ -42,6 +42,37 @@ import {
 import { useRunApp } from "@/hooks/useRunApp";
 import { useShortcut } from "@/hooks/useShortcut";
 
+// Security: Define allowed origins for iframe communication
+const ALLOWED_IFRAME_ORIGINS = [
+  'http://localhost',
+  'https://localhost',
+  'http://127.0.0.1',
+  'https://127.0.0.1'
+];
+
+// Security: Validate if origin is allowed for iframe communication
+const isAllowedOrigin = (origin: string): boolean => {
+  try {
+    const url = new URL(origin);
+    return ALLOWED_IFRAME_ORIGINS.some(allowed => 
+      url.origin.startsWith(allowed) || 
+      (url.hostname === 'localhost' || url.hostname === '127.0.0.1')
+    );
+  } catch {
+    return false;
+  }
+};
+
+// Security: Get safe origin for postMessage
+const getSafeOrigin = (appUrl: string): string => {
+  try {
+    const url = new URL(appUrl);
+    return url.origin;
+  } catch {
+    return window.location.origin;
+  }
+};
+
 interface ErrorBannerProps {
   error: string | undefined;
   onDismiss: () => void;
@@ -156,10 +187,11 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
   // Deactivate component selector when selection is cleared
   useEffect(() => {
     if (!selectedComponentPreview) {
-      if (iframeRef.current?.contentWindow) {
+      if (iframeRef.current?.contentWindow && appUrl) {
+        const safeOrigin = getSafeOrigin(appUrl);
         iframeRef.current.contentWindow.postMessage(
           { type: "deactivate-dyad-component-selector" },
-          "*",
+          safeOrigin,
         );
       }
       setIsPicking(false);
@@ -169,8 +201,20 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
   // Add message listener for iframe errors and navigation events
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      // Only handle messages from our iframe
+      // Security: Validate message source and origin
       if (event.source !== iframeRef.current?.contentWindow) {
+        return;
+      }
+      
+      // Security: Validate origin is from allowed iframe sources
+      if (!isAllowedOrigin(event.origin)) {
+        console.warn('Blocked message from unauthorized origin:', event.origin);
+        return;
+      }
+      
+      // Security: Validate message structure
+      if (!event.data || typeof event.data !== 'object') {
+        console.warn('Blocked invalid message format');
         return;
       }
 
@@ -291,16 +335,17 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
 
   // Function to activate component selector in the iframe
   const handleActivateComponentSelector = () => {
-    if (iframeRef.current?.contentWindow) {
+    if (iframeRef.current?.contentWindow && appUrl) {
       const newIsPicking = !isPicking;
       setIsPicking(newIsPicking);
+      const safeOrigin = getSafeOrigin(appUrl);
       iframeRef.current.contentWindow.postMessage(
         {
           type: newIsPicking
             ? "activate-dyad-component-selector"
             : "deactivate-dyad-component-selector",
         },
-        "*",
+        safeOrigin,
       );
     }
   };
@@ -316,13 +361,14 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
 
   // Function to navigate back
   const handleNavigateBack = () => {
-    if (canGoBack && iframeRef.current?.contentWindow) {
+    if (canGoBack && iframeRef.current?.contentWindow && appUrl) {
+      const safeOrigin = getSafeOrigin(appUrl);
       iframeRef.current.contentWindow.postMessage(
         {
           type: "navigate",
           payload: { direction: "backward" },
         },
-        "*",
+        safeOrigin,
       );
 
       // Update our local state
@@ -334,13 +380,14 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
 
   // Function to navigate forward
   const handleNavigateForward = () => {
-    if (canGoForward && iframeRef.current?.contentWindow) {
+    if (canGoForward && iframeRef.current?.contentWindow && appUrl) {
+      const safeOrigin = getSafeOrigin(appUrl);
       iframeRef.current.contentWindow.postMessage(
         {
           type: "navigate",
           payload: { direction: "forward" },
         },
-        "*",
+        safeOrigin,
       );
 
       // Update our local state
@@ -558,7 +605,7 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
           </div>
         ) : (
           <iframe
-            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-downloads"
+            sandbox="allow-scripts allow-forms allow-popups allow-modals allow-orientation-lock allow-pointer-lock allow-presentation"
             data-testid="preview-iframe-element"
             onLoad={() => {
               setErrorMessage(undefined);
