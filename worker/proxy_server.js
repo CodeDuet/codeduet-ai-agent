@@ -195,7 +195,6 @@ const server = http.createServer((clientReq, clientRes) => {
       // Security: Add security headers even for non-injected responses
       const secureHeaders = {
         ...upRes.headers,
-        "x-frame-options": "SAMEORIGIN",
         "x-content-type-options": "nosniff", 
         "referrer-policy": "strict-origin-when-cross-origin"
       };
@@ -213,9 +212,8 @@ const server = http.createServer((clientReq, clientRes) => {
         const hdrs = {
           ...upRes.headers,
           "content-length": Buffer.byteLength(patched),
-          // Security: Add Content Security Policy headers
-          "content-security-policy": "default-src 'self' 'unsafe-inline' 'unsafe-eval' localhost:* 127.0.0.1:* data: blob:; connect-src 'self' localhost:* 127.0.0.1:* ws: wss:; frame-ancestors 'self' localhost:* 127.0.0.1:*",
-          "x-frame-options": "SAMEORIGIN",
+          // Security: Add Content Security Policy headers (allow file:// for Electron)
+          "content-security-policy": "default-src 'self' 'unsafe-inline' 'unsafe-eval' localhost:* 127.0.0.1:* data: blob:; connect-src 'self' localhost:* 127.0.0.1:* ws: wss:; frame-ancestors 'self' localhost:* 127.0.0.1:* file:",
           "x-content-type-options": "nosniff",
           "referrer-policy": "strict-origin-when-cross-origin"
         };

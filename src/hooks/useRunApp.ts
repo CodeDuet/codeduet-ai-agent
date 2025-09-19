@@ -29,20 +29,27 @@ export function useRunApp() {
       "[dyad-proxy-server]started=[",
     );
     if (matchesProxyServerStart) {
+      console.debug("Found proxy server start message:", output.message);
       // Extract both proxy URL and original URL using regex
       const proxyUrlMatch = output.message.match(
         /\[dyad-proxy-server\]started=\[(.*?)\]/,
       );
       const originalUrlMatch = output.message.match(/original=\[(.*?)\]/);
 
+      console.debug("Proxy URL match:", proxyUrlMatch);
+      console.debug("Original URL match:", originalUrlMatch);
+
       if (proxyUrlMatch && proxyUrlMatch[1]) {
         const proxyUrl = proxyUrlMatch[1];
         const originalUrl = originalUrlMatch && originalUrlMatch[1];
+        console.debug("Setting appUrl to:", proxyUrl, "originalUrl:", originalUrl);
         setAppUrlObj({
           appUrl: proxyUrl,
           appId: output.appId,
           originalUrl: originalUrl!,
         });
+      } else {
+        console.warn("Failed to extract proxy URL from message:", output.message);
       }
     }
   };

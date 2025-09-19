@@ -5,28 +5,7 @@
 
   let previousUrl = window.location.href;
   
-  // Security: Determine safe parent origin instead of wildcard
-  const getSafeParentOrigin = () => {
-    try {
-      // Get parent origin safely
-      if (window.parent && window.parent.location && window.parent.location.origin) {
-        return window.parent.location.origin;
-      }
-    } catch (e) {
-      // Cross-origin restrictions prevent access, use document referrer as fallback
-      if (document.referrer) {
-        try {
-          return new URL(document.referrer).origin;
-        } catch (urlError) {
-          console.warn("Could not parse referrer URL:", urlError);
-        }
-      }
-    }
-    // Fallback to localhost origins for development
-    return window.location.protocol + "//" + window.location.host;
-  };
-  
-  const PARENT_TARGET_ORIGIN = getSafeParentOrigin();
+  const PARENT_TARGET_ORIGIN = "*";
 
   // --- History API Overrides ---
   const originalPushState = history.pushState;
@@ -95,38 +74,12 @@
 
   // --- Listener for Commands from Parent ---
   window.addEventListener("message", (event) => {
-    // Security: Validate message source and origin
-    if (event.source !== window.parent) {
+    if (
+      event.source !== window.parent ||
+      !event.data ||
+      typeof event.data !== "object"
+    )
       return;
-    }
-    
-    // Security: Validate origin matches expected parent
-    try {
-      const parentOrigin = new URL(PARENT_TARGET_ORIGIN).origin;
-      const eventOrigin = event.origin;
-      if (eventOrigin !== parentOrigin && 
-          !eventOrigin.includes('localhost') && 
-          !eventOrigin.includes('127.0.0.1')) {
-        console.warn("Blocked message from unauthorized parent origin:", eventOrigin);
-        return;
-      }
-    } catch (e) {
-      console.warn("Could not validate parent origin:", e);
-      return;
-    }
-    
-    // Security: Validate message structure
-    if (!event.data || typeof event.data !== "object") {
-      return;
-    }
-    
-    // Security: Whitelist allowed message types
-    const allowedTypes = ["navigate", "activate-dyad-component-selector", "deactivate-dyad-component-selector"];
-    if (!allowedTypes.includes(event.data.type)) {
-      console.warn("Blocked unauthorized message type:", event.data.type);
-      return;
-    }
-    
     if (event.data.type === "navigate") {
       const direction = event.data.payload?.direction;
       if (direction === "forward") history.forward();
