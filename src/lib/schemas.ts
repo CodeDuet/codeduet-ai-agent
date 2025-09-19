@@ -213,6 +213,7 @@ export const UserSettingsSchema = z.object({
   releaseChannel: ReleaseChannelSchema,
   runtimeMode2: RuntimeMode2Schema.optional(),
   enableResponseEndNotification: z.boolean().optional(),
+  enableConfetti: z.boolean().optional(),
 
   ////////////////////////////////
   // E2E TESTING ONLY.

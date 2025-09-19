@@ -164,6 +164,23 @@ export default function SettingsPage() {
                   .
                 </div>
               </div>
+              <div className="space-y-1 mt-4">
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="enable-confetti"
+                    checked={settings?.enableConfetti ?? true}
+                    onCheckedChange={(checked) => {
+                      updateSettings({
+                        enableConfetti: checked,
+                      });
+                    }}
+                  />
+                  <Label htmlFor="enable-confetti">Enable Confetti</Label>
+                </div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">
+                  Show confetti animations when completing setup tasks.
+                </div>
+              </div>
             </div>
           </div>
 

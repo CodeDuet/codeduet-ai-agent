@@ -1,8 +1,16 @@
 import { useCallback } from 'react';
 import confetti from 'canvas-confetti';
+import { useSettings } from './useSettings';
 
 export function useConfetti() {
+  const { settings } = useSettings();
+  
   const celebrate = useCallback(() => {
+    // Check if confetti is enabled (defaults to true if setting is not present)
+    if (settings?.enableConfetti === false) {
+      return;
+    }
+    
     // First burst from left
     confetti({
       particleCount: 100,
@@ -30,9 +38,14 @@ export function useConfetti() {
         colors: ['#10B981', '#3B82F6', '#8B5CF6', '#F59E0B', '#EF4444']
       });
     }, 300);
-  }, []);
+  }, [settings?.enableConfetti]);
 
   const celebrateSuccess = useCallback(() => {
+    // Check if confetti is enabled (defaults to true if setting is not present)
+    if (settings?.enableConfetti === false) {
+      return;
+    }
+    
     // Focused celebration for setup completion
     confetti({
       particleCount: 150,
@@ -42,7 +55,7 @@ export function useConfetti() {
       shapes: ['star', 'circle'],
       scalar: 1.2
     });
-  }, []);
+  }, [settings?.enableConfetti]);
 
   return {
     celebrate,
