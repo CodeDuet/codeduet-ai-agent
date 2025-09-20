@@ -3,9 +3,27 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Edit, Trash2, Play, Square, TestTube } from "lucide-react";
 import { IpcClient } from "@/ipc/ipc_client";
@@ -69,7 +87,9 @@ export function McpServerSettings() {
       const ipcClient = IpcClient.getInstance();
       await ipcClient.toggleMcpServer(id, enabled);
       await loadServers();
-      showSuccess(`MCP server ${enabled ? "enabled" : "disabled"} successfully`);
+      showSuccess(
+        `MCP server ${enabled ? "enabled" : "disabled"} successfully`,
+      );
     } catch (error) {
       console.error("Error toggling MCP server:", error);
       showError("Failed to toggle MCP server");
@@ -77,7 +97,9 @@ export function McpServerSettings() {
   };
 
   if (loading) {
-    return <div className="flex justify-center py-8">Loading MCP servers...</div>;
+    return (
+      <div className="flex justify-center py-8">Loading MCP servers...</div>
+    );
   }
 
   return (
@@ -117,7 +139,8 @@ export function McpServerSettings() {
             <div className="text-center text-gray-500">
               <div className="text-lg mb-2">No MCP servers configured</div>
               <div className="text-sm">
-                Add your first MCP server to extend AI capabilities with external tools
+                Add your first MCP server to extend AI capabilities with
+                external tools
               </div>
             </div>
           </CardContent>
@@ -134,7 +157,10 @@ export function McpServerSettings() {
                       {server.transport}
                     </Badge>
                     {connectedServers.includes(server.id) && (
-                      <Badge variant="default" className="bg-green-100 text-green-800">
+                      <Badge
+                        variant="default"
+                        className="bg-green-100 text-green-800"
+                      >
                         Connected
                       </Badge>
                     )}
@@ -142,7 +168,9 @@ export function McpServerSettings() {
                   <div className="flex items-center gap-2">
                     <Switch
                       checked={server.isEnabled}
-                      onCheckedChange={(enabled) => handleToggleServer(server.id, enabled)}
+                      onCheckedChange={(enabled) =>
+                        handleToggleServer(server.id, enabled)
+                      }
                     />
                     <Button
                       variant="ghost"
@@ -195,10 +223,14 @@ function McpServerForm({ server, onClose, onSave }: McpServerFormProps) {
   });
 
   const [argsText, setArgsText] = useState(
-    server?.args ? server.args.join(" ") : ""
+    server?.args ? server.args.join(" ") : "",
   );
   const [envText, setEnvText] = useState(
-    server?.env ? Object.entries(server.env).map(([k, v]) => `${k}=${v}`).join("\n") : ""
+    server?.env
+      ? Object.entries(server.env)
+          .map(([k, v]) => `${k}=${v}`)
+          .join("\n")
+      : "",
   );
 
   const [testing, setTesting] = useState(false);
@@ -210,17 +242,22 @@ function McpServerForm({ server, onClose, onSave }: McpServerFormProps) {
       const testConfig = {
         ...formData,
         args: argsText ? argsText.split(" ").filter(Boolean) : [],
-        env: envText ? Object.fromEntries(
-          envText.split("\n").filter(Boolean).map(line => {
-            const [key, ...valueParts] = line.split("=");
-            return [key.trim(), valueParts.join("=").trim()];
-          })
-        ) : {},
+        env: envText
+          ? Object.fromEntries(
+              envText
+                .split("\n")
+                .filter(Boolean)
+                .map((line) => {
+                  const [key, ...valueParts] = line.split("=");
+                  return [key.trim(), valueParts.join("=").trim()];
+                }),
+            )
+          : {},
       };
 
       const ipcClient = IpcClient.getInstance();
       const success = await ipcClient.testMcpConnection(testConfig);
-      
+
       if (success) {
         showSuccess("Connection test successful!");
       } else {
@@ -255,12 +292,17 @@ function McpServerForm({ server, onClose, onSave }: McpServerFormProps) {
       const config = {
         ...formData,
         args: argsText ? argsText.split(" ").filter(Boolean) : [],
-        env: envText ? Object.fromEntries(
-          envText.split("\n").filter(Boolean).map(line => {
-            const [key, ...valueParts] = line.split("=");
-            return [key.trim(), valueParts.join("=").trim()];
-          })
-        ) : {},
+        env: envText
+          ? Object.fromEntries(
+              envText
+                .split("\n")
+                .filter(Boolean)
+                .map((line) => {
+                  const [key, ...valueParts] = line.split("=");
+                  return [key.trim(), valueParts.join("=").trim()];
+                }),
+            )
+          : {},
       };
 
       const ipcClient = IpcClient.getInstance();
@@ -319,7 +361,9 @@ function McpServerForm({ server, onClose, onSave }: McpServerFormProps) {
             <Input
               id="command"
               value={formData.command}
-              onChange={(e) => setFormData({ ...formData, command: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, command: e.target.value })
+              }
               placeholder="python -m my_mcp_server"
             />
           </div>
@@ -335,7 +379,9 @@ function McpServerForm({ server, onClose, onSave }: McpServerFormProps) {
           </div>
 
           <div className="grid w-full gap-1.5">
-            <Label htmlFor="env">Environment Variables (KEY=value, one per line)</Label>
+            <Label htmlFor="env">
+              Environment Variables (KEY=value, one per line)
+            </Label>
             <textarea
               id="env"
               value={envText}
@@ -363,7 +409,9 @@ function McpServerForm({ server, onClose, onSave }: McpServerFormProps) {
         <Switch
           id="enabled"
           checked={formData.isEnabled}
-          onCheckedChange={(enabled) => setFormData({ ...formData, isEnabled: enabled })}
+          onCheckedChange={(enabled) =>
+            setFormData({ ...formData, isEnabled: enabled })
+          }
         />
         <Label htmlFor="enabled">Enable server</Label>
       </div>

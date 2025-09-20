@@ -5,7 +5,14 @@ import {
 } from "./DyadMarkdownParser";
 import { motion } from "framer-motion";
 import { useStreamChat } from "@/hooks/useStreamChat";
-import { CheckCircle, XCircle, Clock, GitCommit, RotateCcw, History } from "lucide-react";
+import {
+  CheckCircle,
+  XCircle,
+  Clock,
+  GitCommit,
+  RotateCcw,
+  History,
+} from "lucide-react";
 import { formatDistanceToNow, format } from "date-fns";
 import { useVersions } from "@/hooks/useVersions";
 import { useAtomValue } from "jotai";
@@ -59,26 +66,30 @@ const ChatMessage = ({ message, isLastMessage, chatId }: ChatMessageProps) => {
   // Handle undo message functionality
   const handleUndo = async () => {
     if (!chatId || !message.checkpointHash) return;
-    
+
     setIsUndoing(true);
     try {
-      const result: CheckpointResult = await IpcClient.getInstance().undoMessage(message.id, chatId);
+      const result: CheckpointResult =
+        await IpcClient.getInstance().undoMessage(message.id, chatId);
       if (result.success) {
         // You might want to refresh the app or show a success message
-        console.log('Successfully undid message changes');
+        console.log("Successfully undid message changes");
       } else {
-        console.error('Failed to undo message:', result.error);
+        console.error("Failed to undo message:", result.error);
         // You might want to show an error toast here
       }
     } catch (error) {
-      console.error('Error undoing message:', error);
+      console.error("Error undoing message:", error);
     } finally {
       setIsUndoing(false);
     }
   };
 
   // Check if this message has a checkpoint (can be undone)
-  const hasCheckpoint = message.role === "assistant" && message.checkpointHash && message.approvalState === "approved";
+  const hasCheckpoint =
+    message.role === "assistant" &&
+    message.checkpointHash &&
+    message.approvalState === "approved";
 
   return (
     <div
@@ -169,8 +180,10 @@ const ChatMessage = ({ message, isLastMessage, chatId }: ChatMessageProps) => {
                     className="flex items-center space-x-1 px-2 py-1 text-xs text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     title="Undo changes from this message"
                   >
-                    <RotateCcw className={`h-3 w-3 ${isUndoing ? 'animate-spin' : ''}`} />
-                    <span>{isUndoing ? 'Undoing...' : 'Undo'}</span>
+                    <RotateCcw
+                      className={`h-3 w-3 ${isUndoing ? "animate-spin" : ""}`}
+                    />
+                    <span>{isUndoing ? "Undoing..." : "Undo"}</span>
                   </button>
                 )}
                 <div className="flex items-center space-x-1 text-xs">

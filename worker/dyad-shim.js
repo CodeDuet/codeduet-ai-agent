@@ -4,7 +4,7 @@
   if (!isInsideIframe) return;
 
   let previousUrl = window.location.href;
-  
+
   const PARENT_TARGET_ORIGIN = "*";
 
   // --- History API Overrides ---

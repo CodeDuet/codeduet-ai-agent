@@ -10,9 +10,11 @@ import {
 import { toast } from "sonner";
 import { IpcClient } from "@/ipc/ipc_client";
 import type { ReleaseChannel } from "@/lib/schemas";
+import { useLanguage } from "@/i18n";
 
 export function ReleaseChannelSelector() {
   const { settings, updateSettings } = useSettings();
+  const { t } = useLanguage();
 
   if (!settings) {
     return null;
@@ -21,11 +23,10 @@ export function ReleaseChannelSelector() {
   const handleReleaseChannelChange = (value: ReleaseChannel) => {
     updateSettings({ releaseChannel: value });
     if (value === "stable") {
-      toast("Using Stable release channel", {
-        description:
-          "You'll stay on your current version until a newer stable release is available, or you can manually downgrade now.",
+      toast(t("settings.general.usingStableChannel"), {
+        description: t("settings.general.usingStableChannelDescription"),
         action: {
-          label: "Download Stable",
+          label: t("settings.general.downloadStable"),
           onClick: () => {
             IpcClient.getInstance().openExternalUrl(
               "https://codeduet.com/download",
@@ -34,11 +35,10 @@ export function ReleaseChannelSelector() {
         },
       });
     } else {
-      toast("Using Beta release channel", {
-        description:
-          "You will need to restart CodeDuet for your settings to take effect.",
+      toast(t("settings.general.usingBetaChannel"), {
+        description: t("settings.general.usingBetaChannelDescription"),
         action: {
-          label: "Restart CodeDuet",
+          label: t("settings.general.restartCodeDuet"),
           onClick: () => {
             IpcClient.getInstance().restartCodeDuet();
           },
@@ -54,7 +54,7 @@ export function ReleaseChannelSelector() {
           htmlFor="release-channel"
           className="text-sm font-medium text-gray-700 dark:text-gray-300"
         >
-          Release Channel
+          {t("settings.general.releaseChannel")}
         </label>
         <Select
           value={settings.releaseChannel}
@@ -64,14 +64,14 @@ export function ReleaseChannelSelector() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="stable">Stable</SelectItem>
-            <SelectItem value="beta">Beta</SelectItem>
+            <SelectItem value="stable">{t("settings.general.releaseChannelStable")}</SelectItem>
+            <SelectItem value="beta">{t("settings.general.releaseChannelBeta")}</SelectItem>
           </SelectContent>
         </Select>
       </div>
       <div className="text-sm text-gray-500 dark:text-gray-400">
-        <p>Stable is recommended for most users. </p>
-        <p>Beta receives more frequent updates but may have more bugs.</p>
+        <p>{t("settings.general.releaseChannelStableDescription")} </p>
+        <p>{t("settings.general.releaseChannelBetaDescription")}</p>
       </div>
     </div>
   );

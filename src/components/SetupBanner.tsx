@@ -27,6 +27,7 @@ import { NodeSystemInfo } from "@/ipc/ipc_types";
 import { usePostHog } from "posthog-js/react";
 import { useLanguageModelProviders } from "@/hooks/useLanguageModelProviders";
 import { useConfetti } from "@/hooks/useConfetti";
+import { useLanguage } from "@/i18n";
 type NodeInstallStep =
   | "install"
   | "waiting-for-continue"
@@ -39,13 +40,15 @@ export function SetupBanner() {
   const { isAnyProviderSetup, isLoading: loading } =
     useLanguageModelProviders();
   const { celebrate } = useConfetti();
+  const { t } = useLanguage();
   const [nodeSystemInfo, setNodeSystemInfo] = useState<NodeSystemInfo | null>(
     null,
   );
   const [nodeCheckError, setNodeCheckError] = useState<boolean>(false);
   const [nodeInstallStep, setNodeInstallStep] =
     useState<NodeInstallStep>("install");
-  const [previousProviderSetup, setPreviousProviderSetup] = useState<boolean>(false);
+  const [previousProviderSetup, setPreviousProviderSetup] =
+    useState<boolean>(false);
   const checkNode = useCallback(async () => {
     try {
       setNodeCheckError(false);
@@ -66,14 +69,14 @@ export function SetupBanner() {
   useEffect(() => {
     if (!loading) {
       const currentProviderSetup = isAnyProviderSetup();
-      
+
       // If providers just got set up (went from false to true), celebrate!
       if (!previousProviderSetup && currentProviderSetup) {
         setTimeout(() => {
           celebrate();
         }, 800); // Delay to let UI update
       }
-      
+
       setPreviousProviderSetup(currentProviderSetup);
     }
   }, [isAnyProviderSetup, loading, previousProviderSetup, celebrate]);
@@ -145,7 +148,7 @@ export function SetupBanner() {
   if (itemsNeedAction.length === 0) {
     return (
       <h1 className="text-6xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 tracking-tight">
-        Build your dream app
+        {t("apps.buildYourDreamApp")}
       </h1>
     );
   }
@@ -168,7 +171,9 @@ export function SetupBanner() {
 
   return (
     <>
-      <p className="text-xl text-zinc-700 dark:text-zinc-300 p-4">Setup CodeDuet</p>
+      <p className="text-xl text-zinc-700 dark:text-zinc-300 p-4">
+        Setup CodeDuet
+      </p>
       <div className={bannerClasses}>
         <Accordion
           type="multiple"
@@ -407,7 +412,8 @@ function NodeInstallButton({
     case "finished-checking":
       return (
         <div className="mt-3 text-sm text-red-600 dark:text-red-400">
-          Node.js not detected. Closing and re-opening CodeDuet usually fixes this.
+          Node.js not detected. Closing and re-opening CodeDuet usually fixes
+          this.
         </div>
       );
     default:

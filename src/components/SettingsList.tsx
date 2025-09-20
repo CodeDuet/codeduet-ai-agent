@@ -2,21 +2,23 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/i18n";
 
 const SETTINGS_SECTIONS = [
-  { id: "general-settings", label: "General" },
-  { id: "workflow-settings", label: "Workflow" },
-  { id: "ai-settings", label: "AI" },
-  { id: "provider-settings", label: "Model Providers" },
-  { id: "mcp-settings", label: "MCP Servers" },
-  { id: "telemetry", label: "Telemetry" },
-  { id: "integrations", label: "Integrations" },
-  { id: "experiments", label: "Experiments" },
-  { id: "danger-zone", label: "Danger Zone" },
+  { id: "general-settings", labelKey: "settings.general.title" },
+  { id: "workflow-settings", labelKey: "settings.workflow.title" },
+  { id: "ai-settings", labelKey: "settings.ai.title" },
+  { id: "provider-settings", labelKey: "settings.modelProviders.title" },
+  { id: "mcp-settings", labelKey: "settings.mcpServers.title" },
+  { id: "telemetry", labelKey: "settings.telemetry.title" },
+  { id: "integrations", labelKey: "settings.integrations.title" },
+  { id: "experiments", labelKey: "settings.experiments.title" },
+  { id: "danger-zone", labelKey: "settings.dangerZone.title" },
 ];
 
 export function SettingsList({ show }: { show: boolean }) {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [activeSection, setActiveSection] = useState<string | null>(
     "general-settings",
   );
@@ -64,7 +66,7 @@ export function SettingsList({ show }: { show: boolean }) {
   return (
     <div className="flex flex-col h-full">
       <div className="flex-shrink-0 p-4">
-        <h2 className="text-lg font-semibold tracking-tight">Settings</h2>
+        <h2 className="text-lg font-semibold tracking-tight">{t("settings.title")}</h2>
       </div>
       <ScrollArea className="flex-grow">
         <div className="space-y-1 p-4 pt-0">
@@ -79,7 +81,7 @@ export function SettingsList({ show }: { show: boolean }) {
                   : "hover:bg-sidebar-accent",
               )}
             >
-              {section.label}
+              {t(section.labelKey)}
             </button>
           ))}
         </div>

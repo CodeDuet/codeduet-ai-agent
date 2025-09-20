@@ -24,7 +24,7 @@ export function resolveAppPath(appPath: string): string {
   if (path.isAbsolute(appPath)) {
     return appPath;
   }
-  
+
   // Otherwise, it's a legacy relative path, resolve it using the old logic
   return getCodeDuetAppPath(appPath);
 }

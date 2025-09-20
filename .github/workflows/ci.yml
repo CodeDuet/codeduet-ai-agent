@@ -8,7 +8,7 @@ on:
   #     - main
   # pull_request:
   #   types: [opened, synchronize, reopened]
-  
+
   # Only run manually for now
   workflow_dispatch:
 
@@ -36,7 +36,7 @@ jobs:
             # { name: "windows", image: "windows-latest" },
             # { name: "ubuntu", image: "ubuntu-latest" },  # Electron Playwright doesn't work well on Ubuntu
           ]
-        shard: [1]  # Reduced to single shard to minimize costs
+        shard: [1] # Reduced to single shard to minimize costs
         shardTotal: [1]
     runs-on: ${{ matrix.os.image }}
     steps:

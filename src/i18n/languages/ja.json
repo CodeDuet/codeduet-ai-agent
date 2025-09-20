@@ -1,0 +1,188 @@
+{
+  "navigation": {
+    "apps": "アプリ",
+    "chat": "チャット",
+    "settings": "設定",
+    "library": "ライブラリ",
+    "hub": "ハブ",
+    "help": "ヘルプ"
+  },
+  "settings": {
+    "title": "設定",
+    "general": {
+      "title": "一般設定",
+      "language": "言語",
+      "theme": "テーマ",
+      "appVersion": "アプリバージョン：",
+      "autoUpdate": "自動更新",
+      "autoUpdateDescription": "新しいバージョンが利用可能になったときにアプリを自動的に更新します。",
+      "releaseChannel": "リリースチャンネル",
+      "releaseChannelStable": "安定版",
+      "releaseChannelBeta": "ベータ版",
+      "releaseChannelStableDescription": "安定版はほとんどのユーザーに推奨されます。",
+      "releaseChannelBetaDescription": "ベータ版はより頻繁に更新されますが、より多くのバグがある可能性があります。",
+      "runtimeMode": "ランタイムモード",
+      "runtimeModeLocal": "ローカル（デフォルト）",
+      "runtimeModeDocker": "Docker（実験的）",
+      "runtimeModeDescription": "アプリをローカルマシンで直接実行するか、Dockerコンテナで実行するかを選択",
+      "dockerWarning": "Dockerモードは実験的で、Docker Desktopがインストールされ実行されている必要があります",
+      "usingStableChannel": "安定版リリースチャンネルを使用",
+      "usingStableChannelDescription": "新しい安定版リリースが利用可能になるまで現在のバージョンを維持するか、今すぐ手動でダウングレードできます。",
+      "downloadStable": "安定版をダウンロード",
+      "usingBetaChannel": "ベータ版リリースチャンネルを使用",
+      "usingBetaChannelDescription": "設定を有効にするにはCodeDuetを再起動する必要があります。",
+      "restartCodeDuet": "CodeDuetを再起動",
+      "autoUpdateSettingsChanged": "自動更新設定が変更されました",
+      "autoUpdateSettingsChangedDescription": "設定を有効にするにはCodeDuetを再起動する必要があります。"
+    },
+    "workflow": {
+      "title": "ワークフロー設定",
+      "autoApprove": "自動承認",
+      "autoApproveDescription": "コードの変更を自動的に承認して実行します。",
+      "autoFixProblems": "問題の自動修正",
+      "autoFixProblemsDescription": "TypeScriptエラーを自動的に修正します。",
+      "responseEndNotification": "応答終了通知",
+      "responseEndNotificationDescription": "アシスタントが返答を完了したときにネイティブ通知を表示します。"
+    },
+    "ai": {
+      "title": "AI設定",
+      "thinkingBudget": "シンキング予算",
+      "thinkingBudgetMedium": "中（デフォルト）",
+      "thinkingBudgetDescription": "ほとんどの会話でバランスの取れた思考。",
+      "maxChatTurns": "コンテキストで使用される最大チャットターン数",
+      "maxChatTurnsDefault": "デフォルト（3）",
+      "maxChatTurnsDescription": "ほとんどの会話でバランスの取れたコンテキストサイズ。"
+    },
+    "modelProviders": {
+      "title": "モデルプロバイダー"
+    },
+    "mcpServers": {
+      "title": "MCPサーバー"
+    },
+    "telemetry": {
+      "title": "テレメトリー",
+      "description": "製品を改善するために匿名の使用データを記録します。"
+    },
+    "integrations": {
+      "title": "インテグレーション"
+    },
+    "experiments": {
+      "title": "実験",
+      "enableNativeGit": "ネイティブGitを有効化",
+      "enableNativeGitDescription": "ネイティブGitはより高速なパフォーマンスを提供しますが、Gitのインストールが必要です。",
+      "enableConfetti": "紙吹雪を有効化",
+      "enableConfettiDescription": "セットアップタスク完了時に紙吹雪アニメーションを表示します。"
+    },
+    "dangerZone": {
+      "title": "危険ゾーン",
+      "resetEverything": "すべてをリセット",
+      "resetEverythingDescription": "すべてのアプリ、チャット、設定を削除します。この操作は元に戻せません。",
+      "resetEverythingButton": "すべてをリセット",
+      "resetting": "リセット中..."
+    }
+  },
+  "apps": {
+    "title": "あなたのアプリ",
+    "newApp": "新しいアプリ",
+    "buildYourDreamApp": "夢のアプリを構築する",
+    "importApp": "アプリをインポート",
+    "importAppDescription": "既存のアプリフォルダを選択してCodeDuetにインポートします。",
+    "importAppExperimentalNote": "アプリインポートは実験的な機能です。問題が発生した場合は、ヘルプボタンを使用して報告してください。",
+    "selectFolder": "フォルダを選択",
+    "selectingFolder": "フォルダを選択中...",
+    "selectedFolder": "選択されたフォルダ：",
+    "clearSelection": "選択をクリア",
+    "appName": "アプリ名",
+    "enterNewAppName": "新しいアプリ名を入力",
+    "appNameExists": "この名前のアプリは既に存在します。別の名前を選択してください：",
+    "advancedOptions": "高度なオプション",
+    "installCommand": "インストールコマンド",
+    "startCommand": "開始コマンド",
+    "bothCommandsRequired": "カスタマイズする場合は両方のコマンドが必要です。",
+    "noAiRulesFound": "AI_RULES.mdが見つかりません。CodeDuetはインポート後に自動的に生成します。",
+    "aiRulesTooltip": "AI_RULES.mdはアプリの編集に使用する技術スタックをCodeDuetに知らせます",
+    "importingApp": "アプリをインポート中...",
+    "importing": "インポート中...",
+    "import": "インポート",
+    "appImportedSuccessfully": "アプリのインポートが成功しました",
+    "appImportedWithAiRules": "アプリのインポートが成功しました。CodeDuetは今すぐAI_RULES.mdを自動生成します。",
+    "askCodeDuetToBuild": "CodeDuetに構築を依頼...",
+    "build": "構築",
+    "noAppsFound": "アプリが見つかりません",
+    "loadingApps": "アプリを読み込み中...",
+    "errorLoadingApps": "アプリの読み込みエラー",
+    "buildingYourApp": "アプリを構築中",
+    "buildingDescription": "AIマジックでアプリをセットアップしています。少々お待ちください...",
+    "templateSuggestions": {
+      "todoApp": "TODOリストアプリ",
+      "landingPage": "ランディングページ",
+      "signUpForm": "サインアップフォーム",
+      "moodJournalTracker": "気分日記・トラッカー",
+      "interactiveStoryGame": "インタラクティブストーリーゲーム",
+      "recipeFinderMealPlanner": "レシピファインダー・食事プランナー",
+      "personalFinanceDashboard": "個人財務ダッシュボード",
+      "travelMemoryMap": "旅行記憶マップ",
+      "aiWritingAssistant": "AI執筆アシスタント",
+      "habitStreakTracker": "習慣ストリークトラッカー",
+      "newsletterCreator": "ニュースレター作成ツール",
+      "musicDiscoveryApp": "音楽発見アプリ",
+      "3dPortfolioViewer": "3Dポートフォリオビューアー",
+      "aiImageGenerator": "AI画像生成器",
+      "pomodoroFocusTimer": "ポモドーロフォーカスタイマー",
+      "virtualAvatarBuilder": "バーチャルアバタービルダー",
+      "moreIdeas": "その他のアイデア"
+    }
+  },
+  "templates": {
+    "title": "デフォルトテンプレートを選択",
+    "subtitle": "新しいプロジェクトの出発点を選択してください。",
+    "officialTemplates": "公式テンプレート",
+    "selected": "選択済み",
+    "official": "公式",
+    "reactTemplate": {
+      "title": "React.jsテンプレート",
+      "description": "React.js、Vite、Shadcn、Tailwind、TypeScriptを使用。"
+    },
+    "nextTemplate": {
+      "title": "Next.jsテンプレート",
+      "description": "Next.js、React.js、Shadcn、Tailwind、TypeScriptを使用。"
+    },
+    "createApp": "アプリを作成",
+    "viewOnGithub": "GitHubで表示"
+  },
+  "chat": {
+    "newChat": "新しいチャット",
+    "searchChats": "チャットを検索",
+    "recentChats": "最近のチャット",
+    "thinking": "考え中",
+    "keepGoing": "続行",
+    "askCodeDuetToBuild": "CodeDuetに構築を依頼...",
+    "systemMessages": "システムメッセージ",
+    "version": "バージョン"
+  },
+  "toolbar": {
+    "preview": "プレビュー",
+    "problems": "問題",
+    "code": "コード",
+    "configure": "設定",
+    "publish": "公開",
+    "toggleSidebar": "サイドバー切り替え"
+  },
+  "common": {
+    "goBack": "戻る",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "save": "保存",
+    "delete": "削除",
+    "edit": "編集",
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "success": "成功",
+    "noAppSelected": "アプリが選択されていません"
+  },
+  "themes": {
+    "system": "システム",
+    "light": "ライト",
+    "dark": "ダーク"
+  }
+}

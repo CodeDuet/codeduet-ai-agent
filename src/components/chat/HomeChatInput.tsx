@@ -12,6 +12,7 @@ import { usePostHog } from "posthog-js/react";
 import { HomeSubmitOptions } from "@/pages/home";
 import { ChatInputControls } from "../ChatInputControls";
 import { LexicalChatInput } from "./LexicalChatInput";
+import { useLanguage } from "@/i18n";
 export function HomeChatInput({
   onSubmit,
 }: {
@@ -23,6 +24,7 @@ export function HomeChatInput({
   const { isStreaming } = useStreamChat({
     hasChatId: false,
   }); // eslint-disable-line @typescript-eslint/no-unused-vars
+  const { t } = useLanguage();
 
   // Use the attachments hook
   const {
@@ -81,7 +83,7 @@ export function HomeChatInput({
               onChange={setInputValue}
               onSubmit={handleCustomSubmit}
               onPaste={handlePaste}
-              placeholder="Ask CodeDuet to build..."
+              placeholder={t("apps.askCodeDuetToBuild")}
               disabled={isStreaming}
               excludeCurrentApp={false}
             />

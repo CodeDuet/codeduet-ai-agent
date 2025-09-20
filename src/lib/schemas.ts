@@ -214,6 +214,7 @@ export const UserSettingsSchema = z.object({
   runtimeMode2: RuntimeMode2Schema.optional(),
   enableResponseEndNotification: z.boolean().optional(),
   enableConfetti: z.boolean().optional(),
+  selectedLanguage: z.string().optional(),
 
   ////////////////////////////////
   // E2E TESTING ONLY.
@@ -232,7 +233,6 @@ export const UserSettingsSchema = z.object({
  * Type derived from the UserSettingsSchema
  */
 export type UserSettings = z.infer<typeof UserSettingsSchema>;
-
 
 // Define interfaces for the props
 export interface SecurityRisk {

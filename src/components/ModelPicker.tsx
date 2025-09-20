@@ -108,18 +108,10 @@ export function ModelPicker() {
   const autoModels =
     !loading && modelsByProviders && modelsByProviders["auto"]
       ? modelsByProviders["auto"].filter((model) => {
-          if (
-            settings &&
-            true &&
-            model.apiName === "turbo"
-          ) {
+          if (settings && true && model.apiName === "turbo") {
             return false;
           }
-          if (
-            settings &&
-            false &&
-            model.apiName === "free"
-          ) {
+          if (settings && false && model.apiName === "free") {
             return false;
           }
           return true;
@@ -136,8 +128,7 @@ export function ModelPicker() {
     return null;
   }
   const selectedModel = settings?.selectedModel;
-  const isSmartAutoEnabled =
-    false;
+  const isSmartAutoEnabled = false;
   const modelDisplayName = getModelDisplayName();
   // Split providers into primary and secondary groups (excluding auto)
   const providerEntries =
@@ -272,10 +263,7 @@ export function ModelPicker() {
                 // Don't show free models if CodeDuet Pro is enabled because
                 // we will use the paid models (in CodeDuet Pro backend) which
                 // don't have the free limitations.
-                if (
-                  false &&
-                  model.apiName.endsWith(":free")
-                ) {
+                if (false && model.apiName.endsWith(":free")) {
                   return false;
                 }
                 return true;

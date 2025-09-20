@@ -1,9 +1,21 @@
 import { useState, useEffect } from "react";
-import { Info, ExternalLink, RefreshCw, Server, AlertCircle } from "lucide-react";
+import {
+  Info,
+  ExternalLink,
+  RefreshCw,
+  Server,
+  AlertCircle,
+} from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IpcClient } from "@/ipc/ipc_client";
@@ -39,7 +51,8 @@ export function LocalProviderConfiguration({
 
   const providerInfo = {
     ollama: {
-      description: "Connect to your local Ollama installation to use open-source models",
+      description:
+        "Connect to your local Ollama installation to use open-source models",
       website: "https://ollama.ai",
       defaultPort: "11434",
       setupInstructions: [
@@ -49,8 +62,9 @@ export function LocalProviderConfiguration({
       ],
     },
     lmstudio: {
-      description: "Connect to LM Studio for a user-friendly local model interface",
-      website: "https://lmstudio.ai", 
+      description:
+        "Connect to LM Studio for a user-friendly local model interface",
+      website: "https://lmstudio.ai",
       defaultPort: "1234",
       setupInstructions: [
         "Download and install LM Studio",
@@ -60,7 +74,8 @@ export function LocalProviderConfiguration({
     },
   };
 
-  const currentProviderInfo = providerInfo[provider as keyof typeof providerInfo];
+  const currentProviderInfo =
+    providerInfo[provider as keyof typeof providerInfo];
   const defaultUrl = defaultUrls[provider as keyof typeof defaultUrls];
 
   const checkConnection = async () => {
@@ -69,7 +84,7 @@ export function LocalProviderConfiguration({
 
     try {
       let models: LocalModel[] = [];
-      
+
       if (provider === "ollama") {
         models = await ipcClient.listLocalOllamaModels();
       } else if (provider === "lmstudio") {
@@ -110,9 +125,7 @@ export function LocalProviderConfiguration({
             <Server className="h-5 w-5" />
             Connection Status
           </CardTitle>
-          <CardDescription>
-            {currentProviderInfo?.description}
-          </CardDescription>
+          <CardDescription>{currentProviderInfo?.description}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
@@ -123,7 +136,10 @@ export function LocalProviderConfiguration({
                   Connected
                 </Badge>
               ) : (
-                <Badge variant="secondary" className="bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700">
+                <Badge
+                  variant="secondary"
+                  className="bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700"
+                >
                   Disconnected
                 </Badge>
               )}
@@ -134,7 +150,9 @@ export function LocalProviderConfiguration({
               size="sm"
               variant="outline"
             >
-              <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`} />
+              <RefreshCw
+                className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`}
+              />
               {isLoading ? "Checking..." : "Refresh"}
             </Button>
           </div>
@@ -146,7 +164,9 @@ export function LocalProviderConfiguration({
             </div>
             <div>
               <span className="font-medium">Models Available:</span>
-              <p className="text-muted-foreground mt-1">{status.models.length} model(s)</p>
+              <p className="text-muted-foreground mt-1">
+                {status.models.length} model(s)
+              </p>
             </div>
           </div>
 
@@ -155,7 +175,8 @@ export function LocalProviderConfiguration({
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Connection Error</AlertTitle>
               <AlertDescription>
-                {status.error.includes("fetch failed") || status.error.includes("connect")
+                {status.error.includes("fetch failed") ||
+                status.error.includes("connect")
                   ? `Could not connect to ${providerDisplayName}. Make sure it's running on port ${currentProviderInfo?.defaultPort}.`
                   : status.error}
               </AlertDescription>
@@ -170,7 +191,8 @@ export function LocalProviderConfiguration({
           <CardHeader>
             <CardTitle>Available Models</CardTitle>
             <CardDescription>
-              Models currently available in your {providerDisplayName} installation
+              Models currently available in your {providerDisplayName}{" "}
+              installation
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -182,7 +204,9 @@ export function LocalProviderConfiguration({
                 >
                   <div>
                     <div className="font-medium">{model.displayName}</div>
-                    <div className="text-sm text-muted-foreground">{model.modelName}</div>
+                    <div className="text-sm text-muted-foreground">
+                      {model.modelName}
+                    </div>
                   </div>
                   <Badge variant="outline">{model.provider}</Badge>
                 </div>
@@ -203,29 +227,33 @@ export function LocalProviderConfiguration({
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              {currentProviderInfo?.setupInstructions.map((instruction, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-medium">
-                    {index + 1}
-                  </span>
-                  <span className="text-sm">{instruction}</span>
-                </div>
-              ))}
+              {currentProviderInfo?.setupInstructions.map(
+                (instruction, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-medium">
+                      {index + 1}
+                    </span>
+                    <span className="text-sm">{instruction}</span>
+                  </div>
+                ),
+              )}
             </div>
 
             <div className="flex gap-3 pt-3">
               <Button
-                onClick={() => currentProviderInfo?.website && openExternalLink(currentProviderInfo.website)}
+                onClick={() =>
+                  currentProviderInfo?.website &&
+                  openExternalLink(currentProviderInfo.website)
+                }
                 variant="outline"
               >
                 <ExternalLink className="h-4 w-4 mr-2" />
                 Visit {providerDisplayName} Website
               </Button>
-              <Button
-                onClick={checkConnection}
-                disabled={isLoading}
-              >
-                <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`} />
+              <Button onClick={checkConnection} disabled={isLoading}>
+                <RefreshCw
+                  className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`}
+                />
                 Test Connection
               </Button>
             </div>
@@ -259,7 +287,9 @@ export function LocalProviderConfiguration({
             <Info className="h-4 w-4" />
             <AlertTitle>Note</AlertTitle>
             <AlertDescription>
-              Custom URLs will be saved as environment variables. The {providerDisplayName} server must be accessible from this application.
+              Custom URLs will be saved as environment variables. The{" "}
+              {providerDisplayName} server must be accessible from this
+              application.
             </AlertDescription>
           </Alert>
         </CardContent>

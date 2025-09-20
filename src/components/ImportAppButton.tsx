@@ -2,9 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
 import { useState } from "react";
 import { ImportAppDialog } from "./ImportAppDialog";
+import { useLanguage } from "@/i18n";
 
 export function ImportAppButton() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { t } = useLanguage();
 
   return (
     <>
@@ -15,7 +17,7 @@ export function ImportAppButton() {
           onClick={() => setIsDialogOpen(true)}
         >
           <Upload className="mr-2 h-4 w-4" />
-          Import App
+          {t("apps.importApp")}
         </Button>
       </div>
       <ImportAppDialog

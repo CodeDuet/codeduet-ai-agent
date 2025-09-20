@@ -2,6 +2,7 @@ import { useSettings } from "@/hooks/useSettings";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { showInfo } from "@/lib/toast";
+import { useLanguage } from "@/i18n";
 
 export function AutoApproveSwitch({
   showToast = true,
@@ -9,6 +10,7 @@ export function AutoApproveSwitch({
   showToast?: boolean;
 }) {
   const { settings, updateSettings } = useSettings();
+  const { t } = useLanguage();
   return (
     <div className="flex items-center space-x-2">
       <Switch
@@ -21,7 +23,7 @@ export function AutoApproveSwitch({
           }
         }}
       />
-      <Label htmlFor="auto-approve">Auto-approve</Label>
+      <Label htmlFor="auto-approve">{t("settings.workflow.autoApprove")}</Label>
     </div>
   );
 }

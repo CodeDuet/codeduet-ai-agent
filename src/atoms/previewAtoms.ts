@@ -6,8 +6,8 @@ export const selectedComponentPreviewAtom = atom<ComponentSelection | null>(
 );
 
 // Device preview modes
-export type DeviceType = 'desktop' | 'tablet' | 'mobile';
-export type Orientation = 'portrait' | 'landscape';
+export type DeviceType = "desktop" | "tablet" | "mobile";
+export type Orientation = "portrait" | "landscape";
 
 export interface DevicePreviewState {
   deviceType: DeviceType;
@@ -16,7 +16,7 @@ export interface DevicePreviewState {
 }
 
 export const devicePreviewAtom = atom<DevicePreviewState>({
-  deviceType: 'desktop',
-  orientation: 'landscape',
+  deviceType: "desktop",
+  orientation: "landscape",
   showDeviceFrame: false,
 });

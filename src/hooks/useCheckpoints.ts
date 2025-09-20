@@ -39,12 +39,17 @@ export function useCheckpoints(chatId: number | null) {
     return result;
   };
 
-  const restoreToCheckpoint = async (checkpointHash: string): Promise<CheckpointResult> => {
+  const restoreToCheckpoint = async (
+    checkpointHash: string,
+  ): Promise<CheckpointResult> => {
     if (!chatId) {
       throw new Error("No chat ID provided");
     }
 
-    const result = await IpcClient.getInstance().restoreToCheckpoint(checkpointHash, chatId);
+    const result = await IpcClient.getInstance().restoreToCheckpoint(
+      checkpointHash,
+      chatId,
+    );
     if (result.success) {
       // Refresh checkpoints after successful restore
       await fetchCheckpoints();
@@ -52,12 +57,17 @@ export function useCheckpoints(chatId: number | null) {
     return result;
   };
 
-  const cleanupOldCheckpoints = async (keepLatest?: number): Promise<{ success: boolean }> => {
+  const cleanupOldCheckpoints = async (
+    keepLatest?: number,
+  ): Promise<{ success: boolean }> => {
     if (!chatId) {
       throw new Error("No chat ID provided");
     }
 
-    const result = await IpcClient.getInstance().cleanupCheckpoints(chatId, keepLatest);
+    const result = await IpcClient.getInstance().cleanupCheckpoints(
+      chatId,
+      keepLatest,
+    );
     if (result.success) {
       // Refresh checkpoints after cleanup
       await fetchCheckpoints();

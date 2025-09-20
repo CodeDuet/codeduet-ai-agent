@@ -78,7 +78,7 @@ export function registerImportHandlers() {
       const existingApp = await db.query.apps.findFirst({
         where: eq(apps.name, appName),
       });
-      
+
       if (existingApp) {
         throw new Error("An app with this name already exists");
       }

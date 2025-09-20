@@ -30,6 +30,30 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { FileAttachment } from "@/ipc/ipc_types";
 import { NEON_TEMPLATE_IDS } from "@/shared/templates";
 import { neonTemplateHook } from "@/client_logic/template_hook";
+import { useLanguage } from "@/i18n";
+
+// Function to map inspiration prompt labels to translation keys
+const getTemplateKey = (label: string): string => {
+  const labelMap: Record<string, string> = {
+    "TODO list app": "todoApp",
+    "Landing Page": "landingPage",
+    "Sign Up Form": "signUpForm",
+    "Mood Journal & Tracker": "moodJournalTracker",
+    "Interactive Story Game": "interactiveStoryGame",
+    "Recipe Finder & Meal Planner": "recipeFinderMealPlanner",
+    "Personal Finance Dashboard": "personalFinanceDashboard",
+    "Travel Memory Map": "travelMemoryMap",
+    "AI Writing Assistant": "aiWritingAssistant",
+    "Habit Streak Tracker": "habitStreakTracker",
+    "Newsletter Creator": "newsletterCreator",
+    "Music Discovery App": "musicDiscoveryApp",
+    "3D Portfolio Viewer": "3dPortfolioViewer",
+    "AI Image Generator": "aiImageGenerator",
+    "Pomodoro Focus Timer": "pomodoroFocusTimer",
+    "Virtual Avatar Builder": "virtualAvatarBuilder",
+  };
+  return labelMap[label] || "todoApp"; // Fallback to todoApp if not found
+};
 
 // Adding an export for attachments
 export interface HomeSubmitOptions {
@@ -51,6 +75,7 @@ export default function HomePage() {
   const [releaseUrl, setReleaseUrl] = useState("");
   const { theme } = useTheme();
   const queryClient = useQueryClient();
+  const { t } = useLanguage();
   useEffect(() => {
     const updateLastVersionLaunched = async () => {
       if (
@@ -164,11 +189,10 @@ export default function HomePage() {
             <div className="absolute top-0 left-0 w-full h-full border-8 border-t-primary rounded-full animate-spin"></div>
           </div>
           <h2 className="text-2xl font-bold mb-2 text-gray-800 dark:text-gray-200">
-            Building your app
+            {t("apps.buildingYourApp")}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 text-center max-w-md mb-8">
-            We're setting up your app with AI magic. <br />
-            This might take a moment...
+            {t("apps.buildingDescription")}
           </p>
         </div>
       </div>
@@ -190,7 +214,7 @@ export default function HomePage() {
               <button
                 type="button"
                 key={index}
-                onClick={() => setInputValue(`Build me a ${item.label}`)}
+                onClick={() => setInputValue(`Build me a ${t(`apps.templateSuggestions.${getTemplateKey(item.label)}`)}`)}
                 className="flex items-center gap-3 px-4 py-2 rounded-xl border border-gray-200
                            bg-white/50 backdrop-blur-sm
                            transition-all duration-200
@@ -203,7 +227,7 @@ export default function HomePage() {
                   {item.icon}
                 </span>
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  {item.label}
+                  {t(`apps.templateSuggestions.${getTemplateKey(item.label)}`)}
                 </span>
               </button>
             ))}
@@ -234,7 +258,7 @@ export default function HomePage() {
               />
             </svg>
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              More ideas
+              {t("apps.templateSuggestions.moreIdeas")}
             </span>
           </button>
         </div>

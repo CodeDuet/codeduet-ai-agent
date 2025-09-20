@@ -3,6 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 
 import { showInfo } from "@/lib/toast";
+import { useLanguage } from "@/i18n";
 
 export function AutoFixProblemsSwitch({
   showToast = false,
@@ -10,6 +11,7 @@ export function AutoFixProblemsSwitch({
   showToast?: boolean;
 }) {
   const { settings, updateSettings } = useSettings();
+  const { t } = useLanguage();
   return (
     <div className="flex items-center space-x-2">
       <Switch
@@ -24,7 +26,7 @@ export function AutoFixProblemsSwitch({
           }
         }}
       />
-      <Label htmlFor="auto-fix-problems">Auto-fix problems</Label>
+      <Label htmlFor="auto-fix-problems">{t("settings.workflow.autoFixProblems")}</Label>
     </div>
   );
 }

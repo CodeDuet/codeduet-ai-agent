@@ -2,7 +2,12 @@ import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 
-type SetupProviderVariant = "google" | "openrouter" | "runpod" | "anthropic" | "openai";
+type SetupProviderVariant =
+  | "google"
+  | "openrouter"
+  | "runpod"
+  | "anthropic"
+  | "openai";
 
 export function SetupProviderCard({
   variant,

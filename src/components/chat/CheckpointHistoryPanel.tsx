@@ -15,8 +15,17 @@ interface CheckpointHistoryPanelProps {
   className?: string;
 }
 
-export function CheckpointHistoryPanel({ chatId, className }: CheckpointHistoryPanelProps) {
-  const { checkpoints, isLoading, undoMessage, restoreToCheckpoint, cleanupOldCheckpoints } = useCheckpoints(chatId);
+export function CheckpointHistoryPanel({
+  chatId,
+  className,
+}: CheckpointHistoryPanelProps) {
+  const {
+    checkpoints,
+    isLoading,
+    undoMessage,
+    restoreToCheckpoint,
+    cleanupOldCheckpoints,
+  } = useCheckpoints(chatId);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   const handleUndoMessage = async (messageId: number) => {
@@ -24,11 +33,11 @@ export function CheckpointHistoryPanel({ chatId, className }: CheckpointHistoryP
     try {
       const result = await undoMessage(messageId);
       if (!result.success) {
-        console.error('Failed to undo message:', result.error);
+        console.error("Failed to undo message:", result.error);
         // You could show a toast error here
       }
     } catch (error) {
-      console.error('Error undoing message:', error);
+      console.error("Error undoing message:", error);
     } finally {
       setActionLoading(null);
     }
@@ -39,22 +48,22 @@ export function CheckpointHistoryPanel({ chatId, className }: CheckpointHistoryP
     try {
       const result = await restoreToCheckpoint(checkpointHash);
       if (!result.success) {
-        console.error('Failed to restore checkpoint:', result.error);
+        console.error("Failed to restore checkpoint:", result.error);
         // You could show a toast error here
       }
     } catch (error) {
-      console.error('Error restoring checkpoint:', error);
+      console.error("Error restoring checkpoint:", error);
     } finally {
       setActionLoading(null);
     }
   };
 
   const handleCleanup = async () => {
-    setActionLoading('cleanup');
+    setActionLoading("cleanup");
     try {
       await cleanupOldCheckpoints(5); // Keep latest 5 checkpoints
     } catch (error) {
-      console.error('Error cleaning up checkpoints:', error);
+      console.error("Error cleaning up checkpoints:", error);
     } finally {
       setActionLoading(null);
     }
@@ -82,7 +91,9 @@ export function CheckpointHistoryPanel({ chatId, className }: CheckpointHistoryP
       <div className={cn("p-4 text-center text-gray-500", className)}>
         <History className="h-8 w-8 mx-auto mb-2 opacity-50" />
         <p>No checkpoints available</p>
-        <p className="text-xs mt-1">Checkpoints are created automatically when AI makes changes</p>
+        <p className="text-xs mt-1">
+          Checkpoints are created automatically when AI makes changes
+        </p>
       </div>
     );
   }
@@ -101,9 +112,9 @@ export function CheckpointHistoryPanel({ chatId, className }: CheckpointHistoryP
                 variant="ghost"
                 size="sm"
                 onClick={handleCleanup}
-                disabled={actionLoading === 'cleanup'}
+                disabled={actionLoading === "cleanup"}
               >
-                {actionLoading === 'cleanup' ? (
+                {actionLoading === "cleanup" ? (
                   <Loader2 className="h-3 w-3 animate-spin" />
                 ) : (
                   <Trash2 className="h-3 w-3" />
@@ -116,7 +127,7 @@ export function CheckpointHistoryPanel({ chatId, className }: CheckpointHistoryP
           </Tooltip>
         )}
       </div>
-      
+
       <div className="max-h-96 overflow-y-auto">
         {checkpoints.map((checkpoint, index) => (
           <div
@@ -134,10 +145,12 @@ export function CheckpointHistoryPanel({ chatId, className }: CheckpointHistoryP
                   </span>
                 </div>
                 <div className="text-xs text-gray-500">
-                  {formatDistanceToNow(new Date(checkpoint.createdAt), { addSuffix: true })}
+                  {formatDistanceToNow(new Date(checkpoint.createdAt), {
+                    addSuffix: true,
+                  })}
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-1">
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -159,27 +172,31 @@ export function CheckpointHistoryPanel({ chatId, className }: CheckpointHistoryP
                     Undo changes from this message
                   </TooltipContent>
                 </Tooltip>
-                
+
                 {checkpoint.checkpointHash && (
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleRestoreCheckpoint(checkpoint.checkpointHash!)}
-                        disabled={actionLoading === `restore-${checkpoint.checkpointHash}`}
+                        onClick={() =>
+                          handleRestoreCheckpoint(checkpoint.checkpointHash!)
+                        }
+                        disabled={
+                          actionLoading ===
+                          `restore-${checkpoint.checkpointHash}`
+                        }
                         className="h-7 w-7 p-0"
                       >
-                        {actionLoading === `restore-${checkpoint.checkpointHash}` ? (
+                        {actionLoading ===
+                        `restore-${checkpoint.checkpointHash}` ? (
                           <Loader2 className="h-3 w-3 animate-spin" />
                         ) : (
                           <History className="h-3 w-3" />
                         )}
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>
-                      Restore to this checkpoint
-                    </TooltipContent>
+                    <TooltipContent>Restore to this checkpoint</TooltipContent>
                   </Tooltip>
                 )}
               </div>

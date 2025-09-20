@@ -9,11 +9,13 @@
 ## How to run CodeDuet in the future:
 
 ### Option 1: Direct launch
+
 ```bash
 open out/CodeDuet-darwin-x64/CodeDuet.app
 ```
 
 ### Option 2: Rebuild and launch
+
 ```bash
 E2E_TEST_BUILD=true npm run package
 open out/CodeDuet-darwin-x64/CodeDuet.app
@@ -39,6 +41,7 @@ If you encounter issues:
 ## Development Workflow
 
 For active development, you can:
+
 1. Make code changes
 2. Rebuild with `E2E_TEST_BUILD=true npm run package`
 3. Launch with `open out/CodeDuet-darwin-x64/CodeDuet.app`

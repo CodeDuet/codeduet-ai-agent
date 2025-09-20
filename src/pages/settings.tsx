@@ -19,6 +19,13 @@ import { SupabaseIntegration } from "@/components/SupabaseIntegration";
 
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { AutoFixProblemsSwitch } from "@/components/AutoFixProblemsSwitch";
 import { AutoUpdateSwitch } from "@/components/AutoUpdateSwitch";
 import { ReleaseChannelSelector } from "@/components/ReleaseChannelSelector";
@@ -26,6 +33,7 @@ import { NeonIntegration } from "@/components/NeonIntegration";
 import { RuntimeModeSelector } from "@/components/RuntimeModeSelector";
 import { McpServerSettings } from "@/components/McpServerSettings";
 import { ResponseEndNotificationSwitch } from "@/components/ResponseEndNotificationSwitch";
+import { useLanguage, LANGUAGE_INFO, type SupportedLanguage } from "@/i18n";
 
 export default function SettingsPage() {
   const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
@@ -33,6 +41,7 @@ export default function SettingsPage() {
   const appVersion = useAppVersion();
   const { settings, updateSettings } = useSettings();
   const router = useRouter();
+  const { t } = useLanguage();
 
   const handleResetEverything = async () => {
     setIsResetting(true);
@@ -61,11 +70,11 @@ export default function SettingsPage() {
           className="flex items-center gap-2 mb-4 bg-(--background-lightest) py-5"
         >
           <ArrowLeft className="h-4 w-4" />
-          Go Back
+          {t("common.goBack")}
         </Button>
         <div className="flex justify-between mb-4">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Settings
+            {t("settings.general.title")}
           </h1>
         </div>
 
@@ -101,11 +110,11 @@ export default function SettingsPage() {
               className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6"
             >
               <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                Telemetry
+                {t("settings.telemetry.title")}
               </h2>
               <div className="space-y-2">
                 <div className="text-sm text-gray-500 dark:text-gray-400">
-                  This records anonymous usage data to improve the product.
+                  {t("settings.telemetry.description")}
                 </div>
               </div>
             </div>
@@ -117,7 +126,7 @@ export default function SettingsPage() {
             className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6"
           >
             <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-              Integrations
+              {t("settings.integrations.title")}
             </h2>
             <div className="space-y-4">
               <GitHubIntegration />
@@ -133,7 +142,7 @@ export default function SettingsPage() {
             className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6"
           >
             <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-              Experiments
+              {t("settings.experiments.title")}
             </h2>
             <div className="space-y-4">
               <div className="space-y-1 mt-4">
@@ -147,10 +156,10 @@ export default function SettingsPage() {
                       });
                     }}
                   />
-                  <Label htmlFor="enable-native-git">Enable Native Git</Label>
+                  <Label htmlFor="enable-native-git">{t("settings.experiments.enableNativeGit")}</Label>
                 </div>
                 <div className="text-sm text-gray-500 dark:text-gray-400">
-                  Native Git offers faster performance but requires{" "}
+                  {t("settings.experiments.enableNativeGitDescription")}{" "}
                   <a
                     onClick={() => {
                       IpcClient.getInstance().openExternalUrl(
@@ -175,10 +184,10 @@ export default function SettingsPage() {
                       });
                     }}
                   />
-                  <Label htmlFor="enable-confetti">Enable Confetti</Label>
+                  <Label htmlFor="enable-confetti">{t("settings.experiments.enableConfetti")}</Label>
                 </div>
                 <div className="text-sm text-gray-500 dark:text-gray-400">
-                  Show confetti animations when completing setup tasks.
+                  {t("settings.experiments.enableConfettiDescription")}
                 </div>
               </div>
             </div>
@@ -190,18 +199,17 @@ export default function SettingsPage() {
             className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-red-200 dark:border-red-800"
           >
             <h2 className="text-lg font-medium text-red-600 dark:text-red-400 mb-4">
-              Danger Zone
+              {t("settings.dangerZone.title")}
             </h2>
 
             <div className="space-y-4">
               <div className="flex items-start justify-between flex-col sm:flex-row sm:items-center gap-4">
                 <div>
                   <h3 className="text-sm font-medium text-gray-900 dark:text-white">
-                    Reset Everything
+                    {t("settings.dangerZone.resetEverything")}
                   </h3>
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    This will delete all your apps, chats, and settings. This
-                    action cannot be undone.
+                    {t("settings.dangerZone.resetEverythingDescription")}
                   </p>
                 </div>
                 <button
@@ -209,7 +217,7 @@ export default function SettingsPage() {
                   disabled={isResetting}
                   className="rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isResetting ? "Resetting..." : "Reset Everything"}
+                  {isResetting ? t("settings.dangerZone.resetting") : t("settings.dangerZone.resetEverythingButton")}
                 </button>
               </div>
             </div>
@@ -232,6 +240,7 @@ export default function SettingsPage() {
 
 export function GeneralSettings({ appVersion }: { appVersion: string | null }) {
   const { theme, setTheme } = useTheme();
+  const { t, currentLanguage, setLanguage } = useLanguage();
 
   return (
     <div
@@ -239,13 +248,35 @@ export function GeneralSettings({ appVersion }: { appVersion: string | null }) {
       className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6"
     >
       <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-        General Settings
+        {t("settings.general.title")}
       </h2>
 
       <div className="space-y-4 mb-4">
         <div className="flex items-center gap-4">
           <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Theme
+            {t("settings.general.language")}
+          </label>
+
+          <Select
+            value={currentLanguage}
+            onValueChange={(value) => setLanguage(value as SupportedLanguage)}
+          >
+            <SelectTrigger className="w-40">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(LANGUAGE_INFO).map((lang) => (
+                <SelectItem key={lang.code} value={lang.code}>
+                  {lang.nativeName}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            {t("settings.general.theme")}
           </label>
 
           <div className="relative bg-gray-100 dark:bg-gray-700 rounded-lg p-1 flex">
@@ -263,7 +294,7 @@ export function GeneralSettings({ appVersion }: { appVersion: string | null }) {
                 }
               `}
               >
-                {option.charAt(0).toUpperCase() + option.slice(1)}
+                {t(`themes.${option}`)}
               </button>
             ))}
           </div>
@@ -273,8 +304,7 @@ export function GeneralSettings({ appVersion }: { appVersion: string | null }) {
       <div className="space-y-1 mt-4">
         <AutoUpdateSwitch />
         <div className="text-sm text-gray-500 dark:text-gray-400">
-          This will automatically update the app when new versions are
-          available.
+          {t("settings.general.autoUpdateDescription")}
         </div>
       </div>
 
@@ -287,7 +317,9 @@ export function GeneralSettings({ appVersion }: { appVersion: string | null }) {
       </div>
 
       <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-4">
-        <span className="mr-2 font-medium">App Version:</span>
+        <span className="mr-2 font-medium">
+          {t("settings.general.appVersion")}
+        </span>
         <span className="bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded text-gray-800 dark:text-gray-200 font-mono">
           {appVersion ? appVersion : "-"}
         </span>
@@ -297,46 +329,50 @@ export function GeneralSettings({ appVersion }: { appVersion: string | null }) {
 }
 
 export function WorkflowSettings() {
+  const { t } = useLanguage();
+  
   return (
     <div
       id="workflow-settings"
       className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6"
     >
       <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-        Workflow Settings
+        {t("settings.workflow.title")}
       </h2>
 
       <div className="space-y-1">
         <AutoApproveSwitch showToast={false} />
         <div className="text-sm text-gray-500 dark:text-gray-400">
-          This will automatically approve code changes and run them.
+          {t("settings.workflow.autoApproveDescription")}
         </div>
       </div>
 
       <div className="space-y-1 mt-4">
         <AutoFixProblemsSwitch />
         <div className="text-sm text-gray-500 dark:text-gray-400">
-          This will automatically fix TypeScript errors.
+          {t("settings.workflow.autoFixProblemsDescription")}
         </div>
       </div>
 
       <div className="space-y-1 mt-4">
         <ResponseEndNotificationSwitch />
         <div className="text-sm text-gray-500 dark:text-gray-400">
-          Show native notifications when assistant finishes replying.
+          {t("settings.workflow.responseEndNotificationDescription")}
         </div>
       </div>
     </div>
   );
 }
 export function AISettings() {
+  const { t } = useLanguage();
+  
   return (
     <div
       id="ai-settings"
       className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6"
     >
       <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-        AI Settings
+        {t("settings.ai.title")}
       </h2>
 
       <div className="mt-4">

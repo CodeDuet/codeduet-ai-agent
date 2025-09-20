@@ -12,7 +12,11 @@ import type {
 } from "../ipc_types";
 import fs from "node:fs";
 import path from "node:path";
-import { getCodeDuetAppPath, getUserDataPath, resolveAppPath } from "../../paths/paths";
+import {
+  getCodeDuetAppPath,
+  getUserDataPath,
+  resolveAppPath,
+} from "../../paths/paths";
 import { ChildProcess, spawn } from "node:child_process";
 import git from "isomorphic-git";
 import { promises as fsPromises } from "node:fs";

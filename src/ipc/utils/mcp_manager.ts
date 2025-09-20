@@ -5,13 +5,13 @@ let Client: any, StdioClientTransport: any, SSEClientTransport: any;
 try {
   const sdkModule = require("@modelcontextprotocol/sdk/client/index.js");
   Client = sdkModule.Client;
-  
+
   const stdioModule = require("@modelcontextprotocol/sdk/client/stdio.js");
   StdioClientTransport = stdioModule.StdioClientTransport;
-  
+
   const sseModule = require("@modelcontextprotocol/sdk/client/sse.js");
   SSEClientTransport = sseModule.SSEClientTransport;
-  
+
   console.log("MCP SDK loaded successfully");
 } catch (error) {
   console.error("Failed to load MCP SDK:", error);
@@ -42,7 +42,7 @@ export class McpManager extends EventEmitter {
     if (!config.isEnabled) {
       return;
     }
-    
+
     if (!Client || !StdioClientTransport || !SSEClientTransport) {
       throw new Error("MCP SDK is not available");
     }
@@ -58,11 +58,13 @@ export class McpManager extends EventEmitter {
         const transport = new StdioClientTransport({
           command: config.command,
           args: config.args,
-          env: { 
-            ...Object.fromEntries(
-              Object.entries(process.env).filter(([, value]) => value !== undefined)
-            ) as Record<string, string>,
-            ...config.env 
+          env: {
+            ...(Object.fromEntries(
+              Object.entries(process.env).filter(
+                ([, value]) => value !== undefined,
+              ),
+            ) as Record<string, string>),
+            ...config.env,
           },
         });
 
@@ -75,7 +77,7 @@ export class McpManager extends EventEmitter {
             capabilities: {
               tools: {},
             },
-          }
+          },
         );
 
         await client.connect(transport);
@@ -85,7 +87,7 @@ export class McpManager extends EventEmitter {
         }
 
         const transport = new SSEClientTransport(new URL(config.url));
-        
+
         client = new Client(
           {
             name: "codeduet",
@@ -95,7 +97,7 @@ export class McpManager extends EventEmitter {
             capabilities: {
               tools: {},
             },
-          }
+          },
         );
 
         await client.connect(transport);
@@ -138,11 +140,13 @@ export class McpManager extends EventEmitter {
 
       try {
         const response = await server.client.listTools();
-        tools.push(...response.tools.map((tool: any) => ({
-          name: tool.name,
-          description: tool.description,
-          inputSchema: tool.inputSchema,
-        })));
+        tools.push(
+          ...response.tools.map((tool: any) => ({
+            name: tool.name,
+            description: tool.description,
+            inputSchema: tool.inputSchema,
+          })),
+        );
       } catch (error) {
         this.emit("serverError", id, error);
       }
@@ -174,7 +178,7 @@ export class McpManager extends EventEmitter {
       console.error("MCP SDK is not available for testing");
       return false;
     }
-    
+
     try {
       let client: any;
 
@@ -186,11 +190,13 @@ export class McpManager extends EventEmitter {
         const transport = new StdioClientTransport({
           command: config.command,
           args: config.args,
-          env: { 
-            ...Object.fromEntries(
-              Object.entries(process.env).filter(([, value]) => value !== undefined)
-            ) as Record<string, string>,
-            ...config.env 
+          env: {
+            ...(Object.fromEntries(
+              Object.entries(process.env).filter(
+                ([, value]) => value !== undefined,
+              ),
+            ) as Record<string, string>),
+            ...config.env,
           },
         });
 
@@ -203,7 +209,7 @@ export class McpManager extends EventEmitter {
             capabilities: {
               tools: {},
             },
-          }
+          },
         );
 
         await client.connect(transport);
@@ -213,7 +219,7 @@ export class McpManager extends EventEmitter {
         }
 
         const transport = new SSEClientTransport(new URL(config.url));
-        
+
         client = new Client(
           {
             name: "codeduet-test",
@@ -223,7 +229,7 @@ export class McpManager extends EventEmitter {
             capabilities: {
               tools: {},
             },
-          }
+          },
         );
 
         await client.connect(transport);
@@ -245,7 +251,7 @@ export class McpManager extends EventEmitter {
 
   async shutdown(): Promise<void> {
     const serverIds = Array.from(this.servers.keys());
-    await Promise.all(serverIds.map(id => this.removeServer(id)));
+    await Promise.all(serverIds.map((id) => this.removeServer(id)));
   }
 }
 

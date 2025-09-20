@@ -1,22 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { IpcClient } from "@/ipc/ipc_client";
 import { showError, showSuccess } from "@/lib/toast";
-import { checkIdeAvailability, type IdeAvailability } from "@/utils/checkIdeAvailability";
 
 export function useOpenInIde() {
   const [isLoading, setIsLoading] = useState(false);
-  const [ideAvailability, setIdeAvailability] = useState<IdeAvailability>({
-    vscode: false,
-    cursor: false,
-  });
-
-  useEffect(() => {
-    checkIdeAvailability().then(setIdeAvailability);
-  }, []);
 
   const openInIde = async (appId: number, ide: "vscode" | "cursor") => {
     if (isLoading) return;
-    
+
     setIsLoading(true);
     try {
       const ipcClient = IpcClient.getInstance();
@@ -36,7 +27,8 @@ export function useOpenInIde() {
     } catch (error) {
       console.error(`Failed to open in ${ide}:`, error);
       const ideName = ide === "vscode" ? "VS Code" : "Cursor";
-      const errorMessage = error instanceof Error ? error.message : `Failed to open in ${ideName}`;
+      const errorMessage =
+        error instanceof Error ? error.message : `Failed to open in ${ideName}`;
       showError(errorMessage);
     } finally {
       setIsLoading(false);
@@ -50,6 +42,5 @@ export function useOpenInIde() {
     openInVSCode,
     openInCursor,
     isLoading,
-    ideAvailability,
   };
 }

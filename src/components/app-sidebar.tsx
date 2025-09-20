@@ -11,6 +11,7 @@ import { useSidebar } from "@/components/ui/sidebar"; // import useSidebar hook
 import { useEffect, useState, useRef } from "react";
 import { useAtom } from "jotai";
 import { dropdownOpenAtom } from "@/atoms/uiAtoms";
+import { useLanguage } from "@/i18n";
 
 import {
   Sidebar,
@@ -33,26 +34,31 @@ import { SettingsList } from "./SettingsList";
 const items = [
   {
     title: "Apps",
+    titleKey: "navigation.apps",
     to: "/",
     icon: Home,
   },
   {
     title: "Chat",
+    titleKey: "navigation.chat",
     to: "/chat",
     icon: Inbox,
   },
   {
     title: "Settings",
+    titleKey: "navigation.settings",
     to: "/settings",
     icon: Settings,
   },
   {
     title: "Library",
+    titleKey: "navigation.library",
     to: "/library",
     icon: BookOpen,
   },
   {
     title: "Hub",
+    titleKey: "navigation.hub",
     to: "/hub",
     icon: Store,
   },
@@ -73,6 +79,7 @@ export function AppSidebar() {
   const expandedByHover = useRef(false);
   const [isHelpDialogOpen, setIsHelpDialogOpen] = useState(false); // State for dialog
   const [isDropdownOpen] = useAtom(dropdownOpenAtom);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (hoverState.startsWith("start-hover") && state === "collapsed") {
@@ -152,11 +159,11 @@ export function AppSidebar() {
             {/* Change button to open dialog instead of linking */}
             <SidebarMenuButton
               size="sm"
-              className="font-medium w-14 flex flex-col items-center gap-1 h-14 mb-2 rounded-2xl"
+              className="font-medium w-16 max-w-16 flex flex-col items-center gap-1 h-16 mb-2 rounded-2xl"
               onClick={() => setIsHelpDialogOpen(true)} // Open dialog on click
             >
               <HelpCircle className="h-5 w-5" />
-              <span className={"text-xs"}>Help</span>
+              <span className={"text-xs text-center leading-tight break-words overflow-wrap-anywhere"}>{t("navigation.help")}</span>
             </SidebarMenuButton>
             <HelpDialog
               isOpen={isHelpDialogOpen}
@@ -178,6 +185,7 @@ function AppIcons({
 }) {
   const routerState = useRouterState();
   const pathname = routerState.location.pathname;
+  const { t } = useLanguage();
 
   return (
     // When collapsed: only show the main menu
@@ -196,11 +204,11 @@ function AppIcons({
                 <SidebarMenuButton
                   asChild
                   size="sm"
-                  className="font-medium w-14"
+                  className="font-medium w-16 max-w-16"
                 >
                   <Link
                     to={item.to}
-                    className={`flex flex-col items-center gap-1 h-14 mb-2 rounded-2xl ${
+                    className={`flex flex-col items-center gap-1 h-16 mb-2 rounded-2xl ${
                       isActive ? "bg-sidebar-accent" : ""
                     }`}
                     onMouseEnter={() => {
@@ -217,7 +225,7 @@ function AppIcons({
                   >
                     <div className="flex flex-col items-center gap-1">
                       <item.icon className="h-5 w-5" />
-                      <span className={"text-xs"}>{item.title}</span>
+                      <span className={"text-xs text-center leading-tight break-words overflow-wrap-anywhere"}>{t(item.titleKey)}</span>
                     </div>
                   </Link>
                 </SidebarMenuButton>

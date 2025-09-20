@@ -192,12 +192,18 @@ export function LocalProviderSettings() {
                   <CardTitle className="text-lg font-medium flex items-center gap-2">
                     {provider.name}
                     {status.isRunning ? (
-                      <Badge variant="secondary" className="text-green-600 bg-green-50 dark:bg-green-900/30">
+                      <Badge
+                        variant="secondary"
+                        className="text-green-600 bg-green-50 dark:bg-green-900/30"
+                      >
                         <Play className="h-3 w-3 mr-1" />
                         Running
                       </Badge>
                     ) : (
-                      <Badge variant="secondary" className="text-gray-500 bg-gray-100 dark:bg-gray-800">
+                      <Badge
+                        variant="secondary"
+                        className="text-gray-500 bg-gray-100 dark:bg-gray-800"
+                      >
                         <Square className="h-3 w-3 mr-1" />
                         Stopped
                       </Badge>
@@ -218,7 +224,11 @@ export function LocalProviderSettings() {
                     {status.models.length > 0 && (
                       <div className="flex flex-wrap gap-1 mb-3">
                         {status.models.slice(0, 3).map((model) => (
-                          <Badge key={model.modelName} variant="outline" className="text-xs">
+                          <Badge
+                            key={model.modelName}
+                            variant="outline"
+                            className="text-xs"
+                          >
                             {model.displayName}
                           </Badge>
                         ))}
@@ -243,7 +253,8 @@ export function LocalProviderSettings() {
                       <Alert className="mb-3">
                         <AlertCircle className="h-4 w-4" />
                         <AlertDescription className="text-sm">
-                          {status.error.includes("fetch failed") || status.error.includes("Connection")
+                          {status.error.includes("fetch failed") ||
+                          status.error.includes("Connection")
                             ? `${provider.name} is not running or not accessible on port ${info?.port}`
                             : status.error}
                         </AlertDescription>
@@ -251,7 +262,9 @@ export function LocalProviderSettings() {
                     )}
                     <div className="space-y-2">
                       <Button
-                        onClick={() => info?.website && openExternalLink(info.website)}
+                        onClick={() =>
+                          info?.website && openExternalLink(info.website)
+                        }
                         variant="outline"
                         className="w-full"
                         size="sm"

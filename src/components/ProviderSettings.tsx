@@ -128,8 +128,7 @@ export function ProviderSettingsGrid() {
                       </span>
                     )}
                   </CardTitle>
-                  <CardDescription>
-                  </CardDescription>
+                  <CardDescription></CardDescription>
                 </CardHeader>
 
                 {isCustom && (

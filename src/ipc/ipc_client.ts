@@ -126,7 +126,9 @@ export class IpcClient {
   >;
   private constructor() {
     if (!window.electron || !window.electron.ipcRenderer) {
-      throw new Error('Electron IPC not available. Make sure the preload script is loaded.');
+      throw new Error(
+        "Electron IPC not available. Make sure the preload script is loaded.",
+      );
     }
     this.ipcRenderer = window.electron.ipcRenderer as unknown as IpcRenderer;
     this.chatStreams = new Map();
@@ -574,19 +576,36 @@ export class IpcClient {
   }
 
   // Checkpoint-related methods
-  public async undoMessage(messageId: number, chatId: number): Promise<CheckpointResult> {
-    return this.ipcRenderer.invoke("checkpoint:undo-message", messageId, chatId);
+  public async undoMessage(
+    messageId: number,
+    chatId: number,
+  ): Promise<CheckpointResult> {
+    return this.ipcRenderer.invoke(
+      "checkpoint:undo-message",
+      messageId,
+      chatId,
+    );
   }
 
-  public async restoreToCheckpoint(checkpointHash: string, chatId: number): Promise<CheckpointResult> {
-    return this.ipcRenderer.invoke("checkpoint:restore", checkpointHash, chatId);
+  public async restoreToCheckpoint(
+    checkpointHash: string,
+    chatId: number,
+  ): Promise<CheckpointResult> {
+    return this.ipcRenderer.invoke(
+      "checkpoint:restore",
+      checkpointHash,
+      chatId,
+    );
   }
 
   public async getChatCheckpoints(chatId: number): Promise<CheckpointInfo[]> {
     return this.ipcRenderer.invoke("checkpoint:get-chat-checkpoints", chatId);
   }
 
-  public async cleanupCheckpoints(chatId: number, keepLatest?: number): Promise<{ success: boolean }> {
+  public async cleanupCheckpoints(
+    chatId: number,
+    keepLatest?: number,
+  ): Promise<{ success: boolean }> {
     return this.ipcRenderer.invoke("checkpoint:cleanup", chatId, keepLatest);
   }
 
@@ -1119,7 +1138,6 @@ export class IpcClient {
     return this.ipcRenderer.invoke("clear-session-data");
   }
 
-
   public async getChatContextResults(params: {
     appId: number;
   }): Promise<ContextPathResults> {
@@ -1200,7 +1218,10 @@ export class IpcClient {
     return this.ipcRenderer.invoke("mcp:addServer", config);
   }
 
-  public async updateMcpServer(id: number, config: McpServerConfig): Promise<McpServer> {
+  public async updateMcpServer(
+    id: number,
+    config: McpServerConfig,
+  ): Promise<McpServer> {
     return this.ipcRenderer.invoke("mcp:updateServer", id, config);
   }
 
@@ -1208,7 +1229,10 @@ export class IpcClient {
     return this.ipcRenderer.invoke("mcp:deleteServer", id);
   }
 
-  public async toggleMcpServer(id: number, enabled: boolean): Promise<McpServer> {
+  public async toggleMcpServer(
+    id: number,
+    enabled: boolean,
+  ): Promise<McpServer> {
     return this.ipcRenderer.invoke("mcp:toggleServer", id, enabled);
   }
 
@@ -1221,7 +1245,12 @@ export class IpcClient {
   }
 
   public async callMcpTool(params: McpToolCallParams): Promise<any> {
-    return this.ipcRenderer.invoke("mcp:callTool", params.serverId, params.toolName, params.args);
+    return this.ipcRenderer.invoke(
+      "mcp:callTool",
+      params.serverId,
+      params.toolName,
+      params.args,
+    );
   }
 
   public async getConnectedMcpServers(): Promise<number[]> {

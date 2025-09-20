@@ -305,7 +305,6 @@ export interface RenameBranchParams {
   newBranchName: string;
 }
 
-
 export interface ComponentSelection {
   id: string;
   name: string;

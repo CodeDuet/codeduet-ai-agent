@@ -1,0 +1,188 @@
+{
+  "navigation": {
+    "apps": "Applications",
+    "chat": "Discussion",
+    "settings": "Paramètres",
+    "library": "Bibliothèque",
+    "hub": "Hub",
+    "help": "Aide"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "general": {
+      "title": "Paramètres Généraux",
+      "language": "Langue",
+      "theme": "Thème",
+      "appVersion": "Version de l'App :",
+      "autoUpdate": "Mise à jour automatique",
+      "autoUpdateDescription": "Ceci mettra automatiquement à jour l'application lorsque de nouvelles versions seront disponibles.",
+      "releaseChannel": "Canal de publication",
+      "releaseChannelStable": "Stable",
+      "releaseChannelBeta": "Bêta",
+      "releaseChannelStableDescription": "Stable est recommandé pour la plupart des utilisateurs.",
+      "releaseChannelBetaDescription": "Bêta reçoit des mises à jour plus fréquentes mais peut avoir plus de bugs.",
+      "runtimeMode": "Mode d'exécution",
+      "runtimeModeLocal": "Local (par défaut)",
+      "runtimeModeDocker": "Docker (expérimental)",
+      "runtimeModeDescription": "Choisir d'exécuter les applications directement sur la machine locale ou dans des conteneurs Docker",
+      "dockerWarning": "Le mode Docker est expérimental et nécessite que Docker Desktop soit installé et en cours d'exécution",
+      "usingStableChannel": "Utilisation du canal de publication stable",
+      "usingStableChannelDescription": "Vous resterez sur votre version actuelle jusqu'à ce qu'une nouvelle version stable soit disponible, ou vous pouvez rétrograder manuellement maintenant.",
+      "downloadStable": "Télécharger la version stable",
+      "usingBetaChannel": "Utilisation du canal de publication bêta",
+      "usingBetaChannelDescription": "Vous devrez redémarrer CodeDuet pour que vos paramètres prennent effet.",
+      "restartCodeDuet": "Redémarrer CodeDuet",
+      "autoUpdateSettingsChanged": "Paramètres de mise à jour automatique modifiés",
+      "autoUpdateSettingsChangedDescription": "Vous devrez redémarrer CodeDuet pour que vos paramètres prennent effet."
+    },
+    "workflow": {
+      "title": "Paramètres de Flux de Travail",
+      "autoApprove": "Approbation automatique",
+      "autoApproveDescription": "Ceci approuvera automatiquement les changements de code et les exécutera.",
+      "autoFixProblems": "Correction automatique des problèmes",
+      "autoFixProblemsDescription": "Ceci corrigera automatiquement les erreurs TypeScript.",
+      "responseEndNotification": "Notifications de fin de réponse",
+      "responseEndNotificationDescription": "Afficher des notifications natives lorsque l'assistant termine de répondre."
+    },
+    "ai": {
+      "title": "Paramètres IA",
+      "thinkingBudget": "Budget de réflexion",
+      "thinkingBudgetMedium": "Moyen (par défaut)",
+      "thinkingBudgetDescription": "Réflexion équilibrée pour la plupart des conversations.",
+      "maxChatTurns": "Nombre maximum de tours de discussion utilisés dans le contexte",
+      "maxChatTurnsDefault": "Par défaut (3)",
+      "maxChatTurnsDescription": "Taille de contexte équilibrée pour la plupart des conversations."
+    },
+    "modelProviders": {
+      "title": "Fournisseurs de modèles"
+    },
+    "mcpServers": {
+      "title": "Serveurs MCP"
+    },
+    "telemetry": {
+      "title": "Télémétrie",
+      "description": "Ceci enregistre des données d'utilisation anonymes pour améliorer le produit."
+    },
+    "integrations": {
+      "title": "Intégrations"
+    },
+    "experiments": {
+      "title": "Expérimentations",
+      "enableNativeGit": "Activer Git Natif",
+      "enableNativeGitDescription": "Git natif offre de meilleures performances mais nécessite l'installation de Git.",
+      "enableConfetti": "Activer les Confettis",
+      "enableConfettiDescription": "Afficher des animations de confettis lors de la completion des tâches de configuration."
+    },
+    "dangerZone": {
+      "title": "Zone Dangereuse",
+      "resetEverything": "Tout Réinitialiser",
+      "resetEverythingDescription": "Ceci supprimera toutes vos applications, discussions et paramètres. Cette action ne peut pas être annulée.",
+      "resetEverythingButton": "Tout Réinitialiser",
+      "resetting": "Réinitialisation..."
+    }
+  },
+  "apps": {
+    "title": "Vos Applications",
+    "newApp": "Nouvelle Application",
+    "buildYourDreamApp": "Construisez l'application de vos rêves",
+    "importApp": "Importer une Application",
+    "importAppDescription": "Sélectionnez un dossier d'application existant à importer dans CodeDuet.",
+    "importAppExperimentalNote": "L'importation d'applications est une fonctionnalité expérimentale. Si vous rencontrez des problèmes, veuillez les signaler en utilisant le bouton Aide.",
+    "selectFolder": "Sélectionner un dossier",
+    "selectingFolder": "Sélection du dossier...",
+    "selectedFolder": "Dossier sélectionné :",
+    "clearSelection": "Effacer la sélection",
+    "appName": "Nom de l'application",
+    "enterNewAppName": "Entrez le nom de la nouvelle application",
+    "appNameExists": "Une application avec ce nom existe déjà. Veuillez choisir un nom différent :",
+    "advancedOptions": "Options avancées",
+    "installCommand": "Commande d'installation",
+    "startCommand": "Commande de démarrage",
+    "bothCommandsRequired": "Les deux commandes sont requises lors de la personnalisation.",
+    "noAiRulesFound": "Aucun AI_RULES.md trouvé. CodeDuet en générera automatiquement un après l'importation.",
+    "aiRulesTooltip": "AI_RULES.md permet à CodeDuet de savoir quelle pile technologique utiliser pour éditer l'application",
+    "importingApp": "Importation de l'application...",
+    "importing": "Importation...",
+    "import": "Importer",
+    "appImportedSuccessfully": "Application importée avec succès",
+    "appImportedWithAiRules": "Application importée avec succès. CodeDuet va maintenant générer automatiquement un AI_RULES.md.",
+    "askCodeDuetToBuild": "Demander à CodeDuet de construire...",
+    "build": "Construire",
+    "noAppsFound": "Aucune application trouvée",
+    "loadingApps": "Chargement des applications...",
+    "errorLoadingApps": "Erreur lors du chargement des applications",
+    "buildingYourApp": "Construction de votre application",
+    "buildingDescription": "Nous configurons votre application avec la magie de l'IA. Cela peut prendre un moment...",
+    "templateSuggestions": {
+      "todoApp": "Application de liste de tâches",
+      "landingPage": "Page d'atterrissage",
+      "signUpForm": "Formulaire d'inscription",
+      "moodJournalTracker": "Journal d'humeur et traqueur",
+      "interactiveStoryGame": "Jeu d'histoire interactive",
+      "recipeFinderMealPlanner": "Chercheur de recettes et planificateur de repas",
+      "personalFinanceDashboard": "Tableau de bord des finances personnelles",
+      "travelMemoryMap": "Carte des souvenirs de voyage",
+      "aiWritingAssistant": "Assistant d'écriture IA",
+      "habitStreakTracker": "Traqueur de séries d'habitudes",
+      "newsletterCreator": "Créateur de newsletter",
+      "musicDiscoveryApp": "Application de découverte musicale",
+      "3dPortfolioViewer": "Visualiseur de portfolio 3D",
+      "aiImageGenerator": "Générateur d'images IA",
+      "pomodoroFocusTimer": "Minuteur de concentration Pomodoro",
+      "virtualAvatarBuilder": "Constructeur d'avatar virtuel",
+      "moreIdeas": "Plus d'idées"
+    }
+  },
+  "templates": {
+    "title": "Choisissez votre modèle par défaut",
+    "subtitle": "Choisissez un point de départ pour votre nouveau projet.",
+    "officialTemplates": "Modèles officiels",
+    "selected": "Sélectionné",
+    "official": "Officiel",
+    "reactTemplate": {
+      "title": "Modèle React.js",
+      "description": "Utilise React.js, Vite, Shadcn, Tailwind et TypeScript."
+    },
+    "nextTemplate": {
+      "title": "Modèle Next.js",
+      "description": "Utilise Next.js, React.js, Shadcn, Tailwind et TypeScript."
+    },
+    "createApp": "Créer une Application",
+    "viewOnGithub": "Voir sur GitHub"
+  },
+  "chat": {
+    "newChat": "Nouvelle Discussion",
+    "searchChats": "Rechercher des discussions",
+    "recentChats": "Discussions Récentes",
+    "thinking": "Réflexion",
+    "keepGoing": "Continuer",
+    "askCodeDuetToBuild": "Demander à CodeDuet de construire...",
+    "systemMessages": "Messages Système",
+    "version": "Version"
+  },
+  "toolbar": {
+    "preview": "Aperçu",
+    "problems": "Problèmes",
+    "code": "Code",
+    "configure": "Configurer",
+    "publish": "Publier",
+    "toggleSidebar": "Basculer la barre latérale"
+  },
+  "common": {
+    "goBack": "Retour",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "noAppSelected": "aucune application sélectionnée"
+  },
+  "themes": {
+    "system": "Système",
+    "light": "Clair",
+    "dark": "Sombre"
+  }
+}

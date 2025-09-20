@@ -22,7 +22,7 @@ export interface CodeViewProps {
 export const CodeView = ({ loading, app }: CodeViewProps) => {
   const selectedFile = useAtomValue(selectedFileAtom);
   const { refreshApp } = useLoadApp(app?.id ?? null);
-  const { openInVSCode, openInCursor, isLoading, ideAvailability } = useOpenInIde();
+  const { openInVSCode, openInCursor, isLoading } = useOpenInIde();
 
   if (loading) {
     return <div className="text-center py-4">Loading files...</div>;
@@ -47,31 +47,31 @@ export const CodeView = ({ loading, app }: CodeViewProps) => {
           >
             <RefreshCw size={16} />
           </button>
-          
+
           <div className="h-6 w-px bg-gray-300"></div>
-          
+
           <div className="flex items-center space-x-2">
             <button
               onClick={() => app.id && openInVSCode(app.id)}
               className="px-3 py-1.5 text-xs rounded-md bg-[#007ACC] text-white hover:bg-[#005a9e] disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-1.5 shadow-sm transition-colors"
-              disabled={isLoading || !app.id || !ideAvailability.vscode}
-              title={ideAvailability.vscode ? "Open in VS Code" : "VS Code not installed"}
+              disabled={isLoading || !app.id}
+              title="Open in VS Code"
             >
               <VSCodeIcon size={14} />
               <span className="font-medium">VS Code</span>
             </button>
-            
+
             <button
               onClick={() => app.id && openInCursor(app.id)}
               className="px-3 py-1.5 text-xs rounded-md bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-1.5 shadow-sm transition-all"
-              disabled={isLoading || !app.id || !ideAvailability.cursor}
-              title={ideAvailability.cursor ? "Open in Cursor" : "Cursor not installed"}
+              disabled={isLoading || !app.id}
+              title="Open in Cursor"
             >
               <CursorIcon size={14} />
               <span className="font-medium">Cursor</span>
             </button>
           </div>
-          
+
           <div className="text-sm text-gray-500">{app.files.length} files</div>
         </div>
 

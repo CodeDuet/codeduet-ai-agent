@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "@radix-ui/react-label";
 import { useNavigate } from "@tanstack/react-router";
+import { useLanguage } from "@/i18n";
 import { useStreamChat } from "@/hooks/useStreamChat";
 import {
   Tooltip,
@@ -51,6 +52,7 @@ export function ImportAppDialog({ isOpen, onClose }: ImportAppDialogProps) {
   const { streamMessage } = useStreamChat({ hasChatId: false });
   const { refreshApps } = useLoadApps();
   const setSelectedAppId = useSetAtom(selectedAppIdAtom);
+  const { t } = useLanguage();
 
   const checkAppName = async (name: string): Promise<void> => {
     setIsCheckingName(true);
@@ -104,8 +106,8 @@ export function ImportAppDialog({ isOpen, onClose }: ImportAppDialogProps) {
     onSuccess: async (result) => {
       showSuccess(
         !hasAiRules
-          ? "App imported successfully. Dyad will automatically generate an AI_RULES.md now."
-          : "App imported successfully",
+          ? t("apps.appImportedWithAiRules")
+          : t("apps.appImportedSuccessfully"),
       );
       onClose();
 
@@ -160,17 +162,16 @@ export function ImportAppDialog({ isOpen, onClose }: ImportAppDialogProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Import App</DialogTitle>
+          <DialogTitle>{t("apps.importApp")}</DialogTitle>
           <DialogDescription>
-            Select an existing app folder to import into Dyad.
+            {t("apps.importAppDescription")}
           </DialogDescription>
         </DialogHeader>
 
         <Alert className="border-blue-500/20 text-blue-500">
           <Info className="h-4 w-4" />
           <AlertDescription>
-            App import is an experimental feature. If you encounter any issues,
-            please report them using the Help button.
+            {t("apps.importAppExperimentalNote")}
           </AlertDescription>
         </Alert>
 
@@ -187,15 +188,15 @@ export function ImportAppDialog({ isOpen, onClose }: ImportAppDialogProps) {
                 <Folder className="mr-2 h-4 w-4" />
               )}
               {selectFolderMutation.isPending
-                ? "Selecting folder..."
-                : "Select Folder"}
+                ? t("apps.selectingFolder")
+                : t("apps.selectFolder")}
             </Button>
           ) : (
             <div className="space-y-4">
               <div className="rounded-md border p-4">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium">Selected folder:</p>
+                    <p className="text-sm font-medium">{t("apps.selectedFolder")}</p>
                     <p className="text-sm text-muted-foreground break-all">
                       {selectedPath}
                     </p>
@@ -208,7 +209,7 @@ export function ImportAppDialog({ isOpen, onClose }: ImportAppDialogProps) {
                     disabled={importAppMutation.isPending}
                   >
                     <X className="h-4 w-4" />
-                    <span className="sr-only">Clear selection</span>
+                    <span className="sr-only">{t("apps.clearSelection")}</span>
                   </Button>
                 </div>
               </div>
@@ -216,16 +217,15 @@ export function ImportAppDialog({ isOpen, onClose }: ImportAppDialogProps) {
               <div className="space-y-2">
                 {nameExists && (
                   <p className="text-sm text-yellow-500">
-                    An app with this name already exists. Please choose a
-                    different name:
+                    {t("apps.appNameExists")}
                   </p>
                 )}
                 <div className="relative">
-                  <Label className="text-sm ml-2 mb-2">App name</Label>
+                  <Label className="text-sm ml-2 mb-2">{t("apps.appName")}</Label>
                   <Input
                     value={customAppName}
                     onChange={handleAppNameChange}
-                    placeholder="Enter new app name"
+                    placeholder={t("apps.enterNewAppName")}
                     className="w-full pr-8"
                     disabled={importAppMutation.isPending}
                   />
@@ -240,12 +240,12 @@ export function ImportAppDialog({ isOpen, onClose }: ImportAppDialogProps) {
               <Accordion type="single" collapsible>
                 <AccordionItem value="advanced-options">
                   <AccordionTrigger className="text-sm hover:no-underline">
-                    Advanced options
+                    {t("apps.advancedOptions")}
                   </AccordionTrigger>
                   <AccordionContent className="space-y-4">
                     <div className="grid gap-2">
                       <Label className="text-sm ml-2 mb-2">
-                        Install command
+                        {t("apps.installCommand")}
                       </Label>
                       <Input
                         value={installCommand}
@@ -255,7 +255,7 @@ export function ImportAppDialog({ isOpen, onClose }: ImportAppDialogProps) {
                       />
                     </div>
                     <div className="grid gap-2">
-                      <Label className="text-sm ml-2 mb-2">Start command</Label>
+                      <Label className="text-sm ml-2 mb-2">{t("apps.startCommand")}</Label>
                       <Input
                         value={startCommand}
                         onChange={(e) => setStartCommand(e.target.value)}
@@ -265,7 +265,7 @@ export function ImportAppDialog({ isOpen, onClose }: ImportAppDialogProps) {
                     </div>
                     {!commandsValid && (
                       <p className="text-sm text-red-500">
-                        Both commands are required when customizing.
+                        {t("apps.bothCommandsRequired")}
                       </p>
                     )}
                   </AccordionContent>
@@ -281,15 +281,13 @@ export function ImportAppDialog({ isOpen, onClose }: ImportAppDialogProps) {
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>
-                          AI_RULES.md lets Dyad know which tech stack to use for
-                          editing the app
+                          {t("apps.aiRulesTooltip")}
                         </p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
                   <AlertDescription>
-                    No AI_RULES.md found. Dyad will automatically generate one
-                    after importing.
+                    {t("apps.noAiRulesFound")}
                   </AlertDescription>
                 </Alert>
               )}
@@ -297,7 +295,7 @@ export function ImportAppDialog({ isOpen, onClose }: ImportAppDialogProps) {
               {importAppMutation.isPending && (
                 <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground animate-pulse">
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  <span>Importing app...</span>
+                  <span>{t("apps.importingApp")}</span>
                 </div>
               )}
             </div>
@@ -310,7 +308,7 @@ export function ImportAppDialog({ isOpen, onClose }: ImportAppDialogProps) {
             onClick={onClose}
             disabled={importAppMutation.isPending}
           >
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button
             onClick={handleImport}
@@ -322,7 +320,7 @@ export function ImportAppDialog({ isOpen, onClose }: ImportAppDialogProps) {
             }
             className="min-w-[80px]"
           >
-            {importAppMutation.isPending ? <>Importing...</> : "Import"}
+            {importAppMutation.isPending ? <>{t("apps.importing")}</> : t("apps.import")}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -3,9 +3,11 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { IpcClient } from "@/ipc/ipc_client";
+import { useLanguage } from "@/i18n";
 
 export function AutoUpdateSwitch() {
   const { settings, updateSettings } = useSettings();
+  const { t } = useLanguage();
 
   if (!settings) {
     return null;
@@ -18,11 +20,10 @@ export function AutoUpdateSwitch() {
         checked={settings.enableAutoUpdate}
         onCheckedChange={(checked) => {
           updateSettings({ enableAutoUpdate: checked });
-          toast("Auto-update settings changed", {
-            description:
-              "You will need to restart CodeDuet for your settings to take effect.",
+          toast(t("settings.general.autoUpdateSettingsChanged"), {
+            description: t("settings.general.autoUpdateSettingsChangedDescription"),
             action: {
-              label: "Restart CodeDuet",
+              label: t("settings.general.restartCodeDuet"),
               onClick: () => {
                 IpcClient.getInstance().restartCodeDuet();
               },
@@ -30,7 +31,7 @@ export function AutoUpdateSwitch() {
           });
         }}
       />
-      <Label htmlFor="enable-auto-update">Auto-update</Label>
+      <Label htmlFor="enable-auto-update">{t("settings.general.autoUpdate")}</Label>
     </div>
   );
 }

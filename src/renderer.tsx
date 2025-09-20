@@ -9,6 +9,7 @@ import {
   MutationCache,
 } from "@tanstack/react-query";
 import { showError } from "./lib/toast";
+import { LanguageProvider } from "./i18n";
 
 // @ts-ignore
 console.log("Running in mode:", import.meta.env.MODE);
@@ -50,7 +51,11 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <LanguageProvider>
+      <RouterProvider router={router} />
+    </LanguageProvider>
+  );
 }
 
 createRoot(document.getElementById("root")!).render(

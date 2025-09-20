@@ -44,12 +44,15 @@ export function useLanguageModelProviders() {
 
   const isAnyProviderSetup = () => {
     // Check if any cloud provider is set up
-    const hasCloudProvider = cloudProviders.some((provider) => isProviderSetup(provider));
-    
+    const hasCloudProvider = cloudProviders.some((provider) =>
+      isProviderSetup(provider),
+    );
+
     // Check if a local model is selected (ollama or lmstudio)
-    const hasLocalModel = settings?.selectedModel?.provider === "ollama" || 
-                          settings?.selectedModel?.provider === "lmstudio";
-    
+    const hasLocalModel =
+      settings?.selectedModel?.provider === "ollama" ||
+      settings?.selectedModel?.provider === "lmstudio";
+
     return hasCloudProvider || hasLocalModel;
   };
 

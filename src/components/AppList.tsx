@@ -13,12 +13,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { selectedChatIdAtom } from "@/atoms/chatAtoms";
 import { useLoadApps } from "@/hooks/useLoadApps";
+import { useLanguage } from "@/i18n";
 
 export function AppList({ show }: { show?: boolean }) {
   const navigate = useNavigate();
   const [selectedAppId, setSelectedAppId] = useAtom(selectedAppIdAtom);
   const setSelectedChatId = useSetAtom(selectedChatIdAtom);
   const { apps, loading, error } = useLoadApps();
+  const { t } = useLanguage();
 
   if (!show) {
     return null;
@@ -40,7 +42,7 @@ export function AppList({ show }: { show?: boolean }) {
 
   return (
     <SidebarGroup className="overflow-y-auto h-[calc(100vh-112px)]">
-      <SidebarGroupLabel>Your Apps</SidebarGroupLabel>
+      <SidebarGroupLabel>{t("apps.title")}</SidebarGroupLabel>
       <SidebarGroupContent>
         <div className="flex flex-col space-y-2">
           <Button
@@ -49,19 +51,19 @@ export function AppList({ show }: { show?: boolean }) {
             className="flex items-center justify-start gap-2 mx-2 py-2"
           >
             <PlusCircle size={16} />
-            <span>New App</span>
+            <span>{t("apps.newApp")}</span>
           </Button>
 
           {loading ? (
             <div className="py-2 px-4 text-sm text-gray-500">
-              Loading apps...
+              {t("common.loading")}
             </div>
           ) : error ? (
             <div className="py-2 px-4 text-sm text-red-500">
-              Error loading apps
+              {t("common.error")}
             </div>
           ) : apps.length === 0 ? (
-            <div className="py-2 px-4 text-sm text-gray-500">No apps found</div>
+            <div className="py-2 px-4 text-sm text-gray-500">{t("apps.noAppsFound")}</div>
           ) : (
             <SidebarMenu className="space-y-1" data-testid="app-list">
               {apps.map((app) => (

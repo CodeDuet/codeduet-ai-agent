@@ -2,7 +2,14 @@ import { useAtom, useAtomValue } from "jotai";
 import { selectedAppIdAtom, selectedVersionIdAtom } from "@/atoms/appAtoms";
 import { useVersions } from "@/hooks/useVersions";
 import { formatDistanceToNow } from "date-fns";
-import { RotateCcw, X, Database, Loader2, History, GitCommit } from "lucide-react";
+import {
+  RotateCcw,
+  X,
+  Database,
+  Loader2,
+  History,
+  GitCommit,
+} from "lucide-react";
 import type { Version } from "@/ipc/ipc_types";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef, useState } from "react";
@@ -42,7 +49,9 @@ export function VersionPane({ isVisible, onClose }: VersionPaneProps) {
   const { checkoutVersion, isCheckingOutVersion } = useCheckoutVersion();
   const wasVisibleRef = useRef(false);
   const [cachedVersions, setCachedVersions] = useState<Version[]>([]);
-  const [activeTab, setActiveTab] = useState<'versions' | 'checkpoints'>('versions');
+  const [activeTab, setActiveTab] = useState<"versions" | "checkpoints">(
+    "versions",
+  );
 
   useEffect(() => {
     async function updatePaneState() {
@@ -121,186 +130,187 @@ export function VersionPane({ isVisible, onClose }: VersionPaneProps) {
           </button>
         </div>
       </div>
-      
+
       {/* Tabs */}
       <div className="flex border-b border-border">
         <button
-          onClick={() => setActiveTab('versions')}
+          onClick={() => setActiveTab("versions")}
           className={cn(
             "flex-1 px-4 py-2 text-sm font-medium flex items-center justify-center gap-2 transition-colors",
-            activeTab === 'versions'
+            activeTab === "versions"
               ? "bg-background-lightest border-b-2 border-primary text-primary"
-              : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+              : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100",
           )}
         >
           <GitCommit className="h-4 w-4" />
           Versions
         </button>
         <button
-          onClick={() => setActiveTab('checkpoints')}
+          onClick={() => setActiveTab("checkpoints")}
           className={cn(
             "flex-1 px-4 py-2 text-sm font-medium flex items-center justify-center gap-2 transition-colors",
-            activeTab === 'checkpoints'
+            activeTab === "checkpoints"
               ? "bg-background-lightest border-b-2 border-primary text-primary"
-              : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+              : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100",
           )}
         >
           <History className="h-4 w-4" />
           Checkpoints
         </button>
       </div>
-      
+
       <div className="overflow-y-auto h-[calc(100%-100px)]">
-        {activeTab === 'versions' ? (
+        {activeTab === "versions" ? (
           versions.length === 0 ? (
             <div className="p-4 ">No versions available</div>
           ) : (
             <div className="divide-y divide-border">
-            {versions.map((version: Version, index: number) => (
-              <div
-                key={version.oid}
-                className={cn(
-                  "px-4 py-2 hover:bg-(--background-lightest) cursor-pointer",
-                  selectedVersionId === version.oid &&
-                    "bg-(--background-lightest)",
-                  isCheckingOutVersion &&
+              {versions.map((version: Version, index: number) => (
+                <div
+                  key={version.oid}
+                  className={cn(
+                    "px-4 py-2 hover:bg-(--background-lightest) cursor-pointer",
                     selectedVersionId === version.oid &&
-                    "opacity-50 cursor-not-allowed",
-                )}
-                onClick={() => {
-                  if (!isCheckingOutVersion) {
-                    handleVersionClick(version);
-                  }
-                }}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-xs">
-                      Version {versions.length - index} (
-                      {version.oid.slice(0, 7)})
-                    </span>
-                    {/* example format: '2025-07-25T21:52:01Z' */}
-                    {version.dbTimestamp &&
-                      (() => {
-                        const timestampMs = new Date(
-                          version.dbTimestamp,
-                        ).getTime();
-                        const isExpired =
-                          Date.now() - timestampMs > 24 * 60 * 60 * 1000;
-                        return (
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <div
-                                className={cn(
-                                  "inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium rounded-md",
-                                  isExpired
-                                    ? "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
-                                    : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-                                )}
-                              >
-                                <Database size={10} />
-                                <span>DB</span>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              {isExpired
-                                ? "DB snapshot may have expired (older than 24 hours)"
-                                : `Database snapshot available at timestamp ${version.dbTimestamp}`}
-                            </TooltipContent>
-                          </Tooltip>
-                        );
-                      })()}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {isCheckingOutVersion &&
-                      selectedVersionId === version.oid && (
-                        <Loader2
-                          size={12}
-                          className="animate-spin text-primary"
-                        />
-                      )}
-                    <span className="text-xs opacity-90">
-                      {isCheckingOutVersion && selectedVersionId === version.oid
-                        ? "Loading..."
-                        : formatDistanceToNow(
-                            new Date(version.timestamp * 1000),
-                            {
-                              addSuffix: true,
-                            },
-                          )}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between gap-2">
-                  {version.message && (
-                    <p className="mt-1 text-sm">
-                      {version.message.startsWith(
-                        "Reverted all changes back to version ",
-                      )
-                        ? version.message.replace(
-                            /Reverted all changes back to version ([a-f0-9]+)/,
-                            (_, hash) => {
-                              const targetIndex = versions.findIndex(
-                                (v) => v.oid === hash,
-                              );
-                              return targetIndex !== -1
-                                ? `Reverted all changes back to version ${
-                                    versions.length - targetIndex
-                                  }`
-                                : version.message;
-                            },
-                          )
-                        : version.message}
-                    </p>
+                      "bg-(--background-lightest)",
+                    isCheckingOutVersion &&
+                      selectedVersionId === version.oid &&
+                      "opacity-50 cursor-not-allowed",
                   )}
+                  onClick={() => {
+                    if (!isCheckingOutVersion) {
+                      handleVersionClick(version);
+                    }
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-xs">
+                        Version {versions.length - index} (
+                        {version.oid.slice(0, 7)})
+                      </span>
+                      {/* example format: '2025-07-25T21:52:01Z' */}
+                      {version.dbTimestamp &&
+                        (() => {
+                          const timestampMs = new Date(
+                            version.dbTimestamp,
+                          ).getTime();
+                          const isExpired =
+                            Date.now() - timestampMs > 24 * 60 * 60 * 1000;
+                          return (
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div
+                                  className={cn(
+                                    "inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium rounded-md",
+                                    isExpired
+                                      ? "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                                      : "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+                                  )}
+                                >
+                                  <Database size={10} />
+                                  <span>DB</span>
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                {isExpired
+                                  ? "DB snapshot may have expired (older than 24 hours)"
+                                  : `Database snapshot available at timestamp ${version.dbTimestamp}`}
+                              </TooltipContent>
+                            </Tooltip>
+                          );
+                        })()}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {isCheckingOutVersion &&
+                        selectedVersionId === version.oid && (
+                          <Loader2
+                            size={12}
+                            className="animate-spin text-primary"
+                          />
+                        )}
+                      <span className="text-xs opacity-90">
+                        {isCheckingOutVersion &&
+                        selectedVersionId === version.oid
+                          ? "Loading..."
+                          : formatDistanceToNow(
+                              new Date(version.timestamp * 1000),
+                              {
+                                addSuffix: true,
+                              },
+                            )}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    {version.message && (
+                      <p className="mt-1 text-sm">
+                        {version.message.startsWith(
+                          "Reverted all changes back to version ",
+                        )
+                          ? version.message.replace(
+                              /Reverted all changes back to version ([a-f0-9]+)/,
+                              (_, hash) => {
+                                const targetIndex = versions.findIndex(
+                                  (v) => v.oid === hash,
+                                );
+                                return targetIndex !== -1
+                                  ? `Reverted all changes back to version ${
+                                      versions.length - targetIndex
+                                    }`
+                                  : version.message;
+                              },
+                            )
+                          : version.message}
+                      </p>
+                    )}
 
-                  <div className="flex items-center gap-1">
-                    {/* Restore button */}
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          onClick={async (e) => {
-                            e.stopPropagation();
+                    <div className="flex items-center gap-1">
+                      {/* Restore button */}
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <button
+                            onClick={async (e) => {
+                              e.stopPropagation();
 
-                            await revertVersion({
-                              versionId: version.oid,
-                            });
-                            setSelectedVersionId(null);
-                            // Close the pane after revert to force a refresh on next open
-                            onClose();
-                            if (version.dbTimestamp) {
-                              await restartApp();
-                            }
-                          }}
-                          disabled={isRevertingVersion}
-                          className={cn(
-                            "invisible mt-1 flex items-center gap-1 px-2 py-0.5 text-sm font-medium bg-(--primary) text-(--primary-foreground) hover:bg-background-lightest rounded-md transition-colors",
-                            selectedVersionId === version.oid && "visible",
-                            isRevertingVersion &&
-                              "opacity-50 cursor-not-allowed",
-                          )}
-                          aria-label="Restore to this version"
-                        >
-                          {isRevertingVersion ? (
-                            <Loader2 size={12} className="animate-spin" />
-                          ) : (
-                            <RotateCcw size={12} />
-                          )}
-                          <span>
-                            {isRevertingVersion ? "Restoring..." : "Restore"}
-                          </span>
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        {isRevertingVersion
-                          ? "Restoring to this version..."
-                          : "Restore to this version"}
-                      </TooltipContent>
-                    </Tooltip>
+                              await revertVersion({
+                                versionId: version.oid,
+                              });
+                              setSelectedVersionId(null);
+                              // Close the pane after revert to force a refresh on next open
+                              onClose();
+                              if (version.dbTimestamp) {
+                                await restartApp();
+                              }
+                            }}
+                            disabled={isRevertingVersion}
+                            className={cn(
+                              "invisible mt-1 flex items-center gap-1 px-2 py-0.5 text-sm font-medium bg-(--primary) text-(--primary-foreground) hover:bg-background-lightest rounded-md transition-colors",
+                              selectedVersionId === version.oid && "visible",
+                              isRevertingVersion &&
+                                "opacity-50 cursor-not-allowed",
+                            )}
+                            aria-label="Restore to this version"
+                          >
+                            {isRevertingVersion ? (
+                              <Loader2 size={12} className="animate-spin" />
+                            ) : (
+                              <RotateCcw size={12} />
+                            )}
+                            <span>
+                              {isRevertingVersion ? "Restoring..." : "Restore"}
+                            </span>
+                          </button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          {isRevertingVersion
+                            ? "Restoring to this version..."
+                            : "Restore to this version"}
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
             </div>
           )
         ) : (

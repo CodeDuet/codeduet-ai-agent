@@ -36,7 +36,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useStreamChat } from "@/hooks/useStreamChat";
-import { selectedComponentPreviewAtom, devicePreviewAtom, type DeviceType, type Orientation } from "@/atoms/previewAtoms";
+import {
+  selectedComponentPreviewAtom,
+  devicePreviewAtom,
+  type DeviceType,
+  type Orientation,
+} from "@/atoms/previewAtoms";
 import { ComponentSelection } from "@/ipc/ipc_types";
 import {
   Tooltip,
@@ -53,14 +58,14 @@ const isAllowedOrigin = (origin: string): boolean => {
   try {
     const url = new URL(origin);
     // Allow localhost and 127.0.0.1 with any port for development
-    return url.hostname === 'localhost' || url.hostname === '127.0.0.1';
+    return url.hostname === "localhost" || url.hostname === "127.0.0.1";
   } catch {
     return false;
   }
 };
 
-// Security: Get safe origin for postMessage  
-// Note: Since iframe is sandboxed and runs on different origin (localhost vs file://), 
+// Security: Get safe origin for postMessage
+// Note: Since iframe is sandboxed and runs on different origin (localhost vs file://),
 // we can use wildcard for convenience while maintaining security
 const getSafeOrigin = (): string => {
   return "*";
@@ -152,9 +157,16 @@ const ErrorBanner = ({ error, onDismiss, onAIFix }: ErrorBannerProps) => {
 export const PreviewIframe = ({ loading }: { loading: boolean }) => {
   const selectedAppId = useAtomValue(selectedAppIdAtom);
   const { appUrl, originalUrl } = useAtomValue(appUrlAtom);
-  
+
   // Debug logging
-  console.debug("PreviewIframe - appUrl:", appUrl, "originalUrl:", originalUrl, "selectedAppId:", selectedAppId);
+  console.debug(
+    "PreviewIframe - appUrl:",
+    appUrl,
+    "originalUrl:",
+    originalUrl,
+    "selectedAppId:",
+    selectedAppId,
+  );
   const setAppOutput = useSetAtom(appOutputAtom);
   // State to trigger iframe reload
   const [reloadKey, setReloadKey] = useState(0);
@@ -201,12 +213,12 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
       if (event.source !== iframeRef.current?.contentWindow) {
         return;
       }
-      
+
       // Note: Origin validation not needed since iframe is sandboxed and on different origin
-      
+
       // Security: Validate message structure
-      if (!event.data || typeof event.data !== 'object') {
-        console.warn('Blocked invalid message format');
+      if (!event.data || typeof event.data !== "object") {
+        console.warn("Blocked invalid message format");
         return;
       }
 
@@ -454,44 +466,47 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
 
   // Device preview functions
   const handleDeviceChange = (deviceType: DeviceType) => {
-    setDevicePreview(prev => ({ ...prev, deviceType }));
+    setDevicePreview((prev) => ({ ...prev, deviceType }));
   };
 
   const handleOrientationToggle = () => {
-    setDevicePreview(prev => ({
+    setDevicePreview((prev) => ({
       ...prev,
-      orientation: prev.orientation === 'portrait' ? 'landscape' : 'portrait'
+      orientation: prev.orientation === "portrait" ? "landscape" : "portrait",
     }));
   };
 
   const handleFrameToggle = () => {
-    setDevicePreview(prev => ({ ...prev, showDeviceFrame: !prev.showDeviceFrame }));
+    setDevicePreview((prev) => ({
+      ...prev,
+      showDeviceFrame: !prev.showDeviceFrame,
+    }));
   };
 
   // Get device dimensions
   const getDeviceDimensions = () => {
     const { deviceType, orientation } = devicePreview;
-    
+
     let width: number, height: number;
-    
+
     switch (deviceType) {
-      case 'mobile':
+      case "mobile":
         width = 375;
         height = 667;
         break;
-      case 'tablet':
+      case "tablet":
         width = 768;
         height = 1024;
         break;
-      case 'desktop':
+      case "desktop":
       default:
-        return { width: '100%', height: '100%' };
+        return { width: "100%", height: "100%" };
     }
-    
-    if (orientation === 'landscape') {
+
+    if (orientation === "landscape") {
       [width, height] = [height, width];
     }
-    
+
     return { width: `${width}px`, height: `${height}px` };
   };
 
@@ -562,11 +577,11 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
-                  onClick={() => handleDeviceChange('desktop')}
+                  onClick={() => handleDeviceChange("desktop")}
                   className={`p-1 rounded transition-colors ${
-                    devicePreview.deviceType === 'desktop'
-                      ? 'bg-blue-500 text-white'
-                      : 'hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-300'
+                    devicePreview.deviceType === "desktop"
+                      ? "bg-blue-500 text-white"
+                      : "hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-300"
                   }`}
                   data-testid="preview-desktop-button"
                 >
@@ -583,11 +598,11 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
-                  onClick={() => handleDeviceChange('tablet')}
+                  onClick={() => handleDeviceChange("tablet")}
                   className={`p-1 rounded transition-colors ${
-                    devicePreview.deviceType === 'tablet'
-                      ? 'bg-blue-500 text-white'
-                      : 'hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-300'
+                    devicePreview.deviceType === "tablet"
+                      ? "bg-blue-500 text-white"
+                      : "hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-300"
                   }`}
                   data-testid="preview-tablet-button"
                 >
@@ -604,11 +619,11 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
-                  onClick={() => handleDeviceChange('mobile')}
+                  onClick={() => handleDeviceChange("mobile")}
                   className={`p-1 rounded transition-colors ${
-                    devicePreview.deviceType === 'mobile'
-                      ? 'bg-blue-500 text-white'
-                      : 'hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-300'
+                    devicePreview.deviceType === "mobile"
+                      ? "bg-blue-500 text-white"
+                      : "hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-300"
                   }`}
                   data-testid="preview-mobile-button"
                 >
@@ -622,7 +637,8 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
           </TooltipProvider>
 
           {/* Orientation Toggle - only show for mobile/tablet */}
-          {(devicePreview.deviceType === 'mobile' || devicePreview.deviceType === 'tablet') && (
+          {(devicePreview.deviceType === "mobile" ||
+            devicePreview.deviceType === "tablet") && (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -642,7 +658,8 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
           )}
 
           {/* Frame Toggle - only show for mobile/tablet */}
-          {(devicePreview.deviceType === 'mobile' || devicePreview.deviceType === 'tablet') && (
+          {(devicePreview.deviceType === "mobile" ||
+            devicePreview.deviceType === "tablet") && (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -650,8 +667,8 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
                     onClick={handleFrameToggle}
                     className={`p-1 rounded transition-colors ${
                       devicePreview.showDeviceFrame
-                        ? 'bg-gray-500 text-white'
-                        : 'hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-300'
+                        ? "bg-gray-500 text-white"
+                        : "hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-300"
                     }`}
                     data-testid="preview-frame-button"
                   >
@@ -659,7 +676,10 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
                   </button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{devicePreview.showDeviceFrame ? 'Hide' : 'Show'} device frame</p>
+                  <p>
+                    {devicePreview.showDeviceFrame ? "Hide" : "Show"} device
+                    frame
+                  </p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -747,39 +767,52 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
             </p>
           </div>
         ) : (
-          <div className={`w-full h-full flex items-center justify-center ${devicePreview.deviceType !== 'desktop' ? 'bg-gray-100 dark:bg-gray-800' : ''}`}>
+          <div
+            className={`w-full h-full flex items-center justify-center ${devicePreview.deviceType !== "desktop" ? "bg-gray-100 dark:bg-gray-800" : ""}`}
+          >
             <div
-              className={`relative ${devicePreview.showDeviceFrame && devicePreview.deviceType !== 'desktop' ? 'device-frame' : ''}`}
-              style={devicePreview.deviceType !== 'desktop' ? getDeviceDimensions() : { width: '100%', height: '100%' }}
+              className={`relative ${devicePreview.showDeviceFrame && devicePreview.deviceType !== "desktop" ? "device-frame" : ""}`}
+              style={
+                devicePreview.deviceType !== "desktop"
+                  ? getDeviceDimensions()
+                  : { width: "100%", height: "100%" }
+              }
             >
-              {devicePreview.showDeviceFrame && devicePreview.deviceType !== 'desktop' && (
-                <div className={`absolute inset-0 pointer-events-none z-10 ${
-                  devicePreview.deviceType === 'mobile' 
-                    ? 'mobile-frame' 
-                    : devicePreview.deviceType === 'tablet' 
-                      ? 'tablet-frame' 
-                      : ''
-                }`}>
-                  {/* Device frame styling */}
-                  <div className="absolute inset-2 rounded-lg border-4 border-gray-800 dark:border-gray-200 shadow-2xl"></div>
-                  {devicePreview.deviceType === 'mobile' && (
-                    <>
-                      {/* Home button for mobile */}
-                      <div className={`absolute w-12 h-12 bg-gray-800 dark:bg-gray-200 rounded-full ${
-                        devicePreview.orientation === 'portrait' 
-                          ? 'bottom-4 left-1/2 transform -translate-x-1/2' 
-                          : 'right-4 top-1/2 transform -translate-y-1/2'
-                      }`}></div>
-                      {/* Speaker for mobile */}
-                      <div className={`absolute w-16 h-2 bg-gray-600 dark:bg-gray-400 rounded-full ${
-                        devicePreview.orientation === 'portrait' 
-                          ? 'top-4 left-1/2 transform -translate-x-1/2' 
-                          : 'left-4 top-1/2 transform -translate-y-1/2 w-2 h-16'
-                      }`}></div>
-                    </>
-                  )}
-                </div>
-              )}
+              {devicePreview.showDeviceFrame &&
+                devicePreview.deviceType !== "desktop" && (
+                  <div
+                    className={`absolute inset-0 pointer-events-none z-10 ${
+                      devicePreview.deviceType === "mobile"
+                        ? "mobile-frame"
+                        : devicePreview.deviceType === "tablet"
+                          ? "tablet-frame"
+                          : ""
+                    }`}
+                  >
+                    {/* Device frame styling */}
+                    <div className="absolute inset-2 rounded-lg border-4 border-gray-800 dark:border-gray-200 shadow-2xl"></div>
+                    {devicePreview.deviceType === "mobile" && (
+                      <>
+                        {/* Home button for mobile */}
+                        <div
+                          className={`absolute w-12 h-12 bg-gray-800 dark:bg-gray-200 rounded-full ${
+                            devicePreview.orientation === "portrait"
+                              ? "bottom-4 left-1/2 transform -translate-x-1/2"
+                              : "right-4 top-1/2 transform -translate-y-1/2"
+                          }`}
+                        ></div>
+                        {/* Speaker for mobile */}
+                        <div
+                          className={`absolute w-16 h-2 bg-gray-600 dark:bg-gray-400 rounded-full ${
+                            devicePreview.orientation === "portrait"
+                              ? "top-4 left-1/2 transform -translate-x-1/2"
+                              : "left-4 top-1/2 transform -translate-y-1/2 w-2 h-16"
+                          }`}
+                        ></div>
+                      </>
+                    )}
+                  </div>
+                )}
               <iframe
                 sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-downloads"
                 data-testid="preview-iframe-element"
@@ -790,11 +823,11 @@ export const PreviewIframe = ({ loading }: { loading: boolean }) => {
                 key={reloadKey}
                 title={`Preview for App ${selectedAppId}`}
                 className={`border-none bg-white dark:bg-gray-950 ${
-                  devicePreview.deviceType === 'desktop' 
-                    ? 'w-full h-full' 
-                    : devicePreview.showDeviceFrame 
-                      ? 'absolute inset-2 rounded-lg' 
-                      : 'w-full h-full rounded-lg shadow-lg'
+                  devicePreview.deviceType === "desktop"
+                    ? "w-full h-full"
+                    : devicePreview.showDeviceFrame
+                      ? "absolute inset-2 rounded-lg"
+                      : "w-full h-full rounded-lg shadow-lg"
                 }`}
                 src={appUrl}
                 allow="clipboard-read; clipboard-write; fullscreen; microphone; camera; display-capture; geolocation; autoplay; picture-in-picture"

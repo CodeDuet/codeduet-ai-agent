@@ -32,135 +32,211 @@ export function registerShellHandlers() {
     logger.debug("Showed item in folder:", fullPath);
   });
 
-  handle("open-in-ide", async (_event, { projectPath, ide }: { projectPath: string; ide: "vscode" | "cursor" }) => {
-    if (!projectPath) {
-      throw new Error("No project path provided.");
-    }
+  handle(
+    "open-in-ide",
+    async (
+      _event,
+      { projectPath, ide }: { projectPath: string; ide: "vscode" | "cursor" },
+    ) => {
+      if (!projectPath) {
+        throw new Error("No project path provided.");
+      }
 
-    // Resolve the app path to get the actual file system path
-    const resolvedPath = resolveAppPath(projectPath);
-    
-    if (!existsSync(resolvedPath)) {
-      throw new Error(`Project path does not exist: ${resolvedPath}`);
-    }
+      // Resolve the app path to get the actual file system path
+      const resolvedPath = resolveAppPath(projectPath);
 
-    let command: string;
-    let args: string[];
+      if (!existsSync(resolvedPath)) {
+        throw new Error(`Project path does not exist: ${resolvedPath}`);
+      }
 
-    // Define commands for different IDEs
-    if (ide === "vscode") {
-      // Try different possible VSCode commands
-      const possibleCommands = ["code", "/usr/local/bin/code", "/opt/homebrew/bin/code"];
-      
-      let foundCommand = null;
-      for (const cmd of possibleCommands) {
-        try {
-          // Check if command exists
-          await new Promise<void>((resolve, reject) => {
-            const testProcess = spawn("which", [cmd.split("/").pop() || cmd], { stdio: "pipe" });
-            testProcess.on("close", (code) => {
-              if (code === 0) resolve();
-              else reject();
+      let command: string;
+      let args: string[];
+
+      // Define commands for different IDEs
+      if (ide === "vscode") {
+        // Try different possible VSCode commands (prioritize direct app path)
+        const possibleCommands = [
+          "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code",
+          "/usr/local/bin/code",
+          "/opt/homebrew/bin/code",
+          "code",
+        ];
+
+        let foundCommand = null;
+        for (const cmd of possibleCommands) {
+          try {
+            // First check if the full path exists
+            if (cmd.includes("/") && existsSync(cmd)) {
+              foundCommand = cmd;
+              break;
+            }
+            
+            // Then check using which command
+            await new Promise<void>((resolve, reject) => {
+              const testProcess = spawn(
+                "which",
+                [cmd.split("/").pop() || cmd],
+                { stdio: "pipe" },
+              );
+              testProcess.on("close", (code) => {
+                if (code === 0) resolve();
+                else reject();
+              });
+              testProcess.on("error", reject);
             });
-            testProcess.on("error", reject);
-          });
-          foundCommand = cmd;
-          break;
-        } catch {
-          continue;
+            foundCommand = cmd;
+            break;
+          } catch {
+            continue;
+          }
         }
-      }
 
-      if (!foundCommand) {
-        throw new Error("VSCode not found. Please install VSCode and ensure 'code' command is available in PATH.");
-      }
+        if (!foundCommand) {
+          throw new Error(
+            "VSCode not found. Please install VSCode and ensure 'code' command is available in PATH.",
+          );
+        }
 
-      command = foundCommand;
-      args = [resolvedPath];
-    } else if (ide === "cursor") {
-      // Try different possible Cursor commands
-      const possibleCommands = ["cursor", "/usr/local/bin/cursor", "/opt/homebrew/bin/cursor"];
-      
-      let foundCommand = null;
-      for (const cmd of possibleCommands) {
-        try {
-          // Check if command exists
-          await new Promise<void>((resolve, reject) => {
-            const testProcess = spawn("which", [cmd.split("/").pop() || cmd], { stdio: "pipe" });
-            testProcess.on("close", (code) => {
-              if (code === 0) resolve();
-              else reject();
+        command = foundCommand;
+        args = [resolvedPath];
+      } else if (ide === "cursor") {
+        // Try different possible Cursor commands (prioritize direct app path)
+        const possibleCommands = [
+          "/Applications/Cursor.app/Contents/Resources/app/bin/code",
+          "/usr/local/bin/cursor",
+          "/opt/homebrew/bin/cursor",
+          "cursor",
+        ];
+
+        let foundCommand = null;
+        for (const cmd of possibleCommands) {
+          try {
+            // First check if the full path exists
+            if (cmd.includes("/") && existsSync(cmd)) {
+              foundCommand = cmd;
+              break;
+            }
+            
+            // Then check using which command
+            await new Promise<void>((resolve, reject) => {
+              const testProcess = spawn(
+                "which",
+                [cmd.split("/").pop() || cmd],
+                { stdio: "pipe" },
+              );
+              testProcess.on("close", (code) => {
+                if (code === 0) resolve();
+                else reject();
+              });
+              testProcess.on("error", reject);
             });
-            testProcess.on("error", reject);
-          });
-          foundCommand = cmd;
-          break;
-        } catch {
-          continue;
+            foundCommand = cmd;
+            break;
+          } catch {
+            continue;
+          }
         }
+
+        if (!foundCommand) {
+          throw new Error(
+            "Cursor not found. Please install Cursor and ensure 'cursor' command is available in PATH.",
+          );
+        }
+
+        command = foundCommand;
+        args = [resolvedPath];
+      } else {
+        throw new Error(`Unsupported IDE: ${ide}`);
       }
 
-      if (!foundCommand) {
-        throw new Error("Cursor not found. Please install Cursor and ensure 'cursor' command is available in PATH.");
-      }
+      return new Promise<void>((resolve, reject) => {
+        const process = spawn(command, args, {
+          stdio: "ignore",
+          detached: true,
+        });
 
-      command = foundCommand;
-      args = [resolvedPath];
-    } else {
-      throw new Error(`Unsupported IDE: ${ide}`);
-    }
+        process.unref();
 
-    return new Promise<void>((resolve, reject) => {
-      const process = spawn(command, args, {
-        stdio: "ignore",
-        detached: true,
+        process.on("error", (err) => {
+          logger.error(`Failed to launch ${ide}:`, err);
+          reject(new Error(`Failed to launch ${ide}: ${err.message}`));
+        });
+
+        // Give it a moment to start
+        setTimeout(() => {
+          logger.info(
+            `Successfully launched ${ide} with project: ${resolvedPath}`,
+          );
+          resolve();
+        }, 500);
       });
-
-      process.unref();
-
-      process.on("error", (err) => {
-        logger.error(`Failed to launch ${ide}:`, err);
-        reject(new Error(`Failed to launch ${ide}: ${err.message}`));
-      });
-
-      // Give it a moment to start
-      setTimeout(() => {
-        logger.info(`Successfully launched ${ide} with project: ${resolvedPath}`);
-        resolve();
-      }, 500);
-    });
-  });
+    },
+  );
 
   handle("check-ide-availability", async (): Promise<IdeAvailability> => {
-    const checkCommand = async (commands: string[]): Promise<boolean> => {
+    const checkCommand = async (commands: string[], name: string): Promise<boolean> => {
       for (const cmd of commands) {
         try {
+          // First check if the full path exists
+          if (cmd.includes("/") && existsSync(cmd)) {
+            logger.debug(`${name} found at full path: ${cmd}`);
+            return true;
+          }
+          
+          // Then check using which command
+          const commandToCheck = cmd.split("/").pop() || cmd;
+          logger.debug(`Checking ${name} command: ${commandToCheck} (from ${cmd})`);
+          
           await new Promise<void>((resolve, reject) => {
-            const testProcess = spawn("which", [cmd.split("/").pop() || cmd], { stdio: "pipe" });
-            testProcess.on("close", (code) => {
-              if (code === 0) resolve();
-              else reject();
+            const testProcess = spawn("which", [commandToCheck], {
+              stdio: "pipe",
             });
-            testProcess.on("error", reject);
+            
+            testProcess.on("close", (code) => {
+              logger.debug(`Command ${commandToCheck} check result: exit code ${code}`);
+              if (code === 0) {
+                logger.debug(`${name} found via which: ${commandToCheck}`);
+                resolve();
+              } else {
+                reject(new Error(`Command not found: ${commandToCheck}`));
+              }
+            });
+            
+            testProcess.on("error", (err) => {
+              logger.debug(`Error checking ${commandToCheck}:`, err);
+              reject(err);
+            });
           });
           return true;
-        } catch {
+        } catch (error) {
+          logger.debug(`Failed to find ${name} command ${cmd}:`, error);
           continue;
         }
       }
+      logger.debug(`${name} not found in any of the checked locations`);
       return false;
     };
 
-    const vscodeCommands = ["code", "/usr/local/bin/code", "/opt/homebrew/bin/code"];
-    const cursorCommands = ["cursor", "/usr/local/bin/cursor", "/opt/homebrew/bin/cursor"];
+    const vscodeCommands = [
+      "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code",
+      "/usr/local/bin/code",
+      "/opt/homebrew/bin/code",
+      "code",
+    ];
+    const cursorCommands = [
+      "/Applications/Cursor.app/Contents/Resources/app/bin/code",
+      "/usr/local/bin/cursor",
+      "/opt/homebrew/bin/cursor",
+      "cursor",
+    ];
 
     const [vscode, cursor] = await Promise.all([
-      checkCommand(vscodeCommands),
-      checkCommand(cursorCommands)
+      checkCommand(vscodeCommands, "VS Code"),
+      checkCommand(cursorCommands, "Cursor"),
     ]);
 
     logger.debug("IDE availability check:", { vscode, cursor });
-    
+
     return { vscode, cursor };
   });
 }

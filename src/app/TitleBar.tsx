@@ -34,7 +34,6 @@ export const TitleBar = () => {
     checkPlatform();
   }, []);
 
-
   // Get selected app name
   const selectedApp = apps.find((app) => app.id === selectedAppId);
   const displayText = selectedApp
@@ -46,7 +45,6 @@ export const TitleBar = () => {
       navigate({ to: "/app-details", search: { appId: selectedApp.id } });
     }
   };
-
 
   return (
     <>
@@ -75,7 +73,6 @@ export const TitleBar = () => {
 
         {showWindowControls && <WindowsControls />}
       </div>
-
     </>
   );
 };
@@ -160,4 +157,3 @@ function WindowsControls() {
     </div>
   );
 }
-

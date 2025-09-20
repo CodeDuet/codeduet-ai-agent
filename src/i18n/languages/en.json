@@ -1,0 +1,188 @@
+{
+  "navigation": {
+    "apps": "Apps",
+    "chat": "Chat",
+    "settings": "Settings",
+    "library": "Library",
+    "hub": "Hub",
+    "help": "Help"
+  },
+  "settings": {
+    "title": "Settings",
+    "general": {
+      "title": "General Settings",
+      "language": "Language",
+      "theme": "Theme",
+      "appVersion": "App Version:",
+      "autoUpdate": "Auto-update",
+      "autoUpdateDescription": "This will automatically update the app when new versions are available.",
+      "releaseChannel": "Release Channel",
+      "releaseChannelStable": "Stable",
+      "releaseChannelBeta": "Beta",
+      "releaseChannelStableDescription": "Stable is recommended for most users.",
+      "releaseChannelBetaDescription": "Beta receives more frequent updates but may have more bugs.",
+      "runtimeMode": "Runtime Mode",
+      "runtimeModeLocal": "Local (default)",
+      "runtimeModeDocker": "Docker (experimental)",
+      "runtimeModeDescription": "Choose whether to run apps directly on the local machine or in Docker containers",
+      "dockerWarning": "Docker mode is experimental and requires Docker Desktop to be installed and running",
+      "usingStableChannel": "Using Stable release channel",
+      "usingStableChannelDescription": "You'll stay on your current version until a newer stable release is available, or you can manually downgrade now.",
+      "downloadStable": "Download Stable",
+      "usingBetaChannel": "Using Beta release channel",
+      "usingBetaChannelDescription": "You will need to restart CodeDuet for your settings to take effect.",
+      "restartCodeDuet": "Restart CodeDuet",
+      "autoUpdateSettingsChanged": "Auto-update settings changed",
+      "autoUpdateSettingsChangedDescription": "You will need to restart CodeDuet for your settings to take effect."
+    },
+    "workflow": {
+      "title": "Workflow Settings",
+      "autoApprove": "Auto-approve",
+      "autoApproveDescription": "This will automatically approve code changes and run them.",
+      "autoFixProblems": "Auto-fix problems",
+      "autoFixProblemsDescription": "This will automatically fix TypeScript errors.",
+      "responseEndNotification": "Response end notifications",
+      "responseEndNotificationDescription": "Show native notifications when assistant finishes replying."
+    },
+    "ai": {
+      "title": "AI Settings",
+      "thinkingBudget": "Thinking Budget",
+      "thinkingBudgetMedium": "Medium (default)",
+      "thinkingBudgetDescription": "Balanced thinking for most conversations.",
+      "maxChatTurns": "Maximum number of chat turns used in context",
+      "maxChatTurnsDefault": "Default (3)",
+      "maxChatTurnsDescription": "Balanced context size for most conversations."
+    },
+    "modelProviders": {
+      "title": "Model Providers"
+    },
+    "mcpServers": {
+      "title": "MCP Servers"
+    },
+    "telemetry": {
+      "title": "Telemetry",
+      "description": "This records anonymous usage data to improve the product."
+    },
+    "integrations": {
+      "title": "Integrations"
+    },
+    "experiments": {
+      "title": "Experiments",
+      "enableNativeGit": "Enable Native Git",
+      "enableNativeGitDescription": "Native Git offers faster performance but requires installing Git.",
+      "enableConfetti": "Enable Confetti",
+      "enableConfettiDescription": "Show confetti animations when completing setup tasks."
+    },
+    "dangerZone": {
+      "title": "Danger Zone",
+      "resetEverything": "Reset Everything",
+      "resetEverythingDescription": "This will delete all your apps, chats, and settings. This action cannot be undone.",
+      "resetEverythingButton": "Reset Everything",
+      "resetting": "Resetting..."
+    }
+  },
+  "apps": {
+    "title": "Your Apps",
+    "newApp": "New App",
+    "buildYourDreamApp": "Build your dream app",
+    "importApp": "Import App",
+    "importAppDescription": "Select an existing app folder to import into CodeDuet.",
+    "importAppExperimentalNote": "App import is an experimental feature. If you encounter any issues, please report them using the Help button.",
+    "selectFolder": "Select Folder",
+    "selectingFolder": "Selecting folder...",
+    "selectedFolder": "Selected folder:",
+    "clearSelection": "Clear selection",
+    "appName": "App name",
+    "enterNewAppName": "Enter new app name",
+    "appNameExists": "An app with this name already exists. Please choose a different name:",
+    "advancedOptions": "Advanced options",
+    "installCommand": "Install command",
+    "startCommand": "Start command",
+    "bothCommandsRequired": "Both commands are required when customizing.",
+    "noAiRulesFound": "No AI_RULES.md found. CodeDuet will automatically generate one after importing.",
+    "aiRulesTooltip": "AI_RULES.md lets CodeDuet know which tech stack to use for editing the app",
+    "importingApp": "Importing app...",
+    "importing": "Importing...",
+    "import": "Import",
+    "appImportedSuccessfully": "App imported successfully",
+    "appImportedWithAiRules": "App imported successfully. CodeDuet will automatically generate an AI_RULES.md now.",
+    "askCodeDuetToBuild": "Ask CodeDuet to build...",
+    "build": "Build",
+    "noAppsFound": "No apps found",
+    "loadingApps": "Loading apps...",
+    "errorLoadingApps": "Error loading apps",
+    "buildingYourApp": "Building your app",
+    "buildingDescription": "We're setting up your app with AI magic. This might take a moment...",
+    "templateSuggestions": {
+      "todoApp": "TODO list app",
+      "landingPage": "Landing Page",
+      "signUpForm": "Sign Up Form",
+      "moodJournalTracker": "Mood Journal & Tracker",
+      "interactiveStoryGame": "Interactive Story Game",
+      "recipeFinderMealPlanner": "Recipe Finder & Meal Planner",
+      "personalFinanceDashboard": "Personal Finance Dashboard",
+      "travelMemoryMap": "Travel Memory Map",
+      "aiWritingAssistant": "AI Writing Assistant",
+      "habitStreakTracker": "Habit Streak Tracker",
+      "newsletterCreator": "Newsletter Creator",
+      "musicDiscoveryApp": "Music Discovery App",
+      "3dPortfolioViewer": "3D Portfolio Viewer",
+      "aiImageGenerator": "AI Image Generator",
+      "pomodoroFocusTimer": "Pomodoro Focus Timer",
+      "virtualAvatarBuilder": "Virtual Avatar Builder",
+      "moreIdeas": "More ideas"
+    }
+  },
+  "templates": {
+    "title": "Pick your default template",
+    "subtitle": "Choose a starting point for your new project.",
+    "officialTemplates": "Official templates",
+    "selected": "Selected",
+    "official": "Official",
+    "reactTemplate": {
+      "title": "React.js Template",
+      "description": "Uses React.js, Vite, Shadcn, Tailwind and TypeScript."
+    },
+    "nextTemplate": {
+      "title": "Next.js Template",
+      "description": "Uses Next.js, React.js, Shadcn, Tailwind and TypeScript."
+    },
+    "createApp": "Create App",
+    "viewOnGithub": "View on GitHub"
+  },
+  "chat": {
+    "newChat": "New Chat",
+    "searchChats": "Search chats",
+    "recentChats": "Recent Chats",
+    "thinking": "Thinking",
+    "keepGoing": "Keep going",
+    "askCodeDuetToBuild": "Ask CodeDuet to build...",
+    "systemMessages": "System Messages",
+    "version": "Version"
+  },
+  "toolbar": {
+    "preview": "Preview",
+    "problems": "Problems",
+    "code": "Code",
+    "configure": "Configure",
+    "publish": "Publish",
+    "toggleSidebar": "Toggle Sidebar"
+  },
+  "common": {
+    "goBack": "Go Back",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "noAppSelected": "no app selected"
+  },
+  "themes": {
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  }
+}

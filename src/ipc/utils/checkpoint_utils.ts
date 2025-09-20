@@ -38,7 +38,7 @@ export async function createCheckpoint({
     // Check if there are any uncommitted changes to include in checkpoint
     const statusMatrix = await git.statusMatrix({ fs, dir: appPath });
     const hasUncommittedChanges = statusMatrix.some(
-      (row) => row[1] !== 1 || row[2] !== 1 || row[3] !== 1
+      (row) => row[1] !== 1 || row[2] !== 1 || row[3] !== 1,
     );
 
     let checkpointHash: string;
@@ -62,7 +62,7 @@ export async function createCheckpoint({
       });
 
       logger.log(
-        `Created checkpoint with uncommitted changes: ${checkpointHash}`
+        `Created checkpoint with uncommitted changes: ${checkpointHash}`,
       );
     } else {
       // No uncommitted changes, use current HEAD as checkpoint
@@ -228,7 +228,7 @@ export async function getChatCheckpoints(chatId: number) {
   });
 
   return chatMessages.filter(
-    (msg) => msg.checkpointHash && msg.role === "assistant"
+    (msg) => msg.checkpointHash && msg.role === "assistant",
   );
 }
 
@@ -238,7 +238,7 @@ export async function getChatCheckpoints(chatId: number) {
  */
 export async function cleanupOldCheckpoints(
   chatId: number,
-  keepLatest: number = 10
+  keepLatest: number = 10,
 ) {
   try {
     const checkpoints = await getChatCheckpoints(chatId);
@@ -251,7 +251,7 @@ export async function cleanupOldCheckpoints(
     const toCleanup = checkpoints.slice(0, -keepLatest);
 
     logger.log(
-      `Cleaning up ${toCleanup.length} old checkpoints for chat ${chatId}`
+      `Cleaning up ${toCleanup.length} old checkpoints for chat ${chatId}`,
     );
 
     // Remove checkpoint flags from old messages

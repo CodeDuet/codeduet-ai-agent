@@ -102,10 +102,10 @@ export function ProviderSettingsPage({ provider }: ProviderSettingsPageProps) {
     }
     setIsSaving(true);
     setSaveError(null);
-    
+
     // Check if this is the first time setting up this provider
     const wasNotConfigured = !isConfigured;
-    
+
     try {
       const settingsUpdate: Partial<UserSettings> = {
         providerSettings: {
@@ -120,7 +120,7 @@ export function ProviderSettingsPage({ provider }: ProviderSettingsPageProps) {
       };
       await updateSettings(settingsUpdate);
       setApiKeyInput(""); // Clear input on success
-      
+
       // Trigger confetti celebration if this was the first time setting up
       if (wasNotConfigured) {
         setTimeout(() => {
@@ -157,7 +157,6 @@ export function ProviderSettingsPage({ provider }: ProviderSettingsPageProps) {
       setIsSaving(false);
     }
   };
-
 
   // Effect to clear input error when input changes
   useEffect(() => {
@@ -285,7 +284,6 @@ export function ProviderSettingsPage({ provider }: ProviderSettingsPageProps) {
             isDyad={isDyad}
           />
         )}
-
 
         {/* Conditionally render CustomModelsSection */}
         {supportsCustomModels && providerData && (

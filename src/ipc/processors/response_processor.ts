@@ -143,7 +143,9 @@ export async function processFullResponseActions(
 
     // Create checkpoint before applying AI changes
     if (willMakeChanges) {
-      logger.log(`Creating checkpoint before applying AI changes for message ${messageId}`);
+      logger.log(
+        `Creating checkpoint before applying AI changes for message ${messageId}`,
+      );
       const checkpointResult = await createCheckpoint({
         appPath,
         chatId,

@@ -2,10 +2,12 @@ import { useSettings } from "@/hooks/useSettings";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { showError, showSuccess } from "@/lib/toast";
+import { useLanguage } from "@/i18n";
 
 export function ResponseEndNotificationSwitch() {
   const { settings, updateSettings } = useSettings();
-  
+  const { t } = useLanguage();
+
   const handleToggle = async (checked: boolean) => {
     if (checked) {
       // Request notification permission when enabling
@@ -16,7 +18,9 @@ export function ResponseEndNotificationSwitch() {
         }
 
         if (Notification.permission === "denied") {
-          showError("Notifications are blocked. Please enable them in your browser settings.");
+          showError(
+            "Notifications are blocked. Please enable them in your browser settings.",
+          );
           return;
         }
 
@@ -49,7 +53,7 @@ export function ResponseEndNotificationSwitch() {
       enableResponseEndNotification: checked,
     });
   };
-  
+
   return (
     <div className="flex items-center space-x-2">
       <Switch
@@ -57,7 +61,9 @@ export function ResponseEndNotificationSwitch() {
         checked={settings?.enableResponseEndNotification ?? false}
         onCheckedChange={handleToggle}
       />
-      <Label htmlFor="response-end-notification">Response end notifications</Label>
+      <Label htmlFor="response-end-notification">
+        {t("settings.workflow.responseEndNotification")}
+      </Label>
     </div>
   );
 }

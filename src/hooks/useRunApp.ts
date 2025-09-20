@@ -42,14 +42,22 @@ export function useRunApp() {
       if (proxyUrlMatch && proxyUrlMatch[1]) {
         const proxyUrl = proxyUrlMatch[1];
         const originalUrl = originalUrlMatch && originalUrlMatch[1];
-        console.debug("Setting appUrl to:", proxyUrl, "originalUrl:", originalUrl);
+        console.debug(
+          "Setting appUrl to:",
+          proxyUrl,
+          "originalUrl:",
+          originalUrl,
+        );
         setAppUrlObj({
           appUrl: proxyUrl,
           appId: output.appId,
           originalUrl: originalUrl!,
         });
       } else {
-        console.warn("Failed to extract proxy URL from message:", output.message);
+        console.warn(
+          "Failed to extract proxy URL from message:",
+          output.message,
+        );
       }
     }
   };

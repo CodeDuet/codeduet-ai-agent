@@ -1,0 +1,188 @@
+{
+  "navigation": {
+    "apps": "应用",
+    "chat": "聊天",
+    "settings": "设置",
+    "library": "资源库",
+    "hub": "中心",
+    "help": "帮助"
+  },
+  "settings": {
+    "title": "设置",
+    "general": {
+      "title": "常规设置",
+      "language": "语言",
+      "theme": "主题",
+      "appVersion": "应用版本：",
+      "autoUpdate": "自动更新",
+      "autoUpdateDescription": "有新版本时自动更新应用程序。",
+      "releaseChannel": "发布渠道",
+      "releaseChannelStable": "稳定版",
+      "releaseChannelBeta": "测试版",
+      "releaseChannelStableDescription": "建议大多数用户使用稳定版。",
+      "releaseChannelBetaDescription": "测试版更新更频繁，但可能有更多错误。",
+      "runtimeMode": "运行模式",
+      "runtimeModeLocal": "本地（默认）",
+      "runtimeModeDocker": "Docker（实验性）",
+      "runtimeModeDescription": "选择在本地机器上直接运行应用程序还是在Docker容器中运行",
+      "dockerWarning": "Docker模式是实验性的，需要安装并运行Docker Desktop",
+      "usingStableChannel": "使用稳定版发布渠道",
+      "usingStableChannelDescription": "您将保持当前版本，直到有新的稳定版本可用，或者您可以立即手动降级。",
+      "downloadStable": "下载稳定版",
+      "usingBetaChannel": "使用测试版发布渠道",
+      "usingBetaChannelDescription": "您需要重新启动CodeDuet以使设置生效。",
+      "restartCodeDuet": "重新启动CodeDuet",
+      "autoUpdateSettingsChanged": "自动更新设置已更改",
+      "autoUpdateSettingsChangedDescription": "您需要重新启动CodeDuet以使设置生效。"
+    },
+    "workflow": {
+      "title": "工作流设置",
+      "autoApprove": "自动批准",
+      "autoApproveDescription": "自动批准代码更改并运行它们。",
+      "autoFixProblems": "自动修复问题",
+      "autoFixProblemsDescription": "自动修复TypeScript错误。",
+      "responseEndNotification": "响应结束通知",
+      "responseEndNotificationDescription": "当助手完成回复时显示原生通知。"
+    },
+    "ai": {
+      "title": "AI设置",
+      "thinkingBudget": "思考预算",
+      "thinkingBudgetMedium": "中等（默认）",
+      "thinkingBudgetDescription": "大多数对话的平衡思考。",
+      "maxChatTurns": "上下文中使用的最大聊天轮数",
+      "maxChatTurnsDefault": "默认（3）",
+      "maxChatTurnsDescription": "大多数对话的平衡上下文大小。"
+    },
+    "modelProviders": {
+      "title": "模型提供商"
+    },
+    "mcpServers": {
+      "title": "MCP服务器"
+    },
+    "telemetry": {
+      "title": "遥测",
+      "description": "记录匿名使用数据以改进产品。"
+    },
+    "integrations": {
+      "title": "集成"
+    },
+    "experiments": {
+      "title": "实验",
+      "enableNativeGit": "启用原生Git",
+      "enableNativeGitDescription": "原生Git提供更快的性能，但需要安装Git。",
+      "enableConfetti": "启用彩带",
+      "enableConfettiDescription": "完成设置任务时显示彩带动画。"
+    },
+    "dangerZone": {
+      "title": "危险区域",
+      "resetEverything": "重置所有内容",
+      "resetEverythingDescription": "这将删除您的所有应用程序、聊天记录和设置。此操作无法撤销。",
+      "resetEverythingButton": "重置所有内容",
+      "resetting": "正在重置..."
+    }
+  },
+  "apps": {
+    "title": "您的应用",
+    "newApp": "新应用",
+    "buildYourDreamApp": "构建您梦想的应用",
+    "importApp": "导入应用",
+    "importAppDescription": "选择一个现有的应用文件夹导入到CodeDuet。",
+    "importAppExperimentalNote": "应用导入是一个实验性功能。如果您遇到任何问题，请使用帮助按钮报告。",
+    "selectFolder": "选择文件夹",
+    "selectingFolder": "正在选择文件夹...",
+    "selectedFolder": "选定的文件夹：",
+    "clearSelection": "清除选择",
+    "appName": "应用名称",
+    "enterNewAppName": "输入新应用名称",
+    "appNameExists": "该名称的应用已存在。请选择一个不同的名称：",
+    "advancedOptions": "高级选项",
+    "installCommand": "安装命令",
+    "startCommand": "启动命令",
+    "bothCommandsRequired": "自定义时需要两个命令。",
+    "noAiRulesFound": "未找到AI_RULES.md。CodeDuet将在导入后自动生成一个。",
+    "aiRulesTooltip": "AI_RULES.md让CodeDuet知道编辑应用时使用哪种技术栈",
+    "importingApp": "正在导入应用...",
+    "importing": "正在导入...",
+    "import": "导入",
+    "appImportedSuccessfully": "应用导入成功",
+    "appImportedWithAiRules": "应用导入成功。CodeDuet现在将自动生成AI_RULES.md。",
+    "askCodeDuetToBuild": "请CodeDuet构建...",
+    "build": "构建",
+    "noAppsFound": "未找到应用",
+    "loadingApps": "正在加载应用...",
+    "errorLoadingApps": "加载应用时出错",
+    "buildingYourApp": "正在构建您的应用",
+    "buildingDescription": "我们正在用AI魔法设置您的应用。这可能需要一点时间...",
+    "templateSuggestions": {
+      "todoApp": "待办事项应用",
+      "landingPage": "着陆页",
+      "signUpForm": "注册表单",
+      "moodJournalTracker": "心情日记和追踪器",
+      "interactiveStoryGame": "互动故事游戏",
+      "recipeFinderMealPlanner": "食谱查找器和膳食计划器",
+      "personalFinanceDashboard": "个人财务仪表板",
+      "travelMemoryMap": "旅行记忆地图",
+      "aiWritingAssistant": "AI写作助手",
+      "habitStreakTracker": "习惯连续追踪器",
+      "newsletterCreator": "新闻通讯创建器",
+      "musicDiscoveryApp": "音乐发现应用",
+      "3dPortfolioViewer": "3D作品集查看器",
+      "aiImageGenerator": "AI图像生成器",
+      "pomodoroFocusTimer": "番茄专注计时器",
+      "virtualAvatarBuilder": "虚拟头像构建器",
+      "moreIdeas": "更多想法"
+    }
+  },
+  "templates": {
+    "title": "选择您的默认模板",
+    "subtitle": "为您的新项目选择一个起点。",
+    "officialTemplates": "官方模板",
+    "selected": "已选择",
+    "official": "官方",
+    "reactTemplate": {
+      "title": "React.js模板",
+      "description": "使用React.js、Vite、Shadcn、Tailwind和TypeScript。"
+    },
+    "nextTemplate": {
+      "title": "Next.js模板",
+      "description": "使用Next.js、React.js、Shadcn、Tailwind和TypeScript。"
+    },
+    "createApp": "创建应用",
+    "viewOnGithub": "在GitHub上查看"
+  },
+  "chat": {
+    "newChat": "新聊天",
+    "searchChats": "搜索聊天",
+    "recentChats": "最近聊天",
+    "thinking": "正在思考",
+    "keepGoing": "继续",
+    "askCodeDuetToBuild": "请CodeDuet构建...",
+    "systemMessages": "系统消息",
+    "version": "版本"
+  },
+  "toolbar": {
+    "preview": "预览",
+    "problems": "问题",
+    "code": "代码",
+    "configure": "配置",
+    "publish": "发布",
+    "toggleSidebar": "切换侧边栏"
+  },
+  "common": {
+    "goBack": "返回",
+    "cancel": "取消",
+    "confirm": "确认",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "noAppSelected": "未选择应用"
+  },
+  "themes": {
+    "system": "系统",
+    "light": "明亮",
+    "dark": "暗黑"
+  }
+}

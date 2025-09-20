@@ -9,9 +9,11 @@ import {
 import { useSettings } from "@/hooks/useSettings";
 import { showError } from "@/lib/toast";
 import { IpcClient } from "@/ipc/ipc_client";
+import { useLanguage } from "@/i18n";
 
 export function RuntimeModeSelector() {
   const { settings, updateSettings } = useSettings();
+  const { t } = useLanguage();
 
   if (!settings) {
     return null;
@@ -32,7 +34,7 @@ export function RuntimeModeSelector() {
       <div className="space-y-1">
         <div className="flex items-center space-x-2">
           <Label className="text-sm font-medium" htmlFor="runtime-mode">
-            Runtime Mode
+            {t("settings.general.runtimeMode")}
           </Label>
           <Select
             value={settings.runtimeMode2 ?? "host"}
@@ -42,19 +44,18 @@ export function RuntimeModeSelector() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="host">Local (default)</SelectItem>
-              <SelectItem value="docker">Docker (experimental)</SelectItem>
+              <SelectItem value="host">{t("settings.general.runtimeModeLocal")}</SelectItem>
+              <SelectItem value="docker">{t("settings.general.runtimeModeDocker")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <div className="text-sm text-gray-500 dark:text-gray-400">
-          Choose whether to run apps directly on the local machine or in Docker
-          containers
+          {t("settings.general.runtimeModeDescription")}
         </div>
       </div>
       {isDockerMode && (
         <div className="text-sm text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 p-2 rounded">
-          ⚠️ Docker mode is <b>experimental</b> and requires{" "}
+          ⚠️ {t("settings.general.dockerWarning")}{" "}
           <button
             type="button"
             className="underline font-medium cursor-pointer"
@@ -65,8 +66,7 @@ export function RuntimeModeSelector() {
             }
           >
             Docker Desktop
-          </button>{" "}
-          to be installed and running
+          </button>
         </div>
       )}
     </div>
