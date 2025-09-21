@@ -10,6 +10,7 @@ import {
 import { IpcClient } from "@/ipc/ipc_client";
 import { useSettings } from "@/hooks/useSettings";
 import { useLoadApp } from "@/hooks/useLoadApp";
+import { useLoadApps } from "@/hooks/useLoadApps";
 import {
   Select,
   SelectContent,
@@ -907,12 +908,14 @@ export function GitHubConnector({
 }: GitHubConnectorProps) {
   const { app, refreshApp } = useLoadApp(appId);
   const { settings, refreshSettings } = useSettings();
+  const { refreshApps } = useLoadApps();
   const [pendingAutoSync, setPendingAutoSync] = useState(false);
 
   const handleRepoSetupComplete = useCallback(() => {
     setPendingAutoSync(true);
     refreshApp();
-  }, [refreshApp]);
+    refreshApps();
+  }, [refreshApp, refreshApps]);
 
   const handleAutoSyncComplete = useCallback(() => {
     setPendingAutoSync(false);
