@@ -1,6 +1,7 @@
 import { ContextFilesPicker } from "./ContextFilesPicker";
 import { ModelPicker } from "./ModelPicker";
 import { ChatModeSelector } from "./ChatModeSelector";
+import { IntegrationShortcuts } from "./IntegrationShortcuts";
 
 export function ChatInputControls({
   showContextFilesPicker = false,
@@ -12,6 +13,8 @@ export function ChatInputControls({
       <ChatModeSelector />
       <div className="w-1.5"></div>
       <ModelPicker />
+      <div className="w-1.5"></div>
+      <IntegrationShortcuts />
       <div className="w-1.5"></div>
       {showContextFilesPicker && (
         <>

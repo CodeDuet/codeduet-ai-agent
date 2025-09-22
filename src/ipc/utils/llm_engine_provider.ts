@@ -71,7 +71,7 @@ export function createDyadEngine(
   options: ExampleProviderSettings,
 ): DyadEngineProvider {
   const baseURL = withoutTrailingSlash(options.baseURL);
-  logger.info("creating dyad engine with baseURL", baseURL);
+  logger.info("creating codeduet engine with baseURL", baseURL);
 
   // Track request ID attempts
   const requestIdAttempts = new Map<string, number>();

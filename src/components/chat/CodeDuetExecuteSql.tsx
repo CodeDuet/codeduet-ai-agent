@@ -4,37 +4,29 @@ import { useState } from "react";
 import {
   ChevronsDownUp,
   ChevronsUpDown,
-  Pencil,
+  Database,
   Loader,
   CircleX,
 } from "lucide-react";
 import { CodeHighlight } from "./CodeHighlight";
 import { CustomTagState } from "./stateTypes";
 
-interface DyadWriteProps {
+interface CodeDuetExecuteSqlProps {
   children?: ReactNode;
   node?: any;
-  path?: string;
   description?: string;
 }
 
-export const DyadWrite: React.FC<DyadWriteProps> = ({
+export const CodeDuetExecuteSql: React.FC<CodeDuetExecuteSqlProps> = ({
   children,
   node,
-  path: pathProp,
-  description: descriptionProp,
+  description,
 }) => {
   const [isContentVisible, setIsContentVisible] = useState(false);
-
-  // Use props directly if provided, otherwise extract from node
-  const path = pathProp || node?.properties?.path || "";
-  const description = descriptionProp || node?.properties?.description || "";
   const state = node?.properties?.state as CustomTagState;
   const inProgress = state === "pending";
   const aborted = state === "aborted";
-
-  // Extract filename from path
-  const fileName = path ? path.split("/").pop() : "";
+  const queryDescription = description || node?.properties?.description;
 
   return (
     <div
@@ -49,16 +41,17 @@ export const DyadWrite: React.FC<DyadWriteProps> = ({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Pencil size={16} />
-          {fileName && (
-            <span className="text-gray-700 dark:text-gray-300 font-medium text-sm">
-              {fileName}
+          <Database size={16} />
+          <span className="text-gray-700 dark:text-gray-300 font-medium text-sm">
+            <span className="font-bold mr-2 outline-2 outline-gray-200 dark:outline-gray-700 bg-gray-100 dark:bg-gray-800 rounded-md px-1">
+              SQL
             </span>
-          )}
+            {queryDescription}
+          </span>
           {inProgress && (
             <div className="flex items-center text-amber-600 text-xs">
               <Loader size={14} className="mr-1 animate-spin" />
-              <span>Writing...</span>
+              <span>Executing...</span>
             </div>
           )}
           {aborted && (
@@ -82,25 +75,9 @@ export const DyadWrite: React.FC<DyadWriteProps> = ({
           )}
         </div>
       </div>
-      {path && (
-        <div className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-1">
-          {path}
-        </div>
-      )}
-      {description && (
-        <div className="text-sm text-gray-600 dark:text-gray-300">
-          <span className="font-medium">Summary: </span>
-          {description}
-        </div>
-      )}
       {isContentVisible && (
-        <div
-          className="text-xs cursor-text"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <CodeHighlight className="language-typescript">
-            {children}
-          </CodeHighlight>
+        <div className="text-xs">
+          <CodeHighlight className="language-sql">{children}</CodeHighlight>
         </div>
       )}
     </div>

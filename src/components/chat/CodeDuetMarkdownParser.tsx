@@ -1,24 +1,24 @@
 import React, { useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 
-import { DyadWrite } from "./DyadWrite";
-import { DyadRename } from "./DyadRename";
-import { DyadDelete } from "./DyadDelete";
-import { DyadAddDependency } from "./DyadAddDependency";
-import { DyadExecuteSql } from "./DyadExecuteSql";
-import { DyadAddIntegration } from "./DyadAddIntegration";
-import { DyadEdit } from "./DyadEdit";
-import { DyadCodebaseContext } from "./DyadCodebaseContext";
-import { DyadThink } from "./DyadThink";
+import { CodeDuetWrite } from "./CodeDuetWrite";
+import { CodeDuetRename } from "./CodeDuetRename";
+import { CodeDuetDelete } from "./CodeDuetDelete";
+import { CodeDuetAddDependency } from "./CodeDuetAddDependency";
+import { CodeDuetExecuteSql } from "./CodeDuetExecuteSql";
+import { CodeDuetAddIntegration } from "./CodeDuetAddIntegration";
+import { CodeDuetEdit } from "./CodeDuetEdit";
+import { CodeDuetCodebaseContext } from "./CodeDuetCodebaseContext";
+import { CodeDuetThink } from "./CodeDuetThink";
 import { CodeHighlight } from "./CodeHighlight";
 import { useAtomValue } from "jotai";
 import { isStreamingAtom } from "@/atoms/chatAtoms";
 import { CustomTagState } from "./stateTypes";
-import { DyadOutput } from "./DyadOutput";
-import { DyadProblemSummary } from "./DyadProblemSummary";
+import { CodeDuetOutput } from "./CodeDuetOutput";
+import { CodeDuetProblemSummary } from "./CodeDuetProblemSummary";
 import { IpcClient } from "@/ipc/ipc_client";
 
-interface DyadMarkdownParserProps {
+interface CodeDuetMarkdownParserProps {
   content: string;
 }
 
@@ -67,9 +67,9 @@ export const VanillaMarkdownParser = ({ content }: { content: string }) => {
 };
 
 /**
- * Custom component to parse markdown content with Dyad-specific tags
+ * Custom component to parse markdown content with CodeDuet-specific tags
  */
-export const DyadMarkdownParser: React.FC<DyadMarkdownParserProps> = ({
+export const CodeDuetMarkdownParser: React.FC<CodeDuetMarkdownParserProps> = ({
   content,
 }) => {
   const isStreaming = useAtomValue(isStreamingAtom);
@@ -111,19 +111,19 @@ function preprocessUnclosedTags(content: string): {
   inProgressTags: Map<string, Set<number>>;
 } {
   const customTagNames = [
-    "dyad-write",
-    "dyad-rename",
-    "dyad-delete",
-    "dyad-add-dependency",
-    "dyad-execute-sql",
-    "dyad-add-integration",
-    "dyad-output",
-    "dyad-problem-report",
-    "dyad-chat-summary",
-    "dyad-edit",
-    "dyad-codebase-context",
+    "codeduet-write",
+    "codeduet-rename",
+    "codeduet-delete",
+    "codeduet-add-dependency",
+    "codeduet-execute-sql",
+    "codeduet-add-integration",
+    "codeduet-output",
+    "codeduet-problem-report",
+    "codeduet-chat-summary",
+    "codeduet-edit",
+    "codeduet-codebase-context",
     "think",
-    "dyad-command",
+    "codeduet-command",
   ];
 
   let processedContent = content;
@@ -178,19 +178,19 @@ function parseCustomTags(content: string): ContentPiece[] {
   const { processedContent, inProgressTags } = preprocessUnclosedTags(content);
 
   const customTagNames = [
-    "dyad-write",
-    "dyad-rename",
-    "dyad-delete",
-    "dyad-add-dependency",
-    "dyad-execute-sql",
-    "dyad-add-integration",
-    "dyad-output",
-    "dyad-problem-report",
-    "dyad-chat-summary",
-    "dyad-edit",
-    "dyad-codebase-context",
+    "codeduet-write",
+    "codeduet-rename",
+    "codeduet-delete",
+    "codeduet-add-dependency",
+    "codeduet-execute-sql",
+    "codeduet-add-integration",
+    "codeduet-output",
+    "codeduet-problem-report",
+    "codeduet-chat-summary",
+    "codeduet-edit",
+    "codeduet-codebase-context",
     "think",
-    "dyad-command",
+    "codeduet-command",
   ];
 
   const tagPattern = new RegExp(
@@ -278,7 +278,7 @@ function renderCustomTag(
   switch (tag) {
     case "think":
       return (
-        <DyadThink
+        <CodeDuetThink
           node={{
             properties: {
               state: getState({ isStreaming, inProgress }),
@@ -286,11 +286,11 @@ function renderCustomTag(
           }}
         >
           {content}
-        </DyadThink>
+        </CodeDuetThink>
       );
-    case "dyad-write":
+    case "codeduet-write":
       return (
-        <DyadWrite
+        <CodeDuetWrite
           node={{
             properties: {
               path: attributes.path || "",
@@ -300,12 +300,12 @@ function renderCustomTag(
           }}
         >
           {content}
-        </DyadWrite>
+        </CodeDuetWrite>
       );
 
-    case "dyad-rename":
+    case "codeduet-rename":
       return (
-        <DyadRename
+        <CodeDuetRename
           node={{
             properties: {
               from: attributes.from || "",
@@ -314,12 +314,12 @@ function renderCustomTag(
           }}
         >
           {content}
-        </DyadRename>
+        </CodeDuetRename>
       );
 
-    case "dyad-delete":
+    case "codeduet-delete":
       return (
-        <DyadDelete
+        <CodeDuetDelete
           node={{
             properties: {
               path: attributes.path || "",
@@ -327,12 +327,12 @@ function renderCustomTag(
           }}
         >
           {content}
-        </DyadDelete>
+        </CodeDuetDelete>
       );
 
-    case "dyad-add-dependency":
+    case "codeduet-add-dependency":
       return (
-        <DyadAddDependency
+        <CodeDuetAddDependency
           node={{
             properties: {
               packages: attributes.packages || "",
@@ -340,12 +340,12 @@ function renderCustomTag(
           }}
         >
           {content}
-        </DyadAddDependency>
+        </CodeDuetAddDependency>
       );
 
-    case "dyad-execute-sql":
+    case "codeduet-execute-sql":
       return (
-        <DyadExecuteSql
+        <CodeDuetExecuteSql
           node={{
             properties: {
               state: getState({ isStreaming, inProgress }),
@@ -354,12 +354,12 @@ function renderCustomTag(
           }}
         >
           {content}
-        </DyadExecuteSql>
+        </CodeDuetExecuteSql>
       );
 
-    case "dyad-add-integration":
+    case "codeduet-add-integration":
       return (
-        <DyadAddIntegration
+        <CodeDuetAddIntegration
           node={{
             properties: {
               provider: attributes.provider || "",
@@ -367,12 +367,12 @@ function renderCustomTag(
           }}
         >
           {content}
-        </DyadAddIntegration>
+        </CodeDuetAddIntegration>
       );
 
-    case "dyad-edit":
+    case "codeduet-edit":
       return (
-        <DyadEdit
+        <CodeDuetEdit
           node={{
             properties: {
               path: attributes.path || "",
@@ -382,12 +382,12 @@ function renderCustomTag(
           }}
         >
           {content}
-        </DyadEdit>
+        </CodeDuetEdit>
       );
 
-    case "dyad-codebase-context":
+    case "codeduet-codebase-context":
       return (
-        <DyadCodebaseContext
+        <CodeDuetCodebaseContext
           node={{
             properties: {
               files: attributes.files || "",
@@ -396,32 +396,32 @@ function renderCustomTag(
           }}
         >
           {content}
-        </DyadCodebaseContext>
+        </CodeDuetCodebaseContext>
       );
 
-    case "dyad-output":
+    case "codeduet-output":
       return (
-        <DyadOutput
+        <CodeDuetOutput
           type={attributes.type as "warning" | "error"}
           message={attributes.message}
         >
           {content}
-        </DyadOutput>
+        </CodeDuetOutput>
       );
 
-    case "dyad-problem-report":
+    case "codeduet-problem-report":
       return (
-        <DyadProblemSummary summary={attributes.summary}>
+        <CodeDuetProblemSummary summary={attributes.summary}>
           {content}
-        </DyadProblemSummary>
+        </CodeDuetProblemSummary>
       );
 
-    case "dyad-chat-summary":
-      // Don't render anything for dyad-chat-summary
+    case "codeduet-chat-summary":
+      // Don't render anything for codeduet-chat-summary
       return null;
 
-    case "dyad-command":
-      // Don't render anything for dyad-command
+    case "codeduet-command":
+      // Don't render anything for codeduet-command
       return null;
 
     default:

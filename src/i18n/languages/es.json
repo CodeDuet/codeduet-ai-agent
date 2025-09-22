@@ -158,7 +158,17 @@
     "keepGoing": "Continuar",
     "askCodeDuetToBuild": "Pide a CodeDuet que construya...",
     "systemMessages": "Mensajes del Sistema",
-    "version": "Versión"
+    "version": "Versión",
+    "modes": {
+      "build": "Construir",
+      "ask": "Preguntar",
+      "buildDescription": "Generar y editar código",
+      "askDescription": "Hacer preguntas sobre la aplicación"
+    },
+    "integrations": {
+      "title": "Integraciones",
+      "quickSetup": "Configuración Rápida de Integración"
+    }
   },
   "toolbar": {
     "preview": "Vista Previa",

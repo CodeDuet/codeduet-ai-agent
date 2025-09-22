@@ -17,7 +17,8 @@
   "scripts": {
     "clean": "rimraf out scaffold/node_modules",
     "build:packages": "cd packages/@codeduet-sh/supabase-management-js && npm run build",
-    "prepackage": "npm run build:packages",
+    "verify-packages": "node scripts/verify-packages.js",
+    "prepackage": "npm run verify-packages && npm run build:packages",
     "start": "electron-forge start",
     "dev:engine": "cross-env CODEDUET_ENGINE_URL=http://localhost:8080/v1 npm start",
     "staging:engine": "cross-env CODEDUET_ENGINE_URL=https://staging---codeduet-llm-engine-kq7pivehnq-uc.a.run.app/v1 npm start",
@@ -42,6 +43,7 @@
     "test:ui": "vitest --ui",
     "extract-codebase": "ts-node scripts/extract-codebase.ts",
     "init-precommit": "husky",
+    "postinstall": "npm run verify-packages",
     "pre:e2e": "cross-env E2E_TEST_BUILD=true npm run package",
     "e2e": "playwright test",
     "e2e:shard": "playwright test --shard"

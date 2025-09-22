@@ -43,6 +43,15 @@ export const localTemplatesData: Template[] = [
     isOfficial: true,
   },
   {
+    id: "nextjs-stripe",
+    title: "Next.js + Stripe Template",
+    description: "Next.js with Stripe integration for payments, checkout, subscriptions, and webhooks. Ready for Vercel deployment.",
+    imageUrl:
+      "https://github.com/user-attachments/assets/a1b2c3d4-e5f6-7890-abcd-1234567890ef",
+    githubUrl: "https://github.com/codeduet/nextjs-stripe-template",
+    isOfficial: true,
+  },
+  {
     id: PORTAL_MINI_STORE_ID,
     title: "Portal: Mini Store Template",
     description: "Uses Neon DB, Payload CMS, Next.js",

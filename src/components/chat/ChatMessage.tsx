@@ -1,8 +1,8 @@
 import type { Message } from "@/ipc/ipc_types";
 import {
-  DyadMarkdownParser,
+  CodeDuetMarkdownParser,
   VanillaMarkdownParser,
-} from "./DyadMarkdownParser";
+} from "./CodeDuetMarkdownParser";
 import { motion } from "framer-motion";
 import { useStreamChat } from "@/hooks/useStreamChat";
 import {
@@ -148,7 +148,7 @@ const ChatMessage = ({ message, isLastMessage, chatId }: ChatMessageProps) => {
             >
               {message.role === "assistant" ? (
                 <>
-                  <DyadMarkdownParser content={message.content} />
+                  <CodeDuetMarkdownParser content={message.content} />
                   {isLastMessage && isStreaming && (
                     <div className="mt-4 ml-4 relative w-5 h-5 animate-spin">
                       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-(--primary) dark:bg-blue-500 rounded-full"></div>

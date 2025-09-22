@@ -132,6 +132,21 @@ export function ChatInput({ chatId }: { chatId?: number }) {
       return;
     }
 
+    // Handle slash commands
+    const trimmedInput = inputValue.trim();
+    if (trimmedInput.startsWith("/")) {
+      const command = trimmedInput.slice(1).toLowerCase();
+      if (command === "stripe") {
+        const stripeTag = '<codeduet-add-integration provider="stripe">Add Stripe payments to handle checkout and subscriptions</codeduet-add-integration>';
+        setInputValue(stripeTag);
+        return;
+      } else if (command === "supabase") {
+        const supabaseTag = '<codeduet-add-integration provider="supabase">Add Supabase backend with authentication and database</codeduet-add-integration>';
+        setInputValue(supabaseTag);
+        return;
+      }
+    }
+
     const currentInput = inputValue;
     setInputValue("");
     setSelectedComponent(null);

@@ -6,7 +6,7 @@ import { useAtomValue } from "jotai";
 import { showError } from "@/lib/toast";
 import { useLoadApp } from "@/hooks/useLoadApp";
 
-interface DyadAddIntegrationProps {
+interface CodeDuetAddIntegrationProps {
   node: {
     properties: {
       provider: string;
@@ -15,7 +15,7 @@ interface DyadAddIntegrationProps {
   children: React.ReactNode;
 }
 
-export const DyadAddIntegration: React.FC<DyadAddIntegrationProps> = ({
+export const CodeDuetAddIntegration: React.FC<CodeDuetAddIntegrationProps> = ({
   node,
   children,
 }) => {
@@ -30,10 +30,17 @@ export const DyadAddIntegration: React.FC<DyadAddIntegrationProps> = ({
       showError("No app ID found");
       return;
     }
-    navigate({ to: "/app-details", search: { appId } });
+    
+    if (provider === "stripe") {
+      // Navigate to app details with stripe integration focus
+      navigate({ to: "/app-details", search: { appId, integration: "stripe" } });
+    } else {
+      navigate({ to: "/app-details", search: { appId } });
+    }
   };
 
-  if (app?.supabaseProjectName) {
+  // Check if integration is already complete
+  if (provider === "supabase" && app?.supabaseProjectName) {
     return (
       <div className="flex flex-col  my-2 p-3 border border-green-300 rounded-lg bg-green-50 shadow-sm">
         <div className="flex items-center space-x-2">
@@ -73,6 +80,12 @@ export const DyadAddIntegration: React.FC<DyadAddIntegrationProps> = ({
         </div>
       </div>
     );
+  }
+
+  // Check if Stripe is already integrated (check for Stripe in package.json or env vars)
+  if (provider === "stripe") {
+    // TODO: Add logic to check if Stripe is already installed/configured
+    // For now, we'll show the setup button since we don't have a way to detect Stripe setup
   }
 
   return (

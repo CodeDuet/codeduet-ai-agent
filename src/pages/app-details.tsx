@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/dialog";
 import { GitHubConnector } from "@/components/GitHubConnector";
 import { SupabaseConnector } from "@/components/SupabaseConnector";
+import { StripeIntegration } from "@/components/StripeIntegration";
 import { showError } from "@/lib/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Label } from "@/components/ui/label";
@@ -346,6 +347,11 @@ export default function AppDetailsPage() {
             <GitHubConnector appId={appId} folderName={selectedApp.path} />
           </div>
           {appId && <SupabaseConnector appId={appId} />}
+          {appId && search.integration === "stripe" && (
+            <div className="border border-blue-200 rounded-md p-4">
+              <StripeIntegration onComplete={() => router.history.back()} />
+            </div>
+          )}
           {appId && <CapacitorControls appId={appId} />}
           <AppUpgrades appId={appId} />
         </div>

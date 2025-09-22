@@ -2,7 +2,7 @@ import { normalizePath } from "../../../shared/normalizePath";
 import log from "electron-log";
 import { SqlQuery } from "../../lib/schemas";
 
-const logger = log.scope("dyad_tag_parser");
+const logger = log.scope("codeduet_tag_parser");
 
 export function getDyadWriteTags(fullResponse: string): {
   path: string;

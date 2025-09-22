@@ -2,6 +2,69 @@
 
 This document details all changes made during the fork and rebrand from Dyad to CodeDuet.
 
+## 🆕 Latest Features & Enhancements
+
+### 🖼️ Template Image Fix (v0.22.1)
+
+**Bug Fix:**
+- **Fixed Next.js + Stripe Template Image**: Corrected broken image URL in template display
+  - **File**: `src/shared/templates.ts:50`
+  - **Issue**: Invalid GitHub assets URL causing broken image in template hub
+  - **Solution**: Updated to proper GitHub assets URL format
+
+## 🆕 Previous Features & Enhancements
+
+### 💳 Stripe Integration System (v0.22.0)
+
+**New Features:**
+- **Next.js + Stripe Template**: Pre-configured template with Stripe payments ready for Vercel deployment
+- **Integration Shortcuts**: Visual button and slash commands for easy integration setup
+- **Automatic Environment Setup**: Auto-installs packages and configures environment variables
+- **Smart Integration UI**: Dedicated setup flow with API key validation and package installation
+
+**How to Use:**
+1. **Templates**: Select "Next.js + Stripe Template" from the Hub for new projects
+2. **Integration Button**: Click ⚡ "Integrations" in chat → Select "Stripe" for existing projects  
+3. **Slash Commands**: Type `/stripe` or `/supabase` and press Enter
+4. **Manual Tags**: Still supports `<codeduet-add-integration provider="stripe">` format
+
+**Technical Implementation:**
+- Created `StripeIntegration.tsx` component with API key collection and validation
+- Added `IntegrationShortcuts.tsx` popover with visual integration options
+- Implemented slash command handler in `ChatInput.tsx` for `/stripe` and `/supabase`
+- Updated app-details page to show integration setup when `?integration=stripe` parameter is present
+
+### 🔧 Chat Tag System Migration (v0.22.0)
+
+**Breaking Change - Tag Prefix Migration:**
+- **Old Format**: `<dyad-*>` tags (e.g., `<dyad-add-integration>`)
+- **New Format**: `<codeduet-*>` tags (e.g., `<codeduet-add-integration>`)
+
+**Updated Components:**
+- Renamed all chat components from `Dyad*` to `CodeDuet*` (e.g., `DyadAddIntegration` → `CodeDuetAddIntegration`)
+- Updated `CodeDuetMarkdownParser.tsx` to recognize new `codeduet-*` tag format
+- Migrated all integration tags: `codeduet-write`, `codeduet-edit`, `codeduet-delete`, `codeduet-add-integration`, etc.
+- Updated tag parsing logic in `preprocessUnclosedTags()` function
+
+**Backward Compatibility**: Old `dyad-*` tags will no longer work and should be updated to `codeduet-*` format.
+
+### 📟 System Messages & Logging Migration (v0.22.0)
+
+**User-Visible System Messages:**
+- **Proxy Server Messages**: Updated from `[dyad-proxy-server]started=` to `[codeduet-proxy-server]started=`
+  - **Files Updated**: `src/ipc/handlers/app_handlers.ts`, `src/hooks/useRunApp.ts`
+  - **Impact**: System Messages panel now shows CodeDuet branding instead of Dyad
+
+**Internal Logging Updates:**
+- **Engine Creation**: Log messages changed from "creating dyad engine" to "creating codeduet engine"
+  - **File**: `src/ipc/utils/llm_engine_provider.ts:74`
+- **Logger Scopes**: Updated scope names from `"dyad_tag_parser"` to `"codeduet_tag_parser"`
+  - **File**: `src/ipc/utils/dyad_tag_parser.ts:5`
+
+**Preserved for Compatibility:**
+- Legacy dyad tag parsing functions maintained for backward compatibility with AI model responses
+- Internal processing still recognizes old dyad tags to handle existing chat responses
+
 ## 🏷️ Rebranding Changes
 
 ### Package Configuration
@@ -181,8 +244,16 @@ This document details all changes made during the fork and rebrand from Dyad to 
 
 ## 🔮 Next Steps
 
-1. **Publish Forked Packages**: Create and publish npm packages under `@codeduet/` organization
-2. **Update Dependencies**: Replace `@dyad-sh/` packages with forked versions
+1. ✅ **Publish Forked Packages**: ~~Create and publish npm packages under `@codeduet/` organization~~ - **COMPLETED**
+   - Published `@codeduet-sh/supabase-management-js` v1.0.1
+   - Local packages structure established under `packages/@codeduet-sh/`
+   - Package management integrated into build system (`npm run build:packages`)
+
+2. ✅ **Update Dependencies**: ~~Replace `@dyad-sh/` packages with forked versions~~ - **COMPLETED**
+   - Updated main package.json to use `@codeduet-sh/supabase-management-js` v1.0.0
+   - Workspace configuration updated to include `packages/@codeduet-sh/*`
+   - Build pipeline configured for local package compilation
+
 3. **User Data Migration**: Implement migration for existing "dyad-apps" directories
 4. **Feature Implementation**: Begin Phase 1 of FEATURE_REQUEST.md roadmap
 

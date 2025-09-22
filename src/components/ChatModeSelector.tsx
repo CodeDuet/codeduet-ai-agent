@@ -11,11 +11,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useSettings } from "@/hooks/useSettings";
+import { useLanguage } from "@/contexts/LanguageContext";
 import type { ChatMode } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 
 export function ChatModeSelector() {
   const { settings, updateSettings } = useSettings();
+  const { t } = useLanguage();
 
   const selectedMode = settings?.selectedChatMode || "build";
 
@@ -26,11 +28,11 @@ export function ChatModeSelector() {
   const getModeDisplayName = (mode: ChatMode) => {
     switch (mode) {
       case "build":
-        return "Build";
+        return t("chat.modes.build");
       case "ask":
-        return "Ask";
+        return t("chat.modes.ask");
       default:
-        return "Build";
+        return t("chat.modes.build");
     }
   };
 
@@ -56,17 +58,17 @@ export function ChatModeSelector() {
       <SelectContent align="start" onCloseAutoFocus={(e) => e.preventDefault()}>
         <SelectItem value="build">
           <div className="flex flex-col items-start">
-            <span className="font-medium">Build</span>
+            <span className="font-medium">{t("chat.modes.build")}</span>
             <span className="text-xs text-muted-foreground">
-              Generate and edit code
+              {t("chat.modes.buildDescription")}
             </span>
           </div>
         </SelectItem>
         <SelectItem value="ask">
           <div className="flex flex-col items-start">
-            <span className="font-medium">Ask</span>
+            <span className="font-medium">{t("chat.modes.ask")}</span>
             <span className="text-xs text-muted-foreground">
-              Ask questions about the app
+              {t("chat.modes.askDescription")}
             </span>
           </div>
         </SelectItem>

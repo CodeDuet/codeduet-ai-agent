@@ -235,7 +235,7 @@ function listenToProcess({
           onStarted: (proxyUrl) => {
             safeSend(event.sender, "app:output", {
               type: "stdout",
-              message: `[dyad-proxy-server]started=[${proxyUrl}] original=[${urlMatch[1]}]`,
+              message: `[codeduet-proxy-server]started=[${proxyUrl}] original=[${urlMatch[1]}]`,
               appId,
             });
           },
