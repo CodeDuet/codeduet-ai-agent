@@ -47,8 +47,8 @@ export const localTemplatesData: Template[] = [
     title: "Next.js + Stripe Template",
     description: "Next.js with Stripe integration for payments, checkout, subscriptions, and webhooks. Ready for Vercel deployment.",
     imageUrl:
-      "https://github.com/user-attachments/assets/a1b2c3d4-e5f6-7890-abcd-1234567890ef",
-    githubUrl: "https://github.com/codeduet/nextjs-stripe-template",
+      "./assets/nextjs-stripe-demo.png",
+    githubUrl: "https://github.com/CodeDuet/nextjs-stripe-template",
     isOfficial: true,
   },
   {
@@ -61,5 +61,14 @@ export const localTemplatesData: Template[] = [
     isOfficial: true,
     isExperimental: true,
     requiresNeon: true,
+  },
+  {
+    id: "nextjs-stripe-v2",
+    title: "Next.js + Stripe v2 Template",
+    description: "Enhanced Next.js with Stripe integration featuring modern payment flows, subscription management, and comprehensive webhook handling. Production-ready with TypeScript and Tailwind.",
+    imageUrl:
+      "./assets/saas-template.png",
+    githubUrl: "https://github.com/CodeDuet/nextjs-stripe-template-v2",
+    isOfficial: true,
   },
 ];

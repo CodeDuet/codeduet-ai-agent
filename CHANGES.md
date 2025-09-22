@@ -4,6 +4,21 @@ This document details all changes made during the fork and rebrand from Dyad to 
 
 ## 🆕 Latest Features & Enhancements
 
+### 💳 Next.js + Stripe v2 Template (v0.22.2)
+
+**New Template Added:**
+- **Next.js + Stripe v2 Template**: Enhanced template with modern payment flows and subscription management
+  - **ID**: `nextjs-stripe-v2`
+  - **Repository**: `https://github.com/CodeDuet/nextjs-stripe-template-v2`
+  - **Features**: Modern payment flows, subscription management, comprehensive webhook handling, TypeScript, Tailwind CSS
+  - **File**: `src/shared/templates.ts:65-72`
+
+**Template Updates:**
+- **Fixed Next.js + Stripe Template Image**: Updated broken image URL and GitHub repository URL
+  - **File**: `src/shared/templates.ts:46-53`
+  - **Image URL**: Updated to `https://github.com/CodeDuet/nextjs-stripe-template/blob/main/public/demo.png`
+  - **Repository**: Updated to use correct CodeDuet organization URL
+
 ### 🖼️ Template Image Fix (v0.22.1)
 
 **Bug Fix:**
