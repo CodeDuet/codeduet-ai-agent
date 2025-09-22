@@ -10,7 +10,7 @@ CodeDuet AI Studio is a local, open-source AI app builder. It's fast, private, a
 More info at: [https://codeduet.com/](https://codeduet.com/)
 
 ## Mission Statement
-The goal of CodeDuet is to allow people to learn more about AI development and create affordable, awesome + exciting products without AI platform lock-in. The vision is for all users to control and switch LLM models as needed based on cost, quality, and personal preference. Privacy is also part of the mission - users can develop products using local LLMs instead of API endpoints or online services.
+The goal of CodeDuet is to allow people to learn more about AI development and create affordable, awesome + exciting products without AI platform lock-in. The vision is for all users to control and switch LLM models as needed based on cost, quality, and personal preference. Privacy is also part of the mission - users can develop products using local LLMs instead of solely paid API endpoints (ChatGPT/Claude/Gemini, etc) or online platforms (Bolt, Replit, v0, Lovable, etc.).
 
 ## 🚀 Features
 
