@@ -44,8 +44,8 @@ export const localTemplatesData: Template[] = [
   },
   {
     id: "nextjs-stripe",
-    title: "Next.js + Stripe Template",
-    description: "Next.js with Stripe integration for payments, checkout, subscriptions, and webhooks. Ready for Vercel deployment.",
+    title: "Next.js + Subscription Template",
+    description: "Next.js with pricing plan integration for payments, checkout, subscriptions, and webhooks. Ready for Vercel deployment.",
     imageUrl:
       "https://github.com/CodeDuet/codeduet-ai-studio/blob/main/assets/nextjs-stripe-demo.png?raw=true",
     githubUrl: "https://github.com/CodeDuet/nextjs-stripe-template",
@@ -64,8 +64,8 @@ export const localTemplatesData: Template[] = [
   },
   {
     id: "nextjs-stripe-v2",
-    title: "Next.js + Stripe v2 Template",
-    description: "Enhanced Next.js with Stripe integration featuring modern payment flows, subscription management, and comprehensive webhook handling. Production-ready with TypeScript and Tailwind.",
+    title: "Next.js + Subscription v2 Template",
+    description: "Enhanced Next.js with pricing plan integration featuring modern payment flows, subscription management, and comprehensive webhook handling. Production-ready with TypeScript and Tailwind.",
     imageUrl:
       "https://github.com/CodeDuet/codeduet-ai-studio/blob/main/assets/saas-template.png?raw=true",
     githubUrl: "https://github.com/CodeDuet/nextjs-stripe-template-v2",
@@ -73,8 +73,8 @@ export const localTemplatesData: Template[] = [
   },
   {
     id: "nextjs-shopify",
-    title: "Next.js Shopify Template",
-    description: "Modern e-commerce template with Shopify integration for product management, cart functionality, and seamless checkout. Built with Next.js, TypeScript, and Tailwind CSS.",
+    title: "Next.js Online Store Template",
+    description: "Modern e-commerce template with online store integration for product management, cart functionality, and seamless checkout. Built with Next.js, TypeScript, and Tailwind CSS.",
     imageUrl:
       "https://github.com/CodeDuet/codeduet-ai-studio/blob/main/assets/nextjs-commerce-template.png?raw=true",
     githubUrl: "https://github.com/CodeDuet/nextjs-commerce-template",
