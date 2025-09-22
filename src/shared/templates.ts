@@ -24,7 +24,7 @@ export const DEFAULT_TEMPLATE = {
   title: "React.js Template",
   description: "Uses React.js, Vite, Shadcn, Tailwind and TypeScript.",
   imageUrl:
-    "https://github.com/user-attachments/assets/5b700eab-b28c-498e-96de-8649b14c16d9",
+    "https://github.com/CodeDuet/codeduet-ai-studio/blob/main/assets/blank_template.png?raw=true",
   isOfficial: true,
 };
 
@@ -38,7 +38,7 @@ export const localTemplatesData: Template[] = [
     title: "Next.js Template",
     description: "Uses Next.js, React.js, Shadcn, Tailwind and TypeScript.",
     imageUrl:
-      "https://github.com/user-attachments/assets/96258e4f-abce-4910-a62a-a9dff77965f2",
+      "https://github.com/CodeDuet/codeduet-ai-studio/blob/main/assets/next-js-template.png?raw=true",
     githubUrl: "https://github.com/codeduet/nextjs-template",
     isOfficial: true,
   },
@@ -47,7 +47,7 @@ export const localTemplatesData: Template[] = [
     title: "Next.js + Stripe Template",
     description: "Next.js with Stripe integration for payments, checkout, subscriptions, and webhooks. Ready for Vercel deployment.",
     imageUrl:
-      "./assets/nextjs-stripe-demo.png",
+      "https://github.com/CodeDuet/codeduet-ai-studio/blob/main/assets/nextjs-stripe-demo.png?raw=true",
     githubUrl: "https://github.com/CodeDuet/nextjs-stripe-template",
     isOfficial: true,
   },
@@ -56,7 +56,7 @@ export const localTemplatesData: Template[] = [
     title: "Portal: Mini Store Template",
     description: "Uses Neon DB, Payload CMS, Next.js",
     imageUrl:
-      "https://github.com/user-attachments/assets/ed86f322-40bf-4fd5-81dc-3b1d8a16e12b",
+      "https://github.com/CodeDuet/codeduet-ai-studio/blob/main/assets/dyad-snacks.png?raw=true",
     githubUrl: "https://github.com/codeduet/portal-mini-store-template",
     isOfficial: true,
     isExperimental: true,
@@ -67,7 +67,7 @@ export const localTemplatesData: Template[] = [
     title: "Next.js + Stripe v2 Template",
     description: "Enhanced Next.js with Stripe integration featuring modern payment flows, subscription management, and comprehensive webhook handling. Production-ready with TypeScript and Tailwind.",
     imageUrl:
-      "./assets/saas-template.png",
+      "https://github.com/CodeDuet/codeduet-ai-studio/blob/main/assets/saas-template.png?raw=true",
     githubUrl: "https://github.com/CodeDuet/nextjs-stripe-template-v2",
     isOfficial: true,
   },
