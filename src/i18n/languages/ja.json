@@ -158,7 +158,23 @@
     "keepGoing": "続行",
     "askCodeDuetToBuild": "CodeDuetに構築を依頼...",
     "systemMessages": "システムメッセージ",
-    "version": "バージョン"
+    "version": "バージョン",
+    "modes": {
+      "build": "構築",
+      "ask": "質問",
+      "buildDescription": "コードを生成・編集",
+      "askDescription": "アプリについて質問"
+    },
+    "integrations": {
+      "title": "統合",
+      "quickSetup": "クイック統合セットアップ",
+      "stripe": {
+        "description": "Stripe決済、チェックアウト、サブスクリプションを追加"
+      },
+      "supabase": {
+        "description": "認証とデータベースを備えたSupabaseバックエンドを追加"
+      }
+    }
   },
   "toolbar": {
     "preview": "プレビュー",

@@ -158,7 +158,23 @@
     "keepGoing": "Continuer",
     "askCodeDuetToBuild": "Demander à CodeDuet de construire...",
     "systemMessages": "Messages Système",
-    "version": "Version"
+    "version": "Version",
+    "modes": {
+      "build": "Construire",
+      "ask": "Demander",
+      "buildDescription": "Générer et modifier le code",
+      "askDescription": "Poser des questions sur l'application"
+    },
+    "integrations": {
+      "title": "Intégrations",
+      "quickSetup": "Configuration Rapide d'Intégration",
+      "stripe": {
+        "description": "Ajouter les paiements Stripe, checkout et abonnements"
+      },
+      "supabase": {
+        "description": "Ajouter le backend Supabase avec authentification et base de données"
+      }
+    }
   },
   "toolbar": {
     "preview": "Aperçu",

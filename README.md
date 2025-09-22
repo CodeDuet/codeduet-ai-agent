@@ -1,12 +1,16 @@
 # CodeDuet
 
-CodeDuet is a local, open-source AI app builder. It's fast, private, and fully under your control — like Lovable, v0, or Bolt, but running right on your machine.
+CodeDuet AI Studio is a local, open-source AI app builder. It's fast, private, and fully under your control — like Lovable, v0, or Bolt, but running right on your machine.
+
 
 > **Attribution**: CodeDuet is forked from [Dyad](https://github.com/dyad-sh/dyad), an open-source project by [Will Chen](https://github.com/willchen90). We're grateful for the excellent foundation provided by the original Dyad project and its contributors. All original work remains under the Apache 2.0 license.
 
 [![Image](https://github.com/user-attachments/assets/f6c83dfc-6ffd-4d32-93dd-4b9c46d17790)](https://codeduet.com/)
 
 More info at: [https://codeduet.com/](https://codeduet.com/)
+
+## Mission Statement
+The goal of CodeDuet is to allow people to learn more about AI development and create affordable, awesome + exciting products without AI platform lock-in. The vision is for all users to control and switch LLM models as needed based on cost, quality, and personal preference. Privacy is also part of the mission - users can develop products using local LLMs instead of API endpoints or online services.
 
 ## 🚀 Features
 

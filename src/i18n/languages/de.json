@@ -158,7 +158,23 @@
     "keepGoing": "Weitermachen",
     "askCodeDuetToBuild": "CodeDuet bitten zu bauen...",
     "systemMessages": "Systemnachrichten",
-    "version": "Version"
+    "version": "Version",
+    "modes": {
+      "build": "Erstellen",
+      "ask": "Fragen",
+      "buildDescription": "Code generieren und bearbeiten",
+      "askDescription": "Fragen zur App stellen"
+    },
+    "integrations": {
+      "title": "Integrationen",
+      "quickSetup": "Schnelle Integration Einrichtung",
+      "stripe": {
+        "description": "Stripe-Zahlungen, Checkout und Abonnements hinzufügen"
+      },
+      "supabase": {
+        "description": "Supabase-Backend mit Authentifizierung und Datenbank hinzufügen"
+      }
+    }
   },
   "toolbar": {
     "preview": "Vorschau",

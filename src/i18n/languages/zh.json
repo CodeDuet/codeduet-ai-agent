@@ -158,7 +158,23 @@
     "keepGoing": "继续",
     "askCodeDuetToBuild": "请CodeDuet构建...",
     "systemMessages": "系统消息",
-    "version": "版本"
+    "version": "版本",
+    "modes": {
+      "build": "构建",
+      "ask": "询问",
+      "buildDescription": "生成和编辑代码",
+      "askDescription": "询问有关应用的问题"
+    },
+    "integrations": {
+      "title": "集成",
+      "quickSetup": "快速集成设置",
+      "stripe": {
+        "description": "添加Stripe支付、结账和订阅功能"
+      },
+      "supabase": {
+        "description": "添加带有身份验证和数据库的Supabase后端"
+      }
+    }
   },
   "toolbar": {
     "preview": "预览",

@@ -167,7 +167,13 @@
     },
     "integrations": {
       "title": "Integrations",
-      "quickSetup": "Quick Integration Setup"
+      "quickSetup": "Quick Integration Setup",
+      "stripe": {
+        "description": "Add Stripe payments, checkout, and subscriptions"
+      },
+      "supabase": {
+        "description": "Add Supabase backend with auth and database"
+      }
     }
   },
   "toolbar": {

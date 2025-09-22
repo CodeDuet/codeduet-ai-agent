@@ -15,33 +15,33 @@ interface IntegrationShortcut {
   id: string;
   name: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
-  description: string;
+  descriptionKey: string;
   tag: string;
   color: string;
 }
 
-const integrationShortcuts: IntegrationShortcut[] = [
-  {
-    id: "stripe",
-    name: "Stripe",
-    icon: CreditCard,
-    description: "Add Stripe payments, checkout, and subscriptions",
-    tag: '<codeduet-add-integration provider="stripe">Add Stripe payments to handle checkout and subscriptions</codeduet-add-integration>',
-    color: "text-purple-600",
-  },
-  {
-    id: "supabase",
-    name: "Supabase",
-    icon: Database,
-    description: "Add Supabase backend with auth and database",
-    tag: '<codeduet-add-integration provider="supabase">Add Supabase backend with authentication and database</codeduet-add-integration>',
-    color: "text-green-600",
-  },
-];
-
 export function IntegrationShortcuts() {
   const [inputValue, setInputValue] = useAtom(chatInputValueAtom);
   const { t } = useLanguage();
+
+  const integrationShortcuts: IntegrationShortcut[] = [
+    {
+      id: "stripe",
+      name: "Stripe",
+      icon: CreditCard,
+      descriptionKey: "chat.integrations.stripe.description",
+      tag: '<codeduet-add-integration provider="stripe">Add Stripe payments to handle checkout and subscriptions</codeduet-add-integration>',
+      color: "text-purple-600",
+    },
+    {
+      id: "supabase",
+      name: "Supabase",
+      icon: Database,
+      descriptionKey: "chat.integrations.supabase.description",
+      tag: '<codeduet-add-integration provider="supabase">Add Supabase backend with authentication and database</codeduet-add-integration>',
+      color: "text-green-600",
+    },
+  ];
 
   const handleIntegrationClick = (integration: IntegrationShortcut) => {
     // Add the integration tag to the current input value
@@ -82,7 +82,7 @@ export function IntegrationShortcuts() {
                     {integration.name}
                   </div>
                   <div className="text-xs text-muted-foreground line-clamp-2">
-                    {integration.description}
+                    {t(integration.descriptionKey)}
                   </div>
                 </div>
               </button>
