@@ -71,4 +71,13 @@ export const localTemplatesData: Template[] = [
     githubUrl: "https://github.com/CodeDuet/nextjs-stripe-template-v2",
     isOfficial: true,
   },
+  {
+    id: "nextjs-shopify",
+    title: "Next.js Shopify Template",
+    description: "Modern e-commerce template with Shopify integration for product management, cart functionality, and seamless checkout. Built with Next.js, TypeScript, and Tailwind CSS.",
+    imageUrl:
+      "https://github.com/CodeDuet/codeduet-ai-studio/blob/main/assets/nextjs-commerce-template.png?raw=true",
+    githubUrl: "https://github.com/CodeDuet/nextjs-commerce-template",
+    isOfficial: true,
+  },
 ];
