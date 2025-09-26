@@ -20,6 +20,19 @@ export function useLanguageModelProviders() {
     if (queryResult.isLoading) {
       return false;
     }
+    
+    const providerData = queryResult.data?.find((p) => p.id === provider);
+    
+    // CLI providers are considered "setup" if they exist in the database
+    if (providerData?.type === "cli") {
+      return true;
+    }
+    
+    // Local providers are always considered "setup" 
+    if (providerData?.type === "local") {
+      return true;
+    }
+    
     // Vertex uses service account credentials instead of an API key
     if (provider === "vertex") {
       const vertexSettings = providerSettings as VertexProviderSetting;
@@ -32,13 +45,16 @@ export function useLanguageModelProviders() {
       }
       return false;
     }
+    
+    // Cloud and custom providers need API keys
     if (providerSettings?.apiKey?.value) {
       return true;
     }
-    const providerData = queryResult.data?.find((p) => p.id === provider);
+    
     if (providerData?.envVarName && envVars[providerData.envVarName]) {
       return true;
     }
+    
     return false;
   };
 

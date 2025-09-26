@@ -5,7 +5,7 @@ import { createLoggedHandler } from "./safe_handle";
 import * as path from "node:path";
 import { existsSync } from "node:fs";
 import { resolveAppPath } from "../../paths/paths";
-import type { IdeAvailability } from "../ipc_types";
+import type { IdeAvailability, CliAvailabilityResult } from "../ipc_types";
 
 const logger = log.scope("shell_handlers");
 const handle = createLoggedHandler(logger);
@@ -238,5 +238,57 @@ export function registerShellHandlers() {
     logger.debug("IDE availability check:", { vscode, cursor });
 
     return { vscode, cursor };
+  });
+
+  handle("check-cli-availability", async (_event, { command, type }: { command: string; type: string }): Promise<CliAvailabilityResult> => {
+    logger.debug(`Checking CLI availability for: ${command} (type: ${type})`);
+    
+    try {
+      // First try to get version information
+      const versionCommand = type === "claude-code" ? `${command} --version` : `${command} --version`;
+      
+      const version = await new Promise<string>((resolve, reject) => {
+        const testProcess = spawn("sh", ["-c", versionCommand], {
+          stdio: "pipe",
+        });
+        
+        let stdout = "";
+        let stderr = "";
+        
+        testProcess.stdout?.on("data", (data) => {
+          stdout += data.toString();
+        });
+        
+        testProcess.stderr?.on("data", (data) => {
+          stderr += data.toString();
+        });
+        
+        testProcess.on("close", (code) => {
+          if (code === 0) {
+            resolve(stdout.trim());
+          } else {
+            reject(new Error(stderr.trim() || `Command exited with code ${code}`));
+          }
+        });
+        
+        testProcess.on("error", (err) => {
+          reject(err);
+        });
+      });
+      
+      return {
+        isAvailable: true,
+        version: version,
+        command: command,
+      };
+    } catch (error: any) {
+      logger.debug(`CLI availability check failed for ${command}:`, error);
+      
+      return {
+        isAvailable: false,
+        error: error.message || "Command not found or failed to execute",
+        command: command,
+      };
+    }
   });
 }

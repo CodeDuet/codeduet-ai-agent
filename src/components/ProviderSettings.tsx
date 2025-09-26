@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { CreateCustomProviderDialog } from "./CreateCustomProviderDialog";
+import { CliProvidersSection } from "./settings/CliProvidersSection";
 
 export function ProviderSettingsGrid() {
   const navigate = useNavigate();
@@ -103,7 +104,7 @@ export function ProviderSettingsGrid() {
       <h2 className="text-lg font-medium mb-6">AI Providers</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {providers
-          ?.filter((p) => p.type !== "local")
+          ?.filter((p) => p.type !== "local" && p.type !== "cli")
           .map((provider: LanguageModelProvider) => {
             const isCustom = provider.type === "custom";
 
@@ -180,6 +181,12 @@ export function ProviderSettingsGrid() {
             </CardDescription>
           </CardHeader>
         </Card>
+
+      </div>
+
+      {/* CLI Providers Section */}
+      <div className="mt-8">
+        <CliProvidersSection />
       </div>
 
       <CreateCustomProviderDialog

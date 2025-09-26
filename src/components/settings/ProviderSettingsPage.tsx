@@ -16,6 +16,7 @@ import { ProviderSettingsHeader } from "./ProviderSettingsHeader";
 import { ApiKeyConfiguration } from "./ApiKeyConfiguration";
 import { ModelsSection } from "./ModelsSection";
 import { LocalProviderConfiguration } from "./LocalProviderConfiguration";
+import { CliProviderConfiguration } from "./CliProviderConfiguration";
 
 interface ProviderSettingsPageProps {
   provider: string;
@@ -267,6 +268,12 @@ export function ProviderSettingsPage({ provider }: ProviderSettingsPageProps) {
           <LocalProviderConfiguration
             provider={provider}
             providerDisplayName={providerDisplayName}
+          />
+        ) : providerData?.type === "cli" ? (
+          <CliProviderConfiguration
+            provider={provider}
+            providerDisplayName={providerDisplayName}
+            providerData={providerData}
           />
         ) : (
           <ApiKeyConfiguration

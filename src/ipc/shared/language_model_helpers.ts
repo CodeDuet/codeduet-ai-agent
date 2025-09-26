@@ -26,12 +26,17 @@ export async function getLanguageModelProviders(): Promise<
 
   const customProvidersMap = new Map<string, LanguageModelProvider>();
   for (const cp of customProvidersDb) {
+    // Determine if this is a CLI provider based on the presence of CLI fields
+    const type = cp.cli_type ? "cli" : "custom";
+    
     customProvidersMap.set(cp.id, {
       id: cp.id,
       name: cp.name,
-      apiBaseUrl: cp.api_base_url,
+      apiBaseUrl: cp.api_base_url ?? undefined,
       envVarName: cp.env_var_name ?? undefined,
-      type: "custom",
+      type,
+      cliType: cp.cli_type as "claude-code" | "codex" | "codeduet" | "qwen" | undefined,
+      cliCommand: cp.cli_command ?? undefined,
       // hasFreeTier, websiteUrl, gatewayPrefix are not in the custom DB schema
       // They will be undefined unless overridden by hardcoded values if IDs match
     });

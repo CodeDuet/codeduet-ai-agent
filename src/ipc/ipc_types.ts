@@ -228,7 +228,9 @@ export interface LanguageModelProvider {
   secondary?: boolean;
   envVarName?: string;
   apiBaseUrl?: string;
-  type: "custom" | "local" | "cloud";
+  type: "custom" | "local" | "cloud" | "cli";
+  cliType?: "claude-code" | "codex" | "codeduet" | "qwen";
+  cliCommand?: string;
 }
 
 export type LanguageModel =
@@ -259,8 +261,11 @@ export type LanguageModel =
 export interface CreateCustomLanguageModelProviderParams {
   id: string;
   name: string;
-  apiBaseUrl: string;
+  apiBaseUrl?: string;
   envVarName?: string;
+  type?: "custom" | "cli";
+  cliType?: "claude-code" | "codex" | "codeduet" | "qwen";
+  cliCommand?: string;
 }
 
 export interface CreateCustomLanguageModelParams {
@@ -504,4 +509,11 @@ export interface OpenInIdeParams {
 export interface IdeAvailability {
   vscode: boolean;
   cursor: boolean;
+}
+
+export interface CliAvailabilityResult {
+  isAvailable: boolean;
+  version?: string;
+  error?: string;
+  command: string;
 }
