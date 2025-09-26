@@ -93,7 +93,9 @@ export function ProviderSettingsPage({ provider }: ProviderSettingsPageProps) {
         ? isVertexConfigured
         : providerData?.type === "local"
           ? true // Local providers are always "configured" if they exist
-          : isValidUserKey || hasEnvKey; // Configured if either is set
+          : providerData?.type === "cli"
+            ? true // CLI providers show status based on CLI availability, not traditional config
+            : isValidUserKey || hasEnvKey; // Configured if either is set
 
   // --- Save Handler ---
   const handleSaveKey = async () => {
