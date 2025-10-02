@@ -121,8 +121,6 @@ export const language_model_providers = sqliteTable(
     name: text("name").notNull(),
     api_base_url: text("api_base_url"),
     env_var_name: text("env_var_name"),
-    cli_type: text("cli_type", { enum: ["claude-code", "codex", "codeduet", "qwen"] }),
-    cli_command: text("cli_command"),
     createdAt: integer("created_at", { mode: "timestamp" })
       .notNull()
       .default(sql`(unixepoch())`),

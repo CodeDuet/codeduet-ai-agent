@@ -67,39 +67,6 @@ describe("Language Model Handlers", () => {
   });
 
   describe("create-custom-language-model-provider", () => {
-    it("should create a CLI provider without apiBaseUrl", async () => {
-      const params: CreateCustomLanguageModelProviderParams = {
-        id: "test-cli",
-        name: "Test CLI Provider",
-        type: "cli",
-        cliType: "claude-code",
-        cliCommand: "claude code",
-        apiBaseUrl: "", // Empty for CLI providers
-        envVarName: undefined,
-      };
-
-      const handler = (global as any).testHandlers["create-custom-language-model-provider"];
-      expect(handler).toBeDefined();
-
-      const result = await handler({}, params);
-
-      expect(result).toEqual({
-        id: "test-cli",
-        name: "Test CLI Provider",
-        apiBaseUrl: "",
-        envVarName: undefined,
-        type: "custom",
-      });
-
-      // Verify database insert was called correctly
-      expect(db.insert).toHaveBeenCalledWith(languageModelProvidersSchema);
-      expect((db.insert as any)().values).toHaveBeenCalledWith({
-        id: "custom::test-cli",
-        name: "Test CLI Provider",
-        api_base_url: null, // Should be null for CLI providers
-        env_var_name: null,
-      });
-    });
 
     it("should create a custom provider with apiBaseUrl", async () => {
       const params: CreateCustomLanguageModelProviderParams = {
@@ -169,22 +136,6 @@ describe("Language Model Handlers", () => {
       await expect(handler({}, params)).rejects.toThrow("API base URL is required");
     });
 
-    it("should not throw error for CLI provider without apiBaseUrl", async () => {
-      const params: CreateCustomLanguageModelProviderParams = {
-        id: "test-cli",
-        name: "Test CLI Provider",
-        type: "cli",
-        cliType: "claude-code",
-        cliCommand: "claude code",
-        apiBaseUrl: undefined,
-      };
-
-      const handler = (global as any).testHandlers["create-custom-language-model-provider"];
-      
-      // Should not throw
-      const result = await handler({}, params);
-      expect(result).toBeDefined();
-    });
 
     it("should throw error if provider already exists", async () => {
       // Mock existing provider

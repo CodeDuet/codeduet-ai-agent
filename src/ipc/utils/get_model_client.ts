@@ -74,6 +74,7 @@ export async function getModelClient(
   if (!providerConfig) {
     throw new Error(`Configuration not found for provider: ${model.provider}`);
   }
+
   // Handle 'auto' provider by trying each model in AUTO_MODELS until one works
   if (model.provider === "auto") {
     if (model.name === "free") {

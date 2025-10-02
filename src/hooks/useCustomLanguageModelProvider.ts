@@ -21,26 +21,17 @@ export function useCustomLanguageModelProvider() {
         throw new Error("Provider name is required");
       }
       
-      // Validate based on provider type
-      if (params.type === "cli") {
-        if (!params.cliType) {
-          throw new Error("CLI type is required for CLI providers");
-        }
-        if (!params.cliCommand?.trim()) {
-          throw new Error("CLI command is required for CLI providers");
-        }
-      } else if (!params.apiBaseUrl?.trim()) {
-        throw new Error("API base URL is required for non-CLI providers");
+      // Validate API base URL is required for custom providers
+      if (!params.apiBaseUrl?.trim()) {
+        throw new Error("API base URL is required");
       }
 
       return ipcClient.createCustomLanguageModelProvider({
         id: params.id.trim(),
         name: params.name.trim(),
-        apiBaseUrl: params.type === "cli" ? undefined : params.apiBaseUrl?.trim(),
+        apiBaseUrl: params.apiBaseUrl?.trim(),
         envVarName: params.envVarName?.trim() || undefined,
         type: params.type,
-        cliType: params.cliType,
-        cliCommand: params.cliCommand?.trim(),
       });
     },
     onSuccess: () => {

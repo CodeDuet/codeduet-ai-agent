@@ -105,7 +105,6 @@ const validInvokeChannels = [
   "open-ios",
   "open-android",
   "check-problems",
-  "check-cli-availability",
   "check-ide-availability",
   "restart-dyad",
   "get-templates",

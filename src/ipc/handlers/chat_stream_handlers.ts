@@ -64,6 +64,7 @@ import { parseAppMentions } from "@/shared/parse_mention_apps";
 import { prompts as promptsTable } from "../../db/schema";
 import { inArray } from "drizzle-orm";
 import { replacePromptReference } from "../utils/replacePromptReference";
+import { getLanguageModelProviders } from "../shared/language_model_helpers";
 
 type AsyncIterableStream<T> = AsyncIterable<T> & ReadableStream<T>;
 
@@ -444,6 +445,8 @@ ${componentSnippet}
           "estimated tokens",
           codebaseInfo.length / 4,
         );
+
+        // Regular AI provider flow
         const { modelClient, isEngineEnabled } = await getModelClient(
           settings.selectedModel,
           settings,
@@ -1316,3 +1319,4 @@ These are the other apps that I've mentioned in my prompt. These other apps' cod
 ${otherAppsCodebaseInfo}
 `;
 }
+

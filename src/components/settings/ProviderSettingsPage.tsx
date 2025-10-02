@@ -16,7 +16,6 @@ import { ProviderSettingsHeader } from "./ProviderSettingsHeader";
 import { ApiKeyConfiguration } from "./ApiKeyConfiguration";
 import { ModelsSection } from "./ModelsSection";
 import { LocalProviderConfiguration } from "./LocalProviderConfiguration";
-import { CliProviderConfiguration } from "./CliProviderConfiguration";
 
 interface ProviderSettingsPageProps {
   provider: string;
@@ -93,8 +92,6 @@ export function ProviderSettingsPage({ provider }: ProviderSettingsPageProps) {
         ? isVertexConfigured
         : providerData?.type === "local"
           ? true // Local providers are always "configured" if they exist
-          : providerData?.type === "cli"
-            ? true // CLI providers show status based on CLI availability, not traditional config
             : isValidUserKey || hasEnvKey; // Configured if either is set
 
   // --- Save Handler ---
@@ -270,12 +267,6 @@ export function ProviderSettingsPage({ provider }: ProviderSettingsPageProps) {
           <LocalProviderConfiguration
             provider={provider}
             providerDisplayName={providerDisplayName}
-          />
-        ) : providerData?.type === "cli" ? (
-          <CliProviderConfiguration
-            provider={provider}
-            providerDisplayName={providerDisplayName}
-            providerData={providerData}
           />
         ) : (
           <ApiKeyConfiguration

@@ -23,11 +23,6 @@ export function useLanguageModelProviders() {
     
     const providerData = queryResult.data?.find((p) => p.id === provider);
     
-    // CLI providers are considered "setup" if they exist in the database
-    if (providerData?.type === "cli") {
-      return true;
-    }
-    
     // Local providers are always considered "setup" 
     if (providerData?.type === "local") {
       return true;

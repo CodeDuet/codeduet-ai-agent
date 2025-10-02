@@ -38,7 +38,7 @@ export function registerLanguageModelHandlers() {
       event: IpcMainInvokeEvent,
       params: CreateCustomLanguageModelProviderParams,
     ): Promise<LanguageModelProvider> => {
-      const { id, name, apiBaseUrl, envVarName, type, cliType, cliCommand } = params;
+      const { id, name, apiBaseUrl, envVarName, type } = params;
 
       // Validation
       if (!id) {
@@ -49,15 +49,8 @@ export function registerLanguageModelHandlers() {
         throw new Error("Provider name is required");
       }
 
-      if (type === "cli") {
-        if (!cliType) {
-          throw new Error("CLI type is required for CLI providers");
-        }
-        if (!cliCommand) {
-          throw new Error("CLI command is required for CLI providers");
-        }
-      } else if (!apiBaseUrl?.trim()) {
-        throw new Error("API base URL is required for non-CLI providers");
+      if (!apiBaseUrl?.trim()) {
+        throw new Error("API base URL is required");
       }
 
       // Check if a provider with this ID already exists
@@ -80,21 +73,8 @@ export function registerLanguageModelHandlers() {
         name,
         api_base_url: apiBaseUrl || null,
         env_var_name: envVarName || null,
-        cli_type: cliType || null,
-        cli_command: cliCommand || null,
       });
 
-      // For CLI providers, create a default model
-      if (type === "cli" && cliType && cliCommand) {
-        await db.insert(languageModelsSchema).values({
-          displayName: `${name} Default`,
-          apiName: `${cliType}-default`,
-          customProviderId: providerDbId,
-          description: `Default model for ${name} CLI provider`,
-          max_output_tokens: null,
-          context_window: null,
-        });
-      }
 
       // Return the newly created provider
       return {
@@ -103,8 +83,6 @@ export function registerLanguageModelHandlers() {
         apiBaseUrl,
         envVarName,
         type: type || "custom",
-        cliType,
-        cliCommand,
       };
     },
   );

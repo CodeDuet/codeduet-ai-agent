@@ -69,7 +69,6 @@ import type {
   McpToolCallParams,
   OpenInIdeParams,
   IdeAvailability,
-  CliAvailabilityResult,
 } from "./ipc_types";
 import type { Template } from "../shared/templates";
 import type {
@@ -479,9 +478,6 @@ export class IpcClient {
     return await this.ipcRenderer.invoke("check-ide-availability");
   }
 
-  public async checkCliAvailability(params: { command: string; type: string }): Promise<CliAvailabilityResult> {
-    return await this.ipcRenderer.invoke("check-cli-availability", params);
-  }
 
   // Run an app
   public async runApp(
@@ -1083,18 +1079,14 @@ export class IpcClient {
     name,
     apiBaseUrl,
     envVarName,
-    type,
-    cliType,
-    cliCommand,
+    type
   }: CreateCustomLanguageModelProviderParams): Promise<LanguageModelProvider> {
     return this.ipcRenderer.invoke("create-custom-language-model-provider", {
       id,
       name,
       apiBaseUrl,
       envVarName,
-      type,
-      cliType,
-      cliCommand,
+      type
     });
   }
 
