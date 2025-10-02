@@ -35,12 +35,35 @@ export const processCounter = {
  */
 export function killProcess(process: ChildProcess): Promise<void> {
   return new Promise<void>((resolve) => {
-    // Add timeout to prevent hanging
+    let isResolved = false;
+    
+    const resolveOnce = () => {
+      if (!isResolved) {
+        isResolved = true;
+        resolve();
+      }
+    };
+
+    // Add timeout to prevent hanging with force kill
     const timeout = setTimeout(() => {
-      console.warn(
-        `Timeout waiting for process (PID: ${process.pid}) to close. Force killing may be needed.`,
-      );
-      resolve();
+      if (!isResolved && process.pid) {
+        console.warn(`Force killing process ${process.pid} after timeout`);
+        try {
+          treeKill(process.pid, "SIGKILL", (err: Error | undefined) => {
+            if (err) {
+              console.error(`Failed to force kill process ${process.pid}:`, err);
+            } else {
+              console.log(`Force killed process ${process.pid}`);
+            }
+            resolveOnce();
+          });
+        } catch (e) {
+          console.error(`Failed to force kill process ${process.pid}:`, e);
+          resolveOnce();
+        }
+      } else {
+        resolveOnce();
+      }
     }, 5000); // 5-second timeout
 
     process.on("close", (code, signal) => {
@@ -48,7 +71,7 @@ export function killProcess(process: ChildProcess): Promise<void> {
       console.log(
         `Received 'close' event for process (PID: ${process.pid}) with code ${code}, signal ${signal}.`,
       );
-      resolve();
+      resolveOnce();
     });
 
     // Handle potential errors during kill/close sequence
@@ -57,7 +80,7 @@ export function killProcess(process: ChildProcess): Promise<void> {
       console.error(
         `Error during stop sequence for process (PID: ${process.pid}): ${err.message}`,
       );
-      resolve();
+      resolveOnce();
     });
 
     // Ensure PID exists before attempting to kill
@@ -79,6 +102,7 @@ export function killProcess(process: ChildProcess): Promise<void> {
       });
     } else {
       console.warn(`Cannot tree-kill process: PID is undefined.`);
+      resolveOnce();
     }
   });
 }

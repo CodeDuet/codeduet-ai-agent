@@ -70,8 +70,39 @@ type AsyncIterableStream<T> = AsyncIterable<T> & ReadableStream<T>;
 
 const logger = log.scope("chat_stream_handlers");
 
-// Track active streams for cancellation
-const activeStreams = new Map<number, AbortController>();
+// Track active streams for cancellation with thread safety
+class StreamManager {
+  private activeStreams = new Map<number, AbortController>();
+  private locks = new Map<number, Promise<void>>();
+
+  async setStream(chatId: number, controller: AbortController): Promise<void> {
+    await this.locks.get(chatId);
+    this.activeStreams.set(chatId, controller);
+  }
+
+  async abortStream(chatId: number): Promise<void> {
+    const lockPromise = this.locks.get(chatId);
+    if (lockPromise) {
+      await lockPromise;
+    }
+    
+    const controller = this.activeStreams.get(chatId);
+    if (controller) {
+      controller.abort();
+      this.activeStreams.delete(chatId);
+    }
+  }
+
+  get(chatId: number): AbortController | undefined {
+    return this.activeStreams.get(chatId);
+  }
+
+  delete(chatId: number): boolean {
+    return this.activeStreams.delete(chatId);
+  }
+}
+
+const streamManager = new StreamManager();
 
 // Track partial responses for cancelled streams
 const partialResponses = new Map<number, string>();
@@ -174,7 +205,7 @@ export function registerChatStreamHandlers() {
 
       // Create an AbortController for this stream
       const abortController = new AbortController();
-      activeStreams.set(req.chatId, abortController);
+      await streamManager.setStream(req.chatId, abortController);
 
       // Get the chat to check for existing messages
       const chat = await db.query.chats.findFirst({
@@ -740,7 +771,7 @@ This conversation includes one or more image attachments. When the user uploads 
                 `Sorry, there was an error from the AI: ${requestIdPrefix}${message}`,
               );
               // Clean up the abort controller
-              activeStreams.delete(req.chatId);
+              streamManager.delete(req.chatId);
             },
             abortSignal: abortController.signal,
           });
@@ -1098,7 +1129,7 @@ ${problemReport.problems
         `Sorry, there was an error processing your request: ${error}`,
       );
       // Clean up the abort controller
-      activeStreams.delete(req.chatId);
+      streamManager.delete(req.chatId);
       // Clean up file uploads state on error
       FileUploadsState.getInstance().clear();
       return "error";
@@ -1107,12 +1138,11 @@ ${problemReport.problems
 
   // Handler to cancel an ongoing stream
   ipcMain.handle("chat:cancel", async (event, chatId: number) => {
-    const abortController = activeStreams.get(chatId);
+    const abortController = streamManager.get(chatId);
 
     if (abortController) {
       // Abort the stream
-      abortController.abort();
-      activeStreams.delete(chatId);
+      await streamManager.abortStream(chatId);
       logger.log(`Aborted stream for chat ${chatId}`);
     } else {
       logger.warn(`No active stream found for chat ${chatId}`);

@@ -179,9 +179,8 @@ export class McpManager extends EventEmitter {
       return false;
     }
 
+    let client: any;
     try {
-      let client: any;
-
       if (config.transport === "stdio") {
         if (!config.command) {
           throw new Error("Command is required for stdio transport");
@@ -237,11 +236,17 @@ export class McpManager extends EventEmitter {
         throw new Error(`Unsupported transport: ${config.transport}`);
       }
 
-      await client.close();
-
       return true;
     } catch (error) {
       return false;
+    } finally {
+      if (client) {
+        try {
+          await client.close();
+        } catch (closeError) {
+          console.error("Error closing test connection:", closeError);
+        }
+      }
     }
   }
 

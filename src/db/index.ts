@@ -86,6 +86,15 @@ export function getDb(): BetterSQLite3Database<typeof schema> & {
 
 export const db = new Proxy({} as any, {
   get(target, prop) {
+    if (!_db) {
+      try {
+        logger.log("Database not initialized, attempting auto-initialization");
+        initializeDatabase();
+      } catch (error) {
+        logger.error("Failed to auto-initialize database:", error);
+        throw new Error("Database not initialized and auto-initialization failed");
+      }
+    }
     const database = getDb();
     return database[prop as keyof typeof database];
   },
